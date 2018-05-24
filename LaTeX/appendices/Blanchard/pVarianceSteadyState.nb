@@ -1,0 +1,43 @@
+
+varlpShk = .01;
+siglpShk = 0.1;
+
+lpVar = pMean = {};
+\[CapitalOmega] = 0.95;
+\[CapitalOmega]Cancel = 1-\[CapitalOmega];
+
+NumKilled = 100;
+Num=Round[NumKilled/\[CapitalOmega]Cancel];
+NumSurviving=Num-NumKilled;
+
+p  = {Table[1,{Num}]};
+pi = {Table[i,{i,Num}]};
+
+\[CapitalPsi]List = DiscreteApproxToMeanOneLogNormal[siglpShk,NumSurviving][[1]];
+
+AppendTo[lpVar ,Variance[Last[p]]];
+AppendTo[pMean,Mean[Last[p]]];
+
+AddPeriod := Block[{},
+(* Pick exactly one person to be killed from each replicate bin *)
+ListKilled = Sort[Table[1+(i-1)*(Num/NumKilled)+Floor[(Num/NumKilled)*Random[]],{i,NumKilled}]];
+OneOverpOfKilled  = 1/Last[p][[ListKilled]];
+ShockList = SurvivorsShockList = \[CapitalPsi]List[[RandomPermutation[NumSurviving]]];
+Do[ShockList = Insert[ShockList,OneOverpOfKilled[[i]],ListKilled[[i]]],{i,Length[ListKilled]-1}];
+ShockList = 
+  If[Last[ListKilled]==Num
+    ,(* then *) Append[ShockList,Last[OneOverpOfKilled]]
+    ,(* else *) Insert[ShockList,Last[OneOverpOfKilled],Last[ListKilled]]
+];
+
+AppendTo[p,Sort[Last[p] ShockList]];
+AppendTo[lpVar ,Variance[Log[Last[p]]]];
+AppendTo[pMean,Mean[    Last[p]]];
+];
+
+Do[AddPeriod,{200}];
+lpVarPlot = ListPlot[lpVar,PlotRange->All];
+lpVarPred = Plot[varlpShk/\[CapitalOmega]Cancel,{t,0,Length[lpVar]}];
+Show[lpVarPlot,lpVarPred,PlotRange->All];
+
+

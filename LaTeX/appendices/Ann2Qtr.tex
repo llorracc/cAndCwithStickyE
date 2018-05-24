@@ -1,0 +1,14 @@
+
+If the quarterly transitory shock is $\theta_t$, define the annual transitory shock as:
+\begin{eqnarray*}
+\theta^a_t = \sum_{i=1}^{4}\frac{\theta_{t+i}}{4}
+\end{eqnarray*}
+for $t = {0,4,8,\dots}$ Then the variance of the annual transitory shock is $\frac{1}{4}$ of the variance of the quarterly transitory shock: $\var(\theta^a)=\frac{4}{16}\var(\theta)=\frac14\var{\theta}$. We therefore multiply our calibrated annual transitory shock ($\input \ParmDir/TranShkVarAnn.txt $) by 4 to get a quarterly number.
+
+Let $\psi_t$ be the quarterly permanent shock. Define the annual permanent shock as:
+\begin{eqnarray*}
+\psi^a_t = \prod_{i=1}^{4} \psi_{t+i}
+\end{eqnarray*}
+for $t ={0,4,8,\dots}$ Then the variance of the annual permanent shock is $\big(1+\var(\psi)\big)^4 \approx 4\times\var(\psi)$ for small $\var(\psi)$. Therefore we divide our calibrated annual permanent shock ($\input \ParmDir/PermShkVarAnn.txt $) by 4 to get a quarterly number.
+
+

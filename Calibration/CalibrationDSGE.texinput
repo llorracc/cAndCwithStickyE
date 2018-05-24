@@ -1,0 +1,12 @@
+\\ & $\rho$ & 2. & Coefficient of Relative Risk Aversion 
+\\ & $\daleth$ & 0.94^{1/4} & Quarterly Depreciation Factor 
+\\ & $K/K^{\varepsilon}$ & 12 & Perf Foresight SS Capital/Output Ratio
+\\ & $\sigma_{\Theta}^{2}$ & 0.00001 & Variance Qtrly Tran Agg Pty Shocks
+\\ & $\sigma_{\Psi}^{2}$ & 0.00004 & Variance Qtrly Perm Agg Pty Shocks
+\\ \\ \multicolumn{4}{l}{Steady State Solution of Model With $\sigma_{\Psi}=\sigma_{\Theta}=0$} \\ 
+ \\ & $K=12^{1/(1-\varepsilon)} $&\approx 48.55& Steady State Quarterly $\mathbf{K}/\mathbf{P}$ Ratio 
+ \\ & $M=K+K^{\varepsilon} $&\approx 52.6& Steady State Quarterly $\mathbf{M}/\mathbf{P}$ Ratio 
+ \\ & $\W=(1-\varepsilon)K^{\epsilon}$&\approx 2.59 & Quarterly Wage Rate 
+ \\ & $\RIn=1+\varepsilon K^{\varepsilon-1}$&=1.03 & Quarterly Gross Capital Income Factor 
+ \\ & $\RBet= \mathcal{R}\ifDepr{\daleth}{}$&\approx 1.014& Quarterly Between-Period Interest Factor 
+ \\ & $\beta= \RBet^{-1} $&\approx 0.986 & Quarterly Time Preference Factor 

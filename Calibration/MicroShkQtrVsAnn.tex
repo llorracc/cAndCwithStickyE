@@ -1,0 +1,148 @@
+\input{./econtexRoot}\input{\econtexRoot/econtexPaths}\documentclass[11pt,letterpaper]{article}
+
+
+\usepackage{float,amsmath,dcolumn,multicol,latexsym,ifthen,natbib,amssymb,verbatim,hyperref,vmargin,moreverb,cancel}
+\usepackage{endfloat}\def\var{\operatorname{var}}
+\def\std{\operatorname{std}}
+
+\setmarginsrb{1.00in}{1.00in}{1.20in}{1.00in}{0pt}{0pt}{12pt}{24pt}
+% {left}{top}{right}{bottom}{headheight}{headsep}{footheight}{footsep}
+
+
+\begin{document}
+
+\tableofcontents 
+
+\section{Intro}
+This document details the calibration of the quarterly version of the idiosyncratic
+model using estimates obtained from annual idiosyncratic data.  The derivations are
+verified in the associated Stata program \jobname{Stata}.do.
+
+\section{Variable Definitions}
+
+\begin{center}
+\begin{tabular}{lcl}
+Stata              & LaTeX                       & Description
+\\ \hline
+    \texttt{tShkQtr}  & $\theta_{t}$                     & transitory shock, $\log \theta\sim\mathcal{N}(-\sigma^{2}_{\theta}/2,\sigma^{2}_{\theta})$ $\Rightarrow$ $E_{t}[\theta_{t+n}]=1~\forall~n>0$
+\\  \texttt{pShkQtr}  & $\psi_{t}$                     & permanent shock, $\log \psi\sim\mathcal{N}(-\sigma^{2}_{\psi}/2,\sigma^{2}_{\psi})$ $\Rightarrow$ $E_{t}[\psi_{t+n}]=1~\forall~n>0$
+\\  \texttt{ltShkQtr}  & $l{\theta}_{t}$              & An $\texttt{l}$ in front of a variable indicates the log
+\\  \texttt{lpShkQtr}  & $l{\psi}_{t}$                     & 
+\\  \texttt{tDevQtr}  & $\theta^{\nabla}_{t}=\theta_{t}-1$    & additive form of transitory income shock in quarter $t$ %satisfying $E_{s}[\theta_{s+n}]=1~\forall~n>0$
+\\  \texttt{pDevQtr}  & $\psi^{\nabla}_{t}=\psi_{t}-1$    & additive form of permanent income shock in quarter $t$ %satisfying $E_{s}[\theta_{s+n}]=1~\forall~n>0$
+\\  \texttt{pLevQtr}  & $\mathbf{p}_{t}$                 & permanent income at a quarterly rate
+\\  \texttt{tLevQtr}  & $\mathbf{t}_{t}$                 & transitory income at a quarterly rate (=$\theta$)
+\\  \texttt{yLevQtr}  & $\mathbf{p}_{t}\theta_{t}=\mathbf{p}_{t}(1+\theta^{\nabla}_{t})$   & actual income in quarter $t$
+\\  \texttt{pLevAnn}  & $\vec{\mathbf{p}}_{t}$                & permanent income for four quarters beginning at $t$ eqn \eqref{eq:pLevAnn}
+\\  \texttt{tLevAnn}  & $\vec{\theta}_{t}$                & transitory income for four quarters beginning at $t$ eqn \eqref{eq:tShkAnn}
+\\  \texttt{tDevAnn}  & $\vec{\theta}_{t}-1$              & transitory shock for four quarters beginning at $t$ eqn \eqref{eq:tShkAnn}
+\\  \texttt{yLevAnn}  & $\vec{\mathbf{y}}_{t}$ & income for four quarters beginning at $t$
+\\  \texttt{tShkAnn} & $\vec{\theta}_{t}$                  & transitory shock to income over year beginning at $t$ 
+\\  \texttt{pShkAnn} & $\vec{\psi}_{t}$                  & permanent shock to income over year beginning at $t$ 
+\\  \texttt{stdltShkAnn} & $\sigma_{\vec{\theta}}$ & standard deviation of transitory component of annual income
+\\  \texttt{stdlpShkAnn} & $\sigma_{\vec{\mathbf{\psi}}}$ & standard deviation of permanent component of annual income
+\\  \texttt{stdltShkQtr} & $\sigma_{\theta}$ & standard deviation of transitory component of quarterly income
+\\  \texttt{stdlpShkQtr} & $\sigma_{\mathbf{\psi}}$ & standard deviation of permanent component of quarterly income
+\end{tabular}
+\end{center}
+
+\section{Relationship Between Annual and Quarterly Transitory Shocks}
+
+Start by assuming that the shocks to permanent income occur only once every four quarters, 
+so that, e.g., 
+\begin{eqnarray}
+ \mathbf{p}_{t} & = & \mathbf{p}_{t+1}=\mathbf{p}_{t+2}=\mathbf{p}_{t+3} 
+\end{eqnarray}
+which implies
+\begin{eqnarray}
+   \texttt{pLevAnn} = \vec{\mathbf{p}}_{t} & = & 4\mathbf{p}_{t}  \label{eq:pLevAnn}
+\\ \texttt{yLevAnn} = \vec{\mathbf{y}}_{t} & = & \mathbf{p}_{t}(1+\theta^{\nabla}_{t})+\mathbf{p}_{t+1}(1+\theta^{\nabla}_{t+1})+\mathbf{p}_{t+2}(1+\theta^{\nabla}_{t+2})+\mathbf{p}_{t+3}(1+\theta^{\nabla}_{t+3})
+\\   & = & \mathbf{p}_{t}\left(4+\theta^{\nabla}_{t}+\theta^{\nabla}_{t+1}+\theta^{\nabla}_{t+2}+\theta^{\nabla}_{t+3}\right)
+\\   & = & \vec{\mathbf{p}}_{t}\left(1+(\theta^{\nabla}_{t}+\theta^{\nabla}_{t+1}+\theta^{\nabla}_{t+2}+\theta^{\nabla}_{t+3})/4\right)
+\\ \vec{\theta}_{t} & = & \left(1+(\theta^{\nabla}_{t}+\theta^{\nabla}_{t+1}+\theta^{\nabla}_{t+2}+\theta^{\nabla}_{t+3})/4\right) \label{eq:tShkAnn}
+\end{eqnarray}
+
+\begin{eqnarray}
+    \log \vec{\theta}_{t} & \approx & (\theta^{\nabla}_{t}+\theta^{\nabla}_{t+1}+\theta^{\nabla}_{t+2}+\theta^{\nabla}_{t+3})/4
+\\  \var(\log \vec{\theta}) & \approx & \var\left((\theta^{\nabla}_{t}+\theta^{\nabla}_{t+1}+\theta^{\nabla}_{t+2}+\theta^{\nabla}_{t+3})/4\right)
+\end{eqnarray}
+but since $\var(\theta^{\nabla}) \approx \sigma_{\theta}^{2}$, this implies
+\begin{eqnarray}
+  \sigma^{2}_{\vec{\theta}} & = & 4 \sigma^{2}_{\theta}/16
+\\ \hat{\sigma}^{2}_{\theta} & = & 4\sigma^{2}_{\vec{\theta}}   \label{eq:varltShkQtr}
+\end{eqnarray}
+
+\section{Permanent Quarterly and Annual Shocks}
+Now let's relax the assumption that permanent shocks arrive only once a year, but
+(to keep the algebra simple), suppose we are looking at semiannual rather than quarterly data.
+
+\begin{eqnarray}
+  \vec{\mathbf{p}}_{t} & = & {\mathbf{p}}_{t}+{\mathbf{p}}_{t}\psi_{t+1}
+\\ & = & {\mathbf{p}}_{t}(1+\psi_{t+1})
+\\ & = & {\mathbf{p}}_{t}(1+(1+l{\psi}_{t+1}))
+\\ & = & 2{\mathbf{p}}_{t}(1+l{\psi}_{t+1}/2)
+\\ \vec{\mathbf{p}}_{t+2} & = & {\mathbf{p}}_{t}\psi_{t+1}\psi_{t+2}(1+\psi_{t+3})
+\\  & = & 2{\mathbf{p}}_{t}(1+l{\psi}_{t+1})(1+l{\psi}_{t+2})(1+l{\psi}_{t+3}/2)
+\\ l\vec{\mathbf{p}}_{t+2} & \approx & \log 2{\mathbf{p}}_{t} + l{\psi}_{t+1}+l{\psi}_{t+2}+l{\psi}_{t+3}/2
+\\ l\vec{\mathbf{p}}_{t+2} - l\vec{\mathbf{p}}_{t} & \approx & l{\psi}_{t+1}+l{\psi}_{t+2}+l{\psi}_{t+3}/2-l{\psi}_{t+1}/2
+\\ & = & l{\psi}_{t+1}/2+l{\psi}_{t+2}+l{\psi}_{t+3}/2
+\\ \var(l\vec{\mathbf{p}}_{t+2} - l\vec{\mathbf{p}}_{t}) & \approx & (1+1/2) \var(l{\psi})
+\end{eqnarray}
+
+Similarly,
+\begin{eqnarray}
+    l\vec{\mathbf{p}}_{t+4} & \approx & \log 2{\mathbf{p}}_{t} + l{\psi}_{t+1}+l{\psi}_{t+2}+ l{\psi}_{t+3}+l{\psi}_{t+4}+l{\psi}_{t+5}/2
+\\  l\vec{\mathbf{p}}_{t+4}-l\vec{\mathbf{p}}_{t} & \approx & l{\psi}_{t+1}/2+l{\psi}_{t+2}+ l{\psi}_{t+3}+l{\psi}_{t+4}+l{\psi}_{t+5}/2
+\\ \var(l\vec{\mathbf{p}}_{t+4}-l\vec{\mathbf{p}}_{t}) & \approx & (3+1/2) \var(l{\psi})
+\end{eqnarray}
+so 
+\begin{eqnarray}
+  \var(l\vec{\mathbf{p}}_{t+4}-l\vec{\mathbf{p}}_{t}) - \var(l\vec{\mathbf{p}}_{t+2} - l\vec{\mathbf{p}}_{t}) & = & 2 \var(l{\psi})
+\end{eqnarray}
+
+The corresponding logic for quarterly (as opposed to semiannual) data leads to the conclusion that
+\begin{eqnarray}
+  \var(l\vec{\mathbf{p}}_{t+8}-l\vec{\mathbf{p}}_{t}) - \var(l\vec{\mathbf{p}}_{t+4} - l\vec{\mathbf{p}}_{t}) & = & 4 \var(l{\psi}) = \var(l{\vec{\psi}}) =\sigma^{2}_{\vec{\psi}} \label{eq:varvecp}
+\end{eqnarray}
+
+Thus, our estimate of the variance of quarterly shocks to permanent income is
+\begin{eqnarray}
+  \hat{\sigma}^{2}_{\psi} & = & \sigma^{2}_{\vec{\psi}} \label{eq:varlpShkQtr}
+\end{eqnarray}
+
+\begin{comment}
+\section{Muth Updating Formula}
+
+In a context similar to the one outlined here, \cite{muthOptimal} showed that a consumer who
+only observes actual income but wants to know permanent income will form a rational
+estimate of permanent income from 
+\begin{eqnarray}
+  \bar{\mathbf{p}}_{t} & = & \pi \left[ y_{t}+(1-\pi)y_{t-1}+(1-\pi)^{2}y_{t-2}+\ldots\right]
+\end{eqnarray}
+where
+\begin{eqnarray}
+  \pi & = & \left(\frac{\sigma^{2}_{\psi}}{\sigma^{2}_{\psi}+\sigma^{2}_{\theta}}\right) \label{eq:pieq}
+\end{eqnarray}
+\end{comment}
+
+\section{Calibration}
+
+The key parameters are taken from \cite{carroll&samwick:nature}, Table 1, first row:
+The estimated annual variances of transitory and permanent components of income.  
+For purposes of this paper, those figures are rounded off, as below.  All other
+statistics are derived from these two.
+
+\begin{center}
+\input MicroShkQtrVsAnnStata.texinput
+\end{center}
+\begin{comment}
+Note (as per the footnote of the table) that these parameters imply an implausibly
+low value of $\pi$ (equivalently, an implausibly high value for the serial correlation
+coefficient of consumption growth, $(1-\pi)$).
+\end{comment}
+
+ 
+\input econtexBibMake
+
+
+\end{document}

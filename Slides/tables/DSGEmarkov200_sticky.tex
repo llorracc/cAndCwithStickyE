@@ -1,0 +1,28 @@
+
+\begin{center}
+
+$\Delta\log\mathbf{C}_{t+1}=\varsigma+\chi\Delta\log\mathbf{C}_t+\eta\Ex_t[\Delta\log\mathbf{Y}_{t+1}]+\alpha A_t+\epsilon_{t+1}$
+\begin{tabular}{d{4}d{4}d{5}cd{4}d{5}}
+\toprule
+\multicolumn{3}{c}{Expectations : Dep Var} & OLS &  \multicolumn{1}{c}{2${}^\text{nd}$ Stage}  &  \multicolumn{1}{c}{KP $p$-val}
+\\ \multicolumn{3}{c}{Independent Variables} & or IV & \multicolumn{1}{c}{$ \bar{R}^{2} $} & \multicolumn{1}{c}{Hansen J $p$ val}
+\\ \midrule \multicolumn{6}{l}{Sticky : $\Delta \log \mathbf{C}_{t+1}^*$ (with measurement error $\mathbf{C}_{t}^* =\mathbf{C}_{t}\times \xi_t$);}
+\\ \multicolumn{1}{c}{$\Delta \log \mathbf{C}_{t}^*$} & \multicolumn{1}{c}{$\Delta \log \mathbf{Y}_{t+1}$} & \multicolumn{1}{c}{$A_{t}$} & & &
+\\ 0.460^{\bullet \bullet \bullet } & & & OLS & 0.216 &
+\\ (0.061) & & & & &
+\\ 0.773^{\bullet \bullet \bullet } & & & IV & 0.228 & 0.000
+\\ (0.108) & & & & &0.532
+\\ & 0.838^{\bullet \bullet \bullet } & & IV & 0.139 & 0.137
+\\ & (0.238) & & & &0.200
+\\ & & -1.00\text{e--4}^{\bullet } & IV & 0.060 & 0.000
+\\ & & (0.53\text{e--4}) & & &0.002
+\\ 0.674^{\bullet \bullet \bullet } & 0.154 & 0.07\text{e--4} & IV & 0.230 & 0.478
+\\ (0.178) & (0.330) & (0.80\text{e--4}) & & & 0.554
+\\ \multicolumn{6}{l}{Memo: For instruments $\mathbf{Z}_{t}$, $\Delta \log \mathbf{C}_{t+1}^*$ $= \mathbf{Z}_{t} \zeta,~~\bar{R}^{2}=$ 0.231;~~$\var(\xi_t)=$ 4.17\text{e--6} }
+\\ \bottomrule
+\end{tabular}
+\end{center}
+
+{\tiny \textbf{Notes:} Reported statistics are the average values for 100 subsamples of 200 simulated quarters each.  Bullets indicate that the average subsample coefficient divided by average subsample standard error is outside of the inner 90\%, 95\%, and 99\% of the standard normal distribution.  Instruments $\textbf{Z}_t = \{\Delta \log \mathbf{C}_{t-2}, \Delta \log \mathbf{C}_{t-3}, \Delta \log \mathbf{Y}_{t-2}, \Delta \log \mathbf{Y}_{t-3}, A_{t-2}, A_{t-3}, \Delta_8 \log \mathbf{C}_{t-2}, \Delta_8 \log \mathbf{Y}_{t-2}   \}$.}
+
+%\texttt{Instruments: L(3/4).deltalogc L3.delta8logc L(3/4).deltalogy L3.delta8logy L(3/4).a, 200 periods}
