@@ -1,4 +1,5 @@
 \input{./econtexRoot.tex}\documentclass{beamer}\usepackage{dcolumn}
+% \documentclass[aspectratio=169]{beamer}
 \usepackage{verbatim}
 \usepackage{cancel}
 \usepackage{econtexShortcuts}
@@ -8,7 +9,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage{booktabs,natbib}
 \input{\econtexRoot/Switches.tex}
-
+\pdfmapfile{+sansmathaccent.map}
 
 %%% Jirka's colors
 
@@ -34,7 +35,7 @@
 }
 
 % if this is on, bullets are shown step by step
-\beamerdefaultoverlayspecification{<+->}
+%\beamerdefaultoverlayspecification{<+->}
 
 %\setbeamertemplate{navigation symbols}{}  % Take away navigation symbols
 
@@ -50,13 +51,7 @@
 %\setboolean{Depreciation}{false}
 \provideboolean{MicroDepr}
 \setboolean{MicroDepr}{true}
-% \setboolean{Depreciation}{false}
-
-
-\newboolean{includeTF}
-\setboolean{includeTF}{true}
-
-\newcommand{\ifInclude}[1]{\ifthenelse{\boolean{includeTF}}{#1}}
+%\setboolean{Depreciation}{false}
 \providecommand{\ifDepr}{\ifthenelse{\boolean{Depreciation}}}
 \providecommand{\MicroDepr}{\ifthenelse{\boolean{MicroDepr}}}
 
@@ -107,24 +102,6 @@
 \setboolean{ShowStickyE}{true}
 \setboolean{ShowStickyE}{false}
 \providecommand{\StickyE}{\ifthenelse{\boolean{ShowStickyE}}}
-
-\provideboolean{BoE}
-\setboolean{BoE}{true}
-\setboolean{BoE}{false}
-\providecommand{\BoEYN}{\ifthenelse{\boolean{BoE}}}
-
-\providecommand{\BoEHideBegin}{\ifthenelse{\boolean{BoE}}{\setboolean{includeTF}{false}}{}}
-\providecommand{\BoEHideEnd}{  \ifthenelse{\boolean{BoE}}{\setboolean{includeTF}{true}}{}}
-
-\providecommand{\TimeShortHideBegin}{\ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{false}}{}}
-\providecommand{\TimeShortHideEnd}{  \ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{true}}{}}
-
-
-\provideboolean{TimeShort}
-\setboolean{TimeShort}{true}
-%\setboolean{TimeShort}{false}
-\providecommand{\TimeShortYN}{\ifthenelse{\boolean{TimeShort}}}
-
 
 \providecommand{\econtexRoot}{.}
 \providecommand{\eq}{\econtexRoot/Equations}
@@ -185,10 +162,8 @@
   \inst{4} MoF Japan,  \texttt{kiichi.tokuoka@mof.go.jp}
   \and
  \inst{5} University of Delaware,  \texttt{mnwecon@udel.edu}\\
-}
-\BoEYN{\date{June 5, 2018 \\ Bank of England Seminar}}{
-  \date{February 2018 % venue
-    } % BoEYN end
+  }
+\date{Computing in Economics and Finance, Milan\\[4mm] June 2018 % venue
 }
 
 \begin{document}
@@ -204,8 +179,8 @@
 %%%%%%%%%%%%%%% Other slides
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Consumption: Micro Vs Macro}
-\subsection{Habits?  No!  It's Inattention}
+%\section{Consumption: Micro Vs Macro}
+%\subsection{Habits?  No!  It's Inattention}
 \begin{frame}
   \frametitle{Consumption Dynamics: Macro vs Micro}
 %  \jbemph{\large C growth persistent in macro but not micro data}
@@ -218,7 +193,7 @@
         \end{itemize}
 %        \item Uncertainty has trivial effects
     \item Evidence: Consumption is too smooth {\scriptsize (Campbell {\&} Deaton, 1989)}
-      \item Solution: \jbemph{``Habits'' parameter $\chi^{\text{Macro}}\approx 0.6\sim~0.8$}\\
+      \item Solution: \jbemph{``Habits'' parameter $\chi^{\text{Macro}}\approx 0.6$--$0.8$}\\
 \centerline{       $\Delta \log \mathbf{C}_{t+1} = \varsigma + \chi \Delta \log \mathbf{C}_t +\epsilon $}
       \end{itemize}
     \end{block}
@@ -228,7 +203,7 @@
     \item  \jbemph{Uninsurable risk is essential, changes everything}
     \item Var of micro income shocks much larger than of macro shocks:\\
 \centerline{    \jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
-    \item Evidence: \jbemph{``Habits'' parameter $\chi^{\text{Micro}}\approx 0.0\sim 0.1$}
+    \item Evidence: \jbemph{``Habits'' parameter $\chi^{\text{Micro}}\approx 0.0$--$0.1$}
     \end{itemize}
   \end{block}
 
@@ -255,6 +230,7 @@
 
 \begin{frame}
 \frametitle{Claim: It's Not Habits, It's Inattention! (Macro not Micro)}
+\jbemph{\large Proposal:\\ Completely drop habits, replace with macro inattention}\\[4mm]
 \jbemph{\large Our Setup}
 \begin{itemize}
 \item   Income Has Idiosyncratic and Aggregate Components
@@ -291,14 +267,13 @@
 \begin{itemize}
 \item  Micro: Critical (and Easy) To Notice You're Unemployed
 % \item Unlike \cite{pischkeMicroMacro}
-\item  Macro: {\it Not} Critical To {\it Instantly} Notice If U $\uparrow$
+\item  Macro: {\it Not} Critical To Instantly Notice If U $\uparrow$
 \end{itemize}
 \end{block}
 \end{frame}
 
-\TimeShortHideBegin
 
-%\ifInclude{
+
 \begin{frame}
 \frametitle{Literature on C Dynamics and Info Frictions}
 \small
@@ -322,7 +297,6 @@
 \end{itemize}
 
 \end{frame}
-%}{}
 
 
 
@@ -415,7 +389,7 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 
 
 \begin{frame}
-\frametitle{One More Ingredient: Idiosyncratic Uncertainty \dots}
+\frametitle{One More Ingredient \dots}
 
 \begin{itemize}
 \setlength{\itemsep}{3mm}
@@ -474,6 +448,38 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 \end{itemize}
 \end{block}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Solving the Models}
+
+All results are generated using the open-source Econ-ARK toolkit:\\
+\texttt{github.com/Econ-ARK/HARK/cAndCwithStickyE}
+
+%\footnotesize
+%\begin{tabular}{ll}
+%\texttt{github.com/Econ-ARK} & All project resources
+%\\ \texttt{github.com/Econ-ARK/HARK} & The HA toolkit
+%\\ \texttt{github.com/Econ-ARK/HARK/cAndCwithStickyE} & Results from this paper
+%\\ \texttt{github.com/Econ-ARK/PARK} & Presentations about toolkit
+%\\ \texttt{github.com/Econ-ARK/PARK/SciPy2018.pdf} & Overview paper
+%\\ 
+%\end{tabular} \normalsize
+%\bi
+%\item \url{github.com/econ-ark/hark}, in  `cAndCwithStickyE` 
+%\ei
+
+\vspace*{0.3cm}
+For a portal to the Econ-ARK project, go to: 
+\bi
+\item \url{http://econ-ark.org}
+\ei
+
+\vspace*{0.3cm}
+More Econ-ARK/HARK in next session ``Econ-Developers Summit'' at 11:10 in room G.012 Pio XII
+
+\end{frame}
+
 
 
 \begin{frame}
@@ -598,7 +604,7 @@ $$\cLevBF_{t,i} = \cFunc(m_{t,i}, \PtyGro_t) \times {p}_{t,i}{P}_{t}$$
 $$
   \perc{P}_{t,i}=\Ex_{t-n}\big[P_t\big\vert\Omega_{t-n}\big]=\Phi_{t-n}^nP_{t-n}
 $$
-because $\Phi$ is random walk 
+because $\Phi$ is random walk
 \ei
 \end{frame}
 
@@ -641,7 +647,7 @@ are the true aggregate state $\{P_t,\PtyGro_t\}$
 
 \item \jbemph{Usually $\perc{m}_{t,i}\not={m}_{t,i}$ because $P_{t}$ not perfectly observed}\\
   \begin{itemize}
-  \item in levels: $\perc{\mathbf{m}}_{t,i}=\mathbf{m}_{t,i}$; but normalized: $\perc{m}_{t,i}\not={m}_{t,i}$ 
+  \item in levels: $\perc{\mathbf{m}}_{t,i}=\mathbf{m}_{t,i}$; but normalized: $\perc{m}_{t,i}\not={m}_{t,i}$
   \end{itemize}
 
 \item {\small Consumers behave according to frictionless consumption function}
@@ -798,7 +804,7 @@ $$
 
 %\providecommand{\DirCampManVsStickyE}{/Volumes/Data/Work/cAndCwithStickyEArchive/Empirical/US/Results/LaTeX/tables}
 
-\footnotesize
+\scriptsize
 
 %\input \TabsDir/slides/tEmpiricalConsNondurables.tex
 \input ../Tables/tEmpiricalCons.tex
@@ -923,7 +929,16 @@ Model with `Sticky Expectations' of aggregate variables can match both micro and
 \begin{frame}[t,allowframebreaks]
 \frametitle{References}
 
-\input econtexBibMake
+%\input econtexBibMake
+
+%\write18{if [ `kpsewhich economics.bib` != '' ]; then touch economics.bib    ; fi} # This should be done only for final versions AFTER bibexport has occurred and \jobname.bib is populated
+%\write18{if [ ! -f \jobname.bib     ]; then touch \jobname.bib     ; fi}
+%\write18{if [ ! -f \jobname-Add.bib ]; then touch \jobname-Add.bib ; fi}
+
+\bibliographystyle{econtex}
+\bibliography{economics,cAndCwithStickyE-Slides,cAndCwithStickyE-Slides-Add}
+
+
 \end{frame}
 
 \normalsize
