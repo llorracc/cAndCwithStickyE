@@ -50,7 +50,13 @@
 %\setboolean{Depreciation}{false}
 \provideboolean{MicroDepr}
 \setboolean{MicroDepr}{true}
-%\setboolean{Depreciation}{false}
+% \setboolean{Depreciation}{false}
+
+
+\newboolean{includeTF}
+\setboolean{includeTF}{true}
+
+\newcommand{\ifInclude}[1]{\ifthenelse{\boolean{includeTF}}{#1}}
 \providecommand{\ifDepr}{\ifthenelse{\boolean{Depreciation}}}
 \providecommand{\MicroDepr}{\ifthenelse{\boolean{MicroDepr}}}
 
@@ -102,10 +108,23 @@
 \setboolean{ShowStickyE}{false}
 \providecommand{\StickyE}{\ifthenelse{\boolean{ShowStickyE}}}
 
-\provideboolean{MinsThirty}
-\setboolean{MinsThirty}{true}
-\setboolean{MinsThirty}{false}
-\providecommand{\StickyE}{\ifthenelse{\boolean{MinsThirty}}}
+\provideboolean{BoE}
+\setboolean{BoE}{true}
+\setboolean{BoE}{false}
+\providecommand{\BoEYN}{\ifthenelse{\boolean{BoE}}}
+
+\providecommand{\BoEHideBegin}{\ifthenelse{\boolean{BoE}}{\setboolean{includeTF}{false}}{}}
+\providecommand{\BoEHideEnd}{  \ifthenelse{\boolean{BoE}}{\setboolean{includeTF}{true}}{}}
+
+\providecommand{\TimeShortHideBegin}{\ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{false}}{}}
+\providecommand{\TimeShortHideEnd}{  \ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{true}}{}}
+
+
+\provideboolean{TimeShort}
+\setboolean{TimeShort}{true}
+%\setboolean{TimeShort}{false}
+\providecommand{\TimeShortYN}{\ifthenelse{\boolean{TimeShort}}}
+
 
 \providecommand{\econtexRoot}{.}
 \providecommand{\eq}{\econtexRoot/Equations}
@@ -166,8 +185,10 @@
   \inst{4} MoF Japan,  \texttt{kiichi.tokuoka@mof.go.jp}
   \and
  \inst{5} University of Delaware,  \texttt{mnwecon@udel.edu}\\
-  }
-\date{February 2018 % venue
+}
+\BoEYN{\date{June 5, 2018 \\ Bank of England Seminar}}{
+  \date{February 2018 % venue
+    } % BoEYN end
 }
 
 \begin{document}
@@ -183,8 +204,8 @@
 %%%%%%%%%%%%%%% Other slides
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\section{Consumption: Micro Vs Macro}
-%\subsection{Habits?  No!  It's Inattention}
+\section{Consumption: Micro Vs Macro}
+\subsection{Habits?  No!  It's Inattention}
 \begin{frame}
   \frametitle{Consumption Dynamics: Macro vs Micro}
 %  \jbemph{\large C growth persistent in macro but not micro data}
@@ -270,13 +291,14 @@
 \begin{itemize}
 \item  Micro: Critical (and Easy) To Notice You're Unemployed
 % \item Unlike \cite{pischkeMicroMacro}
-\item  Macro: {\it Not} Critical To Instantly Notice If U $\uparrow$
+\item  Macro: {\it Not} Critical To {\it Instantly} Notice If U $\uparrow$
 \end{itemize}
 \end{block}
 \end{frame}
 
+\TimeShortHideBegin
 
-
+%\ifInclude{
 \begin{frame}
 \frametitle{Literature on C Dynamics and Info Frictions}
 \small
@@ -300,6 +322,7 @@
 \end{itemize}
 
 \end{frame}
+%}{}
 
 
 
@@ -392,7 +415,7 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 
 
 \begin{frame}
-\frametitle{One More Ingredient \dots}
+\frametitle{One More Ingredient: Idiosyncratic Uncertainty \dots}
 
 \begin{itemize}
 \setlength{\itemsep}{3mm}
