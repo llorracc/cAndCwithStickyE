@@ -5,8 +5,13 @@ statistics and regression results are both output to screen and saved in a log
 file in the results directory.  TeX code for tables in the paper are saved in
 the tables directory.  See StickyEparams for calibrated model parameters.
 '''
+from __future__ import division
+from __future__ import print_function
 
-import sys 
+from builtins import str
+from builtins import range
+from past.utils import old_div
+import sys
 import os
 #sys.path.insert(0, os.path.abspath('../'))
 #sys.path.insert(0, os.path.abspath('../ConsumptionSaving'))
@@ -24,7 +29,7 @@ import StickyEparams as Params
 from StickyEtools import makeStickyEdataFile, runStickyEregressions, makeResultsTable,\
                   runStickyEregressionsInStata, makeParameterTable, makeEquilibriumTable,\
                   makeMicroRegressionTable, extractSampleMicroData, makeuCostVsPiFig, \
-                  makeValueVsAggShkVarFig, makeValueVsPiFig
+                  makeValueVsAggShkVarFig, makeValueVsPiFig, runStickyEregressionLagged
 
 # Choose which models to do work for
 do_SOE  = False
@@ -45,7 +50,7 @@ run_value_vs_aggvar = False # Whether to run an exercise to find value at birth 
 ignore_periods = Params.ignore_periods # Number of simulated periods to ignore as a "burn-in" phase
 interval_size = Params.interval_size   # Number of periods in each non-overlapping subsample
 total_periods = Params.periods_to_sim  # Total number of periods in simulation
-interval_count = (total_periods-ignore_periods)/interval_size # Number of intervals in the macro regressions
+interval_count = old_div((total_periods-ignore_periods),interval_size) # Number of intervals in the macro regressions
 periods_to_sim_micro = Params.periods_to_sim_micro # To save memory, micro regressions are run on a smaller sample
 AgentCount_micro = Params.AgentCount_micro # To save memory, micro regressions are run on a smaller sample
 my_counts = [interval_size,interval_count]
@@ -64,11 +69,11 @@ else:
 
 # Run models and save output if this module is called from main
 if __name__ == '__main__':
-    
+
     ###############################################################################
     ########## SMALL OPEN ECONOMY WITH MACROECONOMIC MARKOV STATE##################
     ###############################################################################
-    
+
     if do_SOE:
         if run_models:
             # Make consumer types to inhabit the small open Markov economy
@@ -80,20 +85,20 @@ if __name__ == '__main__':
                 StickySOEmarkovConsumers.append(deepcopy(StickySOEmarkovBaseType))
                 StickySOEmarkovConsumers[-1].seed = n
                 StickySOEmarkovConsumers[-1].DiscFac = Params.DiscFacSetSOE[n]
-            
+
             # Make a small open economy for the agents
             StickySOmarkovEconomy = SmallOpenMarkovEconomy(agents=StickySOEmarkovConsumers, **Params.init_SOE_mrkv_market)
             StickySOmarkovEconomy.track_vars += ['TranShkAggNow','wRteNow']
             StickySOmarkovEconomy.makeAggShkHist() # Simulate a history of aggregate shocks
             for n in range(Params.TypeCount):
                 StickySOEmarkovConsumers[n].getEconomyData(StickySOmarkovEconomy) # Have the consumers inherit relevant objects from the economy
-            
+
             # Solve the small open Markov model
             t_start = clock()
             StickySOmarkovEconomy.solveAgents()
             t_end = clock()
             print('Solving the small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             # Plot the consumption function in each Markov state
             print('Consumption function for one type in the small open Markov economy:')
             m = np.linspace(0,20,500)
@@ -103,7 +108,7 @@ if __name__ == '__main__':
                 c[i,:] = StickySOEmarkovConsumers[0].solution[0].cFunc[i](m,M)
                 plt.plot(m,c[i,:])
             plt.show()
-            
+
             # Simulate the sticky small open Markov economy
             t_start = clock()
             for agent in StickySOmarkovEconomy.agents:
@@ -111,7 +116,7 @@ if __name__ == '__main__':
             StickySOmarkovEconomy.makeHistory()
             t_end = clock()
             print('Simulating the sticky small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             # Make results for the sticky small open Markov economy
             desc = 'Results for the sticky small open Markov economy with update probability ' + mystr(Params.UpdatePrb)
             name = 'SOEmarkovSticky'
@@ -119,7 +124,7 @@ if __name__ == '__main__':
             if calc_micro_stats:
                 sticky_SOEmarkov_micro_data = extractSampleMicroData(StickySOmarkovEconomy, np.minimum(StickySOmarkovEconomy.act_T-ignore_periods-1,periods_to_sim_micro), np.minimum(StickySOmarkovEconomy.agents[0].AgentCount,AgentCount_micro), ignore_periods)
             DeltaLogC_stdev = np.genfromtxt(results_dir + 'SOEmarkovStickyResults.csv', delimiter=',')[3] # For use in frictionless spec
-            
+
             # Simulate the frictionless small open Markov economy
             t_start = clock()
             for agent in StickySOmarkovEconomy.agents:
@@ -127,7 +132,7 @@ if __name__ == '__main__':
             StickySOmarkovEconomy.makeHistory()
             t_end = clock()
             print('Simulating the frictionless small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             # Make results for the frictionless small open Markov economy
             desc = 'Results for the frictionless small open Markov economy (update probability 1.0)'
             name = 'SOEmarkovFrictionless'
@@ -135,7 +140,7 @@ if __name__ == '__main__':
             if calc_micro_stats:
                 frictionless_SOEmarkov_micro_data = extractSampleMicroData(StickySOmarkovEconomy, np.minimum(StickySOmarkovEconomy.act_T-ignore_periods-1,periods_to_sim_micro), np.minimum(StickySOmarkovEconomy.agents[0].AgentCount,AgentCount_micro), ignore_periods)
                 makeMicroRegressionTable('CGrowCross', [frictionless_SOEmarkov_micro_data,sticky_SOEmarkov_micro_data])
-            
+
             if run_ucost_vs_pi:
                 # Find the birth value and cost of stickiness as it varies with updating probability
                 UpdatePrbVec = np.linspace(0.025,1.0,40)
@@ -149,7 +154,7 @@ if __name__ == '__main__':
                     StickySOmarkovEconomy.makeHistory()
                     makeStickyEdataFile(StickySOmarkovEconomy,ignore_periods,description='trash',filename='TEMP',save_data=False,calc_micro_stats=True)
                     vBirth_S = np.genfromtxt(results_dir + 'TEMPBirthValue.csv', delimiter=',')
-                    uCost = np.mean(1. - (vBirth_S/vBirth_F)**(1./(1.-CRRA)))
+                    uCost = np.mean(1. - (old_div(vBirth_S,vBirth_F))**(old_div(1.,(1.-CRRA))))
                     uCostVec[j] = uCost
                     vVec[j] = np.mean(vBirth_S)
                     print('Found that uCost=' + str(uCost) + ' for Pi=' + str(UpdatePrbVec[j]))
@@ -165,7 +170,7 @@ if __name__ == '__main__':
                     f.close()
                 os.remove(results_dir + 'TEMPResults.csv')
                 os.remove(results_dir + 'TEMPBirthValue.csv')
-                
+
             if run_value_vs_aggvar:
                 # Find value as it varies with updating probability
                 PermShkAggVarBase = np.linspace(0.5,1.5,40)
@@ -192,7 +197,7 @@ if __name__ == '__main__':
                     f.close()
                 os.remove(results_dir + 'TEMPResults.csv')
                 os.remove(results_dir + 'TEMPBirthValue.csv')
-        
+
         # Process the coefficients, standard errors, etc into a LaTeX table
         if make_tables:
             t_start = clock()
@@ -209,12 +214,15 @@ if __name__ == '__main__':
             makeResultsTable(None,[sticky_me_panel],my_counts,'SOEmrkvSimRegS','tPESOEsimS')
             t_end = clock()
             print('Running time series regressions for the small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-    
+            
+            # Extra code to see how long the smoothness dynamic lasts
+            lag_coeffs_array = runStickyEregressionLagged('SOEmarkovStickyData',interval_size,False,True,True)
+            lag_coeffs_array_me = runStickyEregressionLagged('SOEmarkovStickyData',interval_size,True,True,True)
 
     ###############################################################################
     ########## COBB-DOUGLAS ECONOMY WITH MACROECONOMIC MARKOV STATE ###############
     ###############################################################################
-    
+
     if do_DSGE:
         if run_models:
             # Make consumers who will live in the Cobb-Douglas Markov economy
@@ -226,7 +234,7 @@ if __name__ == '__main__':
                 StickyDSGEmarkovConsumers.append(deepcopy(StickyDSGEmarkovBaseType))
                 StickyDSGEmarkovConsumers[-1].seed = n
                 StickyDSGEmarkovConsumers[-1].DiscFac = Params.DiscFacSetDSGE[n]
-            
+
             # Make a Cobb-Douglas economy for the agents
             StickyDSGEmarkovEconomy = StickyCobbDouglasMarkovEconomy(agents = StickyDSGEmarkovConsumers,**Params.init_DSGE_mrkv_market)
             StickyDSGEmarkovEconomy.track_vars += ['RfreeNow','wRteNow','TranShkAggNow']
@@ -235,15 +243,15 @@ if __name__ == '__main__':
             for n in range(Params.TypeCount):
                 StickyDSGEmarkovConsumers[n].getEconomyData(StickyDSGEmarkovEconomy) # Have the consumers inherit relevant objects from the economy
                 StickyDSGEmarkovConsumers[n](UpdatePrb = Params.UpdatePrb)
-            
+
             # Solve the sticky heterogeneous agent DSGE model
             t_start = clock()
             StickyDSGEmarkovEconomy.solve()
             t_end = clock()
             print('Solving the sticky Cobb-Douglas Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             print('Displaying the consumption functions for the Cobb-Douglas Markov economy would be too much.')
-            
+
             # Make results for the sticky Cobb-Douglas Markov economy
             desc = 'Results for the sticky Cobb-Douglas Markov economy with update probability ' + mystr(Params.UpdatePrb)
             name = 'DSGEmarkovSticky'
@@ -251,24 +259,24 @@ if __name__ == '__main__':
             DeltaLogC_stdev = np.genfromtxt(results_dir + 'DSGEmarkovStickyResults.csv', delimiter=',')[3] # For use in frictionless spec
             if calc_micro_stats:
                 sticky_DSGEmarkov_micro_data = extractSampleMicroData(StickyDSGEmarkovEconomy, np.minimum(StickyDSGEmarkovEconomy.act_T-ignore_periods-1,periods_to_sim_micro), np.minimum(StickyDSGEmarkovEconomy.agents[0].AgentCount,AgentCount_micro), ignore_periods)
-            
+
             # Store the histories of MaggNow, wRteNow, and Rfree now in _overwrite attributes
             StickyDSGEmarkovEconomy.MaggNow_overwrite = deepcopy(StickyDSGEmarkovEconomy.MaggNow_hist)
             StickyDSGEmarkovEconomy.wRteNow_overwrite = deepcopy(StickyDSGEmarkovEconomy.wRteNow_hist)
             StickyDSGEmarkovEconomy.RfreeNow_overwrite = deepcopy(StickyDSGEmarkovEconomy.RfreeNow_hist)
-            
+
             # Calculate the lifetime value of being frictionless when all other agents are sticky
             if calc_micro_stats:
                 StickyDSGEmarkovEconomy.overwrite_hist = True # History will be overwritten by sticky outcomes
                 for agent in StickyDSGEmarkovEconomy.agents:
                     agent(UpdatePrb = 1.0) # Make agents frictionless
                 StickyDSGEmarkovEconomy.makeHistory() # Simulate a history one more time
-                
+
                 # Save the birth value file in a temporary file and delete the other generated results files
                 makeStickyEdataFile(StickyDSGEmarkovEconomy,ignore_periods,description=desc,filename=name+'TEMP',save_data=False,calc_micro_stats=calc_micro_stats)
                 os.remove(results_dir + name + 'TEMP' + 'Results.csv')
                 sticky_name = name
-            
+
             # Solve the frictionless heterogeneous agent DSGE model
             StickyDSGEmarkovEconomy.overwrite_hist = False
             for agent in StickyDSGEmarkovEconomy.agents:
@@ -277,9 +285,9 @@ if __name__ == '__main__':
             StickyDSGEmarkovEconomy.solve()
             t_end = clock()
             print('Solving the frictionless Cobb-Douglas Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             print('Displaying the consumption functions for the Cobb-Douglas Markov economy would be too much.')
-            
+
             # Make results for the frictionless Cobb-Douglas Markov economy
             desc = 'Results for the frictionless Cobb-Douglas Markov economy (update probability 1.0)'
             name = 'DSGEmarkovFrictionless'
@@ -289,7 +297,7 @@ if __name__ == '__main__':
                 os.rename(results_dir + sticky_name + 'TEMPBirthValue.csv',results_dir + name + 'BirthValue.csv') # Replace just deleted file with "alternate" value calculation
                 frictionless_DSGEmarkov_micro_data = extractSampleMicroData(StickyDSGEmarkovEconomy, np.minimum(StickyDSGEmarkovEconomy.act_T-ignore_periods-1,periods_to_sim_micro), np.minimum(StickyDSGEmarkovEconomy.agents[0].AgentCount,AgentCount_micro), ignore_periods)
                 makeMicroRegressionTable('CGrowCrossDSGE', [frictionless_DSGEmarkov_micro_data,sticky_DSGEmarkov_micro_data])
-        
+
         # Process the coefficients, standard errors, etc into a LaTeX table
         if make_tables:
             t_start = clock()
@@ -306,29 +314,29 @@ if __name__ == '__main__':
             makeResultsTable(None,[sticky_me_panel],my_counts,'DSGEmrkvSimRegS','tDSGEsimS')
             t_end = clock()
             print('Running time series regressions for the Cobb-Douglas Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-       
-    
+
+
 
     ###############################################################################
     ########### REPRESENTATIVE AGENT ECONOMY WITH MARKOV STATE ####################
     ###############################################################################
-    
+
     if do_RA:
         if run_models:
             # Make a representative agent consumer, then solve and simulate the model
             StickyRAmarkovConsumer = StickyEmarkovRepAgent(**Params.init_RA_mrkv_consumer)
             StickyRAmarkovConsumer.IncomeDstn[0] = Params.StateCount*[StickyRAmarkovConsumer.IncomeDstn[0]]
             StickyRAmarkovConsumer.track_vars = ['cLvlNow','yNrmTrue','aLvlNow','pLvlTrue','TranShkNow','MrkvNow']
-            
+
             # Solve the representative agent Markov economy
             t_start = clock()
             StickyRAmarkovConsumer.solve()
             t_end = clock()
             print('Solving the representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             print('Consumption functions for the Markov representative agent:')
             plotFuncs(StickyRAmarkovConsumer.solution[0].cFunc,0,50)
-            
+
             # Simulate the sticky representative agent Markov economy
             t_start = clock()
             StickyRAmarkovConsumer(UpdatePrb = Params.UpdatePrb)
@@ -336,13 +344,13 @@ if __name__ == '__main__':
             StickyRAmarkovConsumer.simulate()
             t_end = clock()
             print('Simulating the sticky representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             # Make results for the sticky representative agent economy
             desc = 'Results for the sticky representative agent Markov economy'
             name = 'RAmarkovSticky'
             makeStickyEdataFile(StickyRAmarkovConsumer,ignore_periods,description=desc,filename=name,save_data=save_data,calc_micro_stats=calc_micro_stats)
             DeltaLogC_stdev = np.genfromtxt(results_dir + 'RAmarkovStickyResults.csv', delimiter=',')[3] # For use in frictionless spec
-                        
+
             # Simulate the frictionless representative agent Markov economy
             t_start = clock()
             StickyRAmarkovConsumer(UpdatePrb = 1.0)
@@ -350,13 +358,13 @@ if __name__ == '__main__':
             StickyRAmarkovConsumer.simulate()
             t_end = clock()
             print('Simulating the frictionless representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-            
+
             # Make results for the frictionless representative agent economy
             desc = 'Results for the frictionless representative agent Markov economy (update probability 1.0)'
             name = 'RAmarkovFrictionless'
             makeStickyEdataFile(StickyRAmarkovConsumer,ignore_periods,description=desc,filename=name,save_data=save_data,calc_micro_stats=calc_micro_stats,meas_err_base=DeltaLogC_stdev)
-              
-        
+
+
         if make_tables:
             # Process the coefficients, standard errors, etc into a LaTeX table
             t_start = clock()
@@ -371,37 +379,37 @@ if __name__ == '__main__':
             makeResultsTable('Aggregate Consumption Dynamics in RA Model',[frictionless_long_panel,sticky_long_panel],alt_counts,'RepAgentMrkvSimRegLong','tRAsimLong')
             t_end = clock()
             print('Running time series regressions for the representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
-        
+
     ###############################################################################
     ########### MAKE OTHER TABLES AND FIGURES #####################################
     ###############################################################################
     if make_tables:
         makeEquilibriumTable('Eqbm', ['SOEmarkovFrictionless','SOEmarkovSticky','DSGEmarkovFrictionless','DSGEmarkovSticky'],Params.init_SOE_consumer['CRRA'])
         makeParameterTable('Calibration', Params)
-    
+
     if run_ucost_vs_pi:
         makeuCostVsPiFig('SOEuCostbyUpdatePrb')
         makeValueVsPiFig('SOEvVecByUpdatePrb')
-    
+
     if run_value_vs_aggvar:
         makeValueVsAggShkVarFig('SOEvVecByPermShkAggVar')
-        
+
     if make_emp_table:
         # Define the command to run the Stata do file
         base_path = os.path.abspath('../../')
         cmd = [Params.stata_exe, "do", empirical_dir + "_usConsDynEmp.do", base_path]
         # Run Stata do-file
-        stata_status = subprocess.call(cmd,shell = 'true') 
+        stata_status = subprocess.call(cmd,shell = 'true')
         if stata_status!=0:
             raise ValueError('Stata code could not run. Check the stata_exe in StickyEparams.py')
-    
+
     if make_histogram:
         # Define the command to run the Stata do file
         base_path = os.path.abspath('../../')
         cmd = [Params.stata_exe, "do", empirical_dir + "metaAnalysis/habitsHistogram.do", base_path]
         # Run Stata do-file
-        stata_status = subprocess.call(cmd,shell = 'true') 
+        stata_status = subprocess.call(cmd,shell = 'true')
         if stata_status!=0:
             raise ValueError('Stata code could not run. Check the stata_exe in StickyEparams.py')
-        
-        
+
+

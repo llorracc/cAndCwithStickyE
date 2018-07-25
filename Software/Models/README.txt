@@ -1,13 +1,15 @@
 This document decribes the file structure and how to run the code in cAndCwithStickyE.
-The vast majority of the project is written in Python 2.7, but some empirical work uses Stata.
+The vast majority of the project is written in Python 2.7, but some empirical work uses 
+Stata. It should also run on versions of Python 3.
 
-To run the code, you should install the Anaconda distribution of Python 2.7 (from
-www.continuum.io), run Spyder, and execute the MAIN file; see notes below.  All
-packages used by the StickyE project are included in the base distribution of Anaconda
-or included in this archive.  The only exception occurs if you try to run the "beta
-dist" specification of the HA-DSGE model, which is commented out in the parameters
-file.  To successfully run this exercise, you must install the packages joblib and
-dill by typing "conda install joblib" and "conda install dill" at a command prompt.
+To run the code, you should install the Anaconda distribution of Python (from
+www.continuum.io, it has been tested for versions 2.7 and 3.6), pip install the 
+requirements.txt file (type "pip install -r \path\to\requirements.txt" at the Anaconda 
+prompt), run Spyder, and execute the MAIN file; see notes below.  All packages used 
+by the StickyE project will be installed by following this process.  The only 
+exception occurs if you try to run the "beta dist" specification of the HA-DSGE model,
+ which is commented out in the parameters file.  To successfully run this exercise, 
+you must install the package joblib by typing "conda install joblib" at a command prompt.
 
 NOTE ON SPYDER: Anaconda comes with an IDE called Spyder.  On most operating systems,
 Spyder can be run by typing "spyder" at a command prompt.  On Windows 10, this does
@@ -46,8 +48,7 @@ StickyE project files include:
 1) StickyE_MAIN.py
 This is the file to run to produce all the results and tables in the paper.
 There are a number of switches at the beginning of the file for the user to choose
-which results and files to produce.  Note: Setting do_DSGE_markov=True will result
-a in VERY long run time.
+which results and files to produce.  Note: Setting do_DSGE_markov=True will result in VERY long run time.
 
 2) StickyEparams.py
 This file loads the calibrated parameters, defines non-economic parameters (grid sizes,

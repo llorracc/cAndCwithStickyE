@@ -12,10 +12,13 @@ It defines dictionaries for the six types of models in cAndCwithStickyE:
 For the first four models (heterogeneous agents), it defines dictionaries for
 the Market instance as well as the consumers themselves.  All parameters are quarterly.
 '''
+from __future__ import division
 
 #import sys 
 #import os
 #sys.path.insert(0, os.path.abspath('../'))
+from builtins import range
+from past.utils import old_div
 import numpy as np
 from copy import copy
 from HARKutilities import approxUniform
@@ -63,14 +66,14 @@ DiscFacSOE = importParam('betaSOE')          # Discount factor, SOE model
 
 # Calculate parameters based on the primitive parameters
 DeprFac = 1. - DeprFacAnn**0.25                  # Quarterly depreciation rate
-KSS = KtYratioSS = KYratioSS**(1./(1.-CapShare)) # Steady state Capital to labor productivity
+KSS = KtYratioSS = KYratioSS**(old_div(1.,(1.-CapShare))) # Steady state Capital to labor productivity
 wRteSS = (1.-CapShare)*KSS**CapShare             # Steady state wage rate
 rFreeSS = CapShare*KSS**(CapShare-1.)            # Steady state interest rate
 RfreeSS = 1. - DeprFac + rFreeSS                 # Steady state return factor
 LivPrb = 1. - DiePrb                             # Quarterly survival probability
 DiscFacDSGE = RfreeSS**(-1)                      # Discount factor, HA-DSGE and RA models
 TranShkVar = TranShkVarAnn*4.                    # Variance of idiosyncratic transitory shocks
-PermShkVar = PermShkVarAnn/4.                    # Variance of idiosyncratic permanent shocks
+PermShkVar = old_div(PermShkVarAnn,4.)           # Variance of idiosyncratic permanent shocks
 #TempDstn = approxMeanOneLognormal(N=7,sigma=np.sqrt(PermShkVar))
 #DiscFacSOE = 0.99*LivPrb/(RfreeSS*np.dot(TempDstn[0],TempDstn[1]**(-CRRA))) # Discount factor, SOE model
 
@@ -79,6 +82,7 @@ periods_to_sim = 21010 # Total number of periods to simulate; this might be incr
 ignore_periods = 1000  # Number of simulated periods to ignore (in order to ensure we are near steady state)
 interval_size = 200    # Number of periods in each subsample interval
 AgentCount = 20000     # Total number of agents to simulate in the economy
+max_t_between_updates = None # Maximum number of periods an agent will go between updating (can be None)
 
 # Use smaller sample for micro regression tables to save memory
 periods_to_sim_micro = 4000
@@ -114,7 +118,7 @@ for i in range(StateCount):
 PolyMrkvArray[0,0] += 0.5*(1.0 - Persistence)
 PolyMrkvArray[StateCount-1,StateCount-1] += 0.5*(1.0 - Persistence)
 PolyMrkvArray *= 1.0 - RegimeChangePrb
-PolyMrkvArray += RegimeChangePrb/StateCount
+PolyMrkvArray += old_div(RegimeChangePrb,StateCount)
 
 # Define the set of aggregate permanent growth factors that can occur (Markov specifications only)
 PermGroFacSet = np.exp(np.linspace(np.log(PermGroFacMin),np.log(PermGroFacMax),num=StateCount))
@@ -130,7 +134,7 @@ init_SOE_consumer = { 'CRRA': CRRA,
                       'DiscFac': DiscFacMeanSOE,
                       'LivPrb': [LivPrb],
                       'PermGroFac': [1.0],
-                      'AgentCount': AgentCount/TypeCount, # Spread agents evenly among types
+                      'AgentCount': old_div(AgentCount,TypeCount), # Spread agents evenly among types
                       'aXtraMin': 0.00001,
                       'aXtraMax': 40.0,
                       'aXtraNestFac': 3,
@@ -156,7 +160,8 @@ init_SOE_consumer = { 'CRRA': CRRA,
                       'T_age' : None,
                       'T_cycle' : 1,
                       'cycles' : 0,
-                      'T_sim' : periods_to_sim
+                      'T_sim' : periods_to_sim,
+                       'max_t_between_updates' : max_t_between_updates
                     }
 
 # Define market parameters for the small open economy
@@ -184,7 +189,7 @@ init_SOE_mrkv_market['MrkvArray'] = PolyMrkvArray
 init_SOE_mrkv_market['PermShkAggStd'] = StateCount*[init_SOE_market['PermShkAggStd']]
 init_SOE_mrkv_market['TranShkAggStd'] = StateCount*[init_SOE_market['TranShkAggStd']]
 init_SOE_mrkv_market['PermGroFacAgg'] = PermGroFacSet
-init_SOE_mrkv_market['MrkvNow_init'] = StateCount/2
+init_SOE_mrkv_market['MrkvNow_init'] = old_div(StateCount,2)
 init_SOE_mrkv_market['loops_max'] = 1
 
 ###############################################################################
@@ -263,5 +268,5 @@ init_RA_consumer =  { 'CRRA': CRRA,
 # Define parameters for the Markov representative agent model
 init_RA_mrkv_consumer = copy(init_RA_consumer)
 init_RA_mrkv_consumer['MrkvArray'] = PolyMrkvArray
-init_RA_mrkv_consumer['MrkvNow'] = [StateCount/2]
+init_RA_mrkv_consumer['MrkvNow'] = [old_div(StateCount,2)]
 init_RA_mrkv_consumer['PermGroFac'] = [PermGroFacSet]

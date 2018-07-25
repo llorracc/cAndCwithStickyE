@@ -3,6 +3,12 @@ Early version of multithreading in HARK. To use most of this module, you should 
 and joblib.  Packages can be installed by typing "conda install dill" (etc) at
 a command prompt.
 '''
+from __future__ import division
+from __future__ import print_function
+from builtins import zip
+from builtins import str
+from builtins import range
+from past.utils import old_div
 import multiprocessing
 import numpy as np
 from time import clock
@@ -18,9 +24,9 @@ except:
     # such that they will raise useful errors if called.
     def raiseImportError(moduleStr):
         def defineImportError(*args):
-            raise ImportError,moduleStr + ' could not be imported, and is required for this'+\
+            raise ImportError(moduleStr + ' could not be imported, and is required for this'+\
             ' function.  See HARK documentation for more information on how to install the ' \
-            + moduleStr + ' module.'
+            + moduleStr + ' module.')
         return defineImportError
 
     Parallel = raiseImportError('joblib')
@@ -225,7 +231,7 @@ def parallelNelderMead(objFunc,guess,perturb=None,P=1,ftol=0.000001,xtol=0.00000
             print('Resuming search after ' + str(iters) + ' iterations and ' + str(evals) + ' function evaluations.')
     
     # Initialize some inputs for the multithreader
-    j_list = range(N-P,N)
+    j_list = list(range(N-P,N))
     opt_params= [r_param,c_param,e_param]
     
     # Run the Nelder-Mead algorithm until a terminal condition is met    
@@ -326,7 +332,7 @@ def saveNelderMeadData(name, simplex, fvals, iters, evals):
     -------
     none
     '''
-    f = open(name + '.txt','wb')
+    f = open(name + '.txt','w')
     my_writer = csv.writer(f,delimiter=' ')
     my_writer.writerow(simplex.shape)
     my_writer.writerow([iters, evals])
@@ -358,15 +364,15 @@ def loadNelderMeadData(name):
     '''
     f = open(name + '.txt','rb')
     my_reader = csv.reader(f,delimiter=' ')
-    my_shape_txt = my_reader.next()
+    my_shape_txt = next(my_reader)
     shape0 = int(my_shape_txt[0])
     shape1 = int(my_shape_txt[1])
-    my_nums_txt = my_reader.next()
+    my_nums_txt = next(my_reader)
     iters = int(my_nums_txt[0])
     evals = int(my_nums_txt[1])
-    simplex_flat = np.array(my_reader.next(),dtype=float)
+    simplex_flat = np.array(next(my_reader),dtype=float)
     simplex = np.reshape(simplex_flat,(shape0,shape1))
-    fvals = np.array(my_reader.next(),dtype=float)
+    fvals = np.array(next(my_reader),dtype=float)
     f.close()
     
     return simplex, fvals, iters, evals
@@ -473,7 +479,7 @@ if __name__ == "__main__":
     P = 24
     my_guess = np.random.rand(K) - 0.5
     def testFunc1(x):
-        return np.sum(x**2.0)/x.size
+        return old_div(np.sum(x**2.0),x.size)
         
     xopt, fmin = parallelNelderMead(testFunc1,my_guess,P=P,maxiter=300,savefreq=100,name='testfile',resume=False)
     xopt2, fmin2 = parallelNelderMead(testFunc1,xopt,P=P)

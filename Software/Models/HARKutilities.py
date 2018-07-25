@@ -5,6 +5,11 @@ derivatives), manipulation of discrete distributions, and basic plotting tools.
 '''
 
 from __future__ import division     # Import Python 3.x division function
+from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
+import sys
 import functools
 import re                           # Regular expression, for string cleaning
 import warnings
@@ -25,7 +30,8 @@ def _warning(message,category = UserWarning,filename = '',lineno = -1):
     I implement this fix directly below, for all simulation and solution utilities.
     '''
     print(message)
-warnings.showwarning = _warning
+if sys.version_info[0] < 3:
+    warnings.showwarning = _warning
 
 def memoize(obj):
    '''
@@ -68,7 +74,7 @@ def getArgNames(function):
     return argNames
 
 
-class NullFunc():
+class NullFunc(object):
     '''
     A trivial class that acts as a placeholder "do nothing" function.
     '''

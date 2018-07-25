@@ -6,7 +6,11 @@ of agents, where agents take the inputs to their problem as exogenous.  A macro
 model adds an additional layer, endogenizing some of the inputs to the micro
 problem by finding a general equilibrium dynamic rule.
 '''
+from __future__ import print_function
 
+from builtins import str
+from builtins import range
+from builtins import object
 from HARKutilities import getArgNames, NullFunc
 from copy import copy, deepcopy
 import numpy as np

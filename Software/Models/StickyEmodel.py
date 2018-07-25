@@ -16,12 +16,15 @@ The Markov-based AgentTypes are imported by StickyE_MAIN, the main file for this
 project.  Non-Markov AgentTypes are imported by StickyE_NO_MARKOV.
 Calibrated parameters for each type are found in StickyEparams.
 '''
+from __future__ import division
 
 #import sys 
 #import os
 #sys.path.insert(0, os.path.abspath('../'))
 #sys.path.insert(0, os.path.abspath('../ConsumptionSaving'))
 
+from builtins import range
+from past.utils import old_div
 import numpy as np
 from ConsAggShockModel import AggShockConsumerType, AggShockMarkovConsumerType, CobbDouglasEconomy, CobbDouglasMarkovEconomy
 from RepAgentModel import RepAgentConsumerType, RepAgentMarkovConsumerType
@@ -49,14 +52,17 @@ class StickyEconsumerType(AggShockConsumerType):
         AggShockConsumerType.simBirth(self,which_agents)
         if hasattr(self,'pLvlErrNow'):
             self.pLvlErrNow[which_agents] = 1.0
-        else:
+        else: # This only triggers at the beginning of the very first simulated period
             self.pLvlErrNow = np.ones(self.AgentCount)
+            self.t_since_update = np.zeros(self.AgentCount,dtype=int)
 
             
     def getUpdaters(self):
         '''
         Determine which agents update this period vs which don't.  Fills in the
-        attributes update and dont as boolean arrays of size AgentCount.
+        attributes update and dont as boolean arrays of size AgentCount.  Also
+        updates the attribute t_since_update, incrementing it for non-updaters
+        and setting it to zero for updaters.
         
         Parameters
         ----------
@@ -66,12 +72,25 @@ class StickyEconsumerType(AggShockConsumerType):
         -------
         None
         '''
+        # Increment the periods-since-updated counter for each agent
+        self.t_since_update += 1
+        
+        # Initialize the random draw of Pi*N agents who update
         how_many_update = int(round(self.UpdatePrb*self.AgentCount))
         base_bool = np.zeros(self.AgentCount,dtype=bool)
         base_bool[0:how_many_update] = True
+        
+        # Update if touched by the Calvo fairy, or its been too long since the last update
         self.update = self.RNG.permutation(base_bool)
+        if (self.max_t_between_updates is not None) and (self.UpdatePrb < 1.0):
+            too_long_since_update = self.t_since_update >= self.max_t_between_updates
+            self.update[too_long_since_update] = True
+        
+        # Mark non-updaters as the complementary set, and reset the time since
+        # update counter for updaters
         self.dont = np.logical_not(self.update)
-
+        self.t_since_update[self.update] = 0
+        
         
     def getpLvlError(self):
         '''
@@ -91,7 +110,7 @@ class StickyEconsumerType(AggShockConsumerType):
             Array of size AgentCount with this period's (new) misperception.
         '''
         pLvlErr = np.ones(self.AgentCount)
-        pLvlErr[self.dont] = self.PermShkAggNow/self.PermGroFacAgg
+        pLvlErr[self.dont] = old_div(self.PermShkAggNow,self.PermGroFacAgg)
         return pLvlErr
         
             
@@ -125,7 +144,7 @@ class StickyEconsumerType(AggShockConsumerType):
         self.pLvlErrNow *= pLvlErrNew # Perception error accumulation
         
         # Calculate (mis)perceptions of the permanent shock
-        PermShkPcvd = self.PermShkNow/pLvlErrNew
+        PermShkPcvd = old_div(self.PermShkNow,pLvlErrNew)
         PermShkPcvd[self.update] *= self.pLvlErrNow[self.update] # Updaters see the true permanent shock and all missed news        
         self.pLvlErrNow[self.update] = 1.0
         self.PermShkNow = PermShkPcvd
@@ -157,7 +176,7 @@ class StickyEconsumerType(AggShockConsumerType):
         
         yLvlNow = self.pLvlTrue*self.TranShkNow # This is true income level
         mLvlTrueNow = bLvlNow + yLvlNow # This is true market resource level
-        mNrmPcvdNow = mLvlTrueNow/self.pLvlNow # This is perceived normalized resources
+        mNrmPcvdNow = old_div(mLvlTrueNow,self.pLvlNow) # This is perceived normalized resources
         self.mNrmNow = mNrmPcvdNow
         self.mLvlTrueNow = mLvlTrueNow
         self.yLvlNow = yLvlNow # Only labor income
@@ -197,7 +216,7 @@ class StickyEconsumerType(AggShockConsumerType):
         AggShockConsumerType.getPostStates(self)
         self.cLvlNow = self.cNrmNow*self.pLvlNow # True consumption level
         self.aLvlNow = self.mLvlTrueNow - self.cLvlNow # True asset level
-        self.aNrmNow = self.aLvlNow/self.pLvlNow # Perceived normalized assets
+        self.aNrmNow = old_div(self.aLvlNow,self.pLvlNow) # Perceived normalized assets
         
 
         
@@ -269,7 +288,7 @@ class StickyEmarkovConsumerType(AggShockMarkovConsumerType,StickyEconsumerType):
             Array of size AgentCount with this period's (new) misperception.
         '''
         pLvlErr = np.ones(self.AgentCount)
-        pLvlErr[self.dont] = self.PermShkAggNow/self.PermGroFacAgg[self.MrkvNowPcvd[self.dont]]
+        pLvlErr[self.dont] = old_div(self.PermShkAggNow,self.PermGroFacAgg[self.MrkvNowPcvd[self.dont]])
         return pLvlErr
     
 
@@ -323,7 +342,7 @@ class StickyErepAgent(RepAgentConsumerType):
         self.pLvlNow = self.getpLvlPcvd()
         
         # Calculate true values of variables
-        self.kNrmTrue = aLvlPrev/self.pLvlTrue
+        self.kNrmTrue = old_div(aLvlPrev,self.pLvlTrue)
         self.yNrmTrue = self.kNrmTrue**self.CapShare*self.TranShkNow**(1.-self.CapShare) - self.kNrmTrue*self.DeprFac
         self.Rfree = 1. + self.CapShare*self.kNrmTrue**(self.CapShare-1.)*self.TranShkNow**(1.-self.CapShare) - self.DeprFac
         self.wRte  = (1.-self.CapShare)*self.kNrmTrue**self.CapShare*self.TranShkNow**(-self.CapShare)
@@ -331,7 +350,7 @@ class StickyErepAgent(RepAgentConsumerType):
         self.mLvlTrue = self.mNrmTrue*self.pLvlTrue
         
         # Calculate perception of normalized market resources
-        self.mNrmNow = self.mLvlTrue/self.pLvlNow
+        self.mNrmNow = old_div(self.mLvlTrue,self.pLvlNow)
 
         
     def getControls(self):
@@ -354,7 +373,7 @@ class StickyErepAgent(RepAgentConsumerType):
         '''
         RepAgentConsumerType.getPostStates(self)
         self.aLvlNow = self.mLvlTrue - self.cLvlNow # This is true
-        self.aNrmNow = self.aLvlNow/self.pLvlTrue # This is true
+        self.aNrmNow = old_div(self.aLvlNow,self.pLvlTrue) # This is true
         
     def getpLvlPcvd(self):
         '''
@@ -450,7 +469,7 @@ class StickyEmarkovRepAgent(RepAgentMarkovConsumerType,StickyErepAgent):
         
         # Combine updaters and non-updaters to get average pLvl perception by Markov state
         self.MrkvPcvd = dont_mass + update_mass # Total mass of agent in each state
-        pLvlPcvd = (dont_mass*dont_pLvlPcvd + update_mass*update_pLvlPcvd)/self.MrkvPcvd
+        pLvlPcvd = old_div((dont_mass*dont_pLvlPcvd + update_mass*update_pLvlPcvd),self.MrkvPcvd)
         pLvlPcvd[self.MrkvPcvd==0.] = 1.0 # Fix division by zero problem when MrkvPcvd[i]=0
         return pLvlPcvd
 

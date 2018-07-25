@@ -4,6 +4,11 @@ cratic income shocks.  Currently only contains one microeconomic model with a
 basic solver.  Also includes a subclass of Market called CobbDouglas economy,
 used for solving "macroeconomic" models with aggregate shocks.
 '''
+from __future__ import division
+from __future__ import print_function
+from builtins import str
+from builtins import range
+from past.utils import old_div
 import sys 
 sys.path.insert(0,'../')
 
@@ -101,7 +106,7 @@ class AggShockConsumerType(IndShockConsumerType):
         '''
         self.initializeSim()
         self.aLvlNow = self.kInit*np.ones(self.AgentCount) # Start simulation near SS
-        self.aNrmNow = self.aLvlNow/self.pLvlNow
+        self.aNrmNow = old_div(self.aLvlNow,self.pLvlNow)
         
     def updateSolutionTerminal(self):
         '''
@@ -234,7 +239,7 @@ class AggShockConsumerType(IndShockConsumerType):
         who_lives = np.logical_not(who_dies)
         wealth_living = np.sum(self.aLvlNow[who_lives])
         wealth_dead = np.sum(self.aLvlNow[who_dies])
-        Ractuarial = 1.0 + wealth_dead/wealth_living
+        Ractuarial = 1.0 + old_div(wealth_dead,wealth_living)
         self.aNrmNow[who_lives] = self.aNrmNow[who_lives]*Ractuarial
         self.aLvlNow[who_lives] = self.aLvlNow[who_lives]*Ractuarial
         return who_dies
@@ -590,10 +595,10 @@ def solveConsAggShock(solution_next,IncomeDstn,LivPrb,DiscFac,CRRA,PermGroFac,
     
     # Calculate returns to capital and labor in the next period
     AaggNow_tiled = np.tile(np.reshape(AFunc(Mgrid),(Mcount,1,1)),(1,aCount,ShkCount))
-    kNext_array = AaggNow_tiled/(PermGroFacAgg*PermShkAggValsNext_tiled) # Next period's aggregate capital to labor ratio
-    kNextEff_array = kNext_array/TranShkAggValsNext_tiled # Same thing, but account for *transitory* shock
+    kNext_array = old_div(AaggNow_tiled,(PermGroFacAgg*PermShkAggValsNext_tiled)) # Next period's aggregate capital to labor ratio
+    kNextEff_array = old_div(kNext_array,TranShkAggValsNext_tiled) # Same thing, but account for *transitory* shock
     R_array = Rfunc(kNextEff_array) # Interest factor on aggregate assets
-    Reff_array = R_array/LivPrb # Effective interest factor on individual assets *for survivors*
+    Reff_array = old_div(R_array,LivPrb) # Effective interest factor on individual assets *for survivors*
     wEff_array = wFunc(kNextEff_array)*TranShkAggValsNext_tiled # Effective wage rate (accounts for labor supply)
     PermShkTotal_array = PermGroFac*PermGroFacAgg*PermShkValsNext_tiled*PermShkAggValsNext_tiled # total / combined permanent shock
     Mnext_array = kNext_array*R_array + wEff_array # next period's aggregate market resources
@@ -618,7 +623,7 @@ def solveConsAggShock(solution_next,IncomeDstn,LivPrb,DiscFac,CRRA,PermGroFac,
     EndOfPrdvP = DiscFac*LivPrb*np.sum(vPnext_array*ShkPrbsNext_tiled,axis=2)
     
     # Calculate optimal consumption from each asset gridpoint
-    cNrmNow = EndOfPrdvP**(-1.0/CRRA)
+    cNrmNow = EndOfPrdvP**(old_div(-1.0,CRRA))
     mNrmNow = aNrmNow_tiled[:,:,0] + cNrmNow
     
     # Loop through the values in Mgrid and make a linear consumption function for each
@@ -761,10 +766,10 @@ def solveConsAggMarkov(solution_next,IncomeDstn,LivPrb,DiscFac,CRRA,MrkvArray,
         AaggNow_tiled = np.tile(np.reshape(AaggGrid,(Mcount,1,1)),(1,aCount,ShkCount))
         
         # Calculate returns to capital and labor in the next period
-        kNext_array = AaggNow_tiled/(PermGroFacAgg[j]*PermShkAggValsNext_tiled) # Next period's aggregate capital to labor ratio
-        kNextEff_array = kNext_array/TranShkAggValsNext_tiled # Same thing, but account for *transitory* shock
+        kNext_array = old_div(AaggNow_tiled,(PermGroFacAgg[j]*PermShkAggValsNext_tiled)) # Next period's aggregate capital to labor ratio
+        kNextEff_array = old_div(kNext_array,TranShkAggValsNext_tiled) # Same thing, but account for *transitory* shock
         R_array = Rfunc(kNextEff_array) # Interest factor on aggregate assets
-        Reff_array = R_array/LivPrb # Effective interest factor on individual assets *for survivors*
+        Reff_array = old_div(R_array,LivPrb) # Effective interest factor on individual assets *for survivors*
         wEff_array = wFunc(kNextEff_array)*TranShkAggValsNext_tiled # Effective wage rate (accounts for labor supply)
         PermShkTotal_array = PermGroFac*PermGroFacAgg[j]*PermShkValsNext_tiled*PermShkAggValsNext_tiled # total / combined permanent shock
         Mnext_array = kNext_array*R_array + wEff_array # next period's aggregate market resources
@@ -790,7 +795,7 @@ def solveConsAggMarkov(solution_next,IncomeDstn,LivPrb,DiscFac,CRRA,MrkvArray,
         
         # Make the conditional end-of-period marginal value function
         BoroCnstNat = LinearInterp(np.insert(AaggGrid,0,0.0),np.insert(BoroCnstNat_vec,0,0.0))
-        EndOfPrdvPnvrs = np.concatenate((np.zeros((Mcount,1)),EndOfPrdvP**(-1./CRRA)),axis=1)
+        EndOfPrdvPnvrs = np.concatenate((np.zeros((Mcount,1)),EndOfPrdvP**(old_div(-1.,CRRA))),axis=1)
         EndOfPrdvPnvrsFunc_base = BilinearInterp(np.transpose(EndOfPrdvPnvrs),np.insert(aXtraGrid,0,0.0),AaggGrid)
         EndOfPrdvPnvrsFunc = VariableLowerBoundFunc2D(EndOfPrdvPnvrsFunc_base,BoroCnstNat)
         EndOfPrdvPfunc_cond.append(MargValueFunc2D(EndOfPrdvPnvrsFunc,CRRA))
@@ -829,7 +834,7 @@ def solveConsAggMarkov(solution_next,IncomeDstn,LivPrb,DiscFac,CRRA,MrkvArray,
                 EndOfPrdvP += MrkvArray[i,j]*temp        
                 
         # Calculate consumption and the endogenous mNrm gridpoints for this state
-        cNrmNow = EndOfPrdvP**(-1./CRRA)
+        cNrmNow = EndOfPrdvP**(old_div(-1.,CRRA))
         mNrmNow = aNrmNow_tiled + cNrmNow
             
         # Loop through the values in Mgrid and make a piecewise linear consumption function for each
@@ -938,12 +943,12 @@ class CobbDouglasEconomy(Market):
         -------
         None
         '''
-        self.kSS    = ((self.getPermGroFacAggLR()**(self.CRRA)/self.DiscFac - (1.0-self.DeprFac))/self.CapShare)**(1.0/(self.CapShare-1.0))
+        self.kSS    = (old_div((old_div(self.getPermGroFacAggLR()**(self.CRRA),self.DiscFac) - (1.0-self.DeprFac)),self.CapShare))**(old_div(1.0,(self.CapShare-1.0)))
         self.KtoYSS = self.kSS**(1.0-self.CapShare)
         self.wRteSS = (1.0-self.CapShare)*self.kSS**(self.CapShare)
         self.RfreeSS = (1.0 + self.CapShare*self.kSS**(self.CapShare-1.0) - self.DeprFac)
         self.MSS = self.kSS*self.RfreeSS + self.wRteSS
-        self.convertKtoY = lambda KtoY : KtoY**(1.0/(1.0 - self.CapShare)) # converts K/Y to K/L
+        self.convertKtoY = lambda KtoY : KtoY**(old_div(1.0,(1.0 - self.CapShare))) # converts K/Y to K/L
         self.Rfunc = lambda k : (1.0 + self.CapShare*k**(self.CapShare-1.0) - self.DeprFac)
         self.wFunc = lambda k : ((1.0-self.CapShare)*k**(self.CapShare))
         self.KtoLnow_init = self.kSS
@@ -1051,7 +1056,7 @@ class CobbDouglasEconomy(Market):
             aggregate permanent and transitory shocks.
         '''
         # Calculate aggregate savings
-        AaggPrev = np.mean(np.array(aLvlNow))/np.mean(pLvlNow) # End-of-period savings from last period
+        AaggPrev = old_div(np.mean(np.array(aLvlNow)),np.mean(pLvlNow)) # End-of-period savings from last period
         # Calculate aggregate capital this period
         AggregateK = np.mean(np.array(aLvlNow)) # ...becomes capital today
         # This version uses end-of-period assets and
@@ -1067,10 +1072,10 @@ class CobbDouglasEconomy(Market):
         AggregateL = np.mean(pLvlNow)*PermShkAggNow
         
         # Calculate the interest factor and wage rate this period
-        KtoLnow = AggregateK/AggregateL
+        KtoLnow = old_div(AggregateK,AggregateL)
         self.KtoYnow = KtoLnow**(1.0-self.CapShare)
-        RfreeNow = self.Rfunc(KtoLnow/TranShkAggNow)
-        wRteNow  = self.wFunc(KtoLnow/TranShkAggNow)
+        RfreeNow = self.Rfunc(old_div(KtoLnow,TranShkAggNow))
+        wRteNow  = self.wFunc(old_div(KtoLnow,TranShkAggNow))
         MaggNow  = KtoLnow*RfreeNow + wRteNow*TranShkAggNow
         self.KtoLnow = KtoLnow   # Need to store this as it is a sow variable
         
@@ -1282,13 +1287,13 @@ class SmallOpenEconomy(Market):
         self.Shk_idx += 1
         
         # Factor prices are constant
-        RfreeNow = self.Rfunc(1.0/PermShkAggNow)
-        wRteNow  = self.wFunc(1.0/PermShkAggNow)
+        RfreeNow = self.Rfunc(old_div(1.0,PermShkAggNow))
+        wRteNow  = self.wFunc(old_div(1.0,PermShkAggNow))
         
         # Aggregates are irrelavent
         AaggNow = 1.0
         MaggNow = 1.0
-        KtoLnow = 1.0/PermShkAggNow
+        KtoLnow = old_div(1.0,PermShkAggNow)
         
         # Package the results into an object and return it
         AggVarsNow = CobbDouglasAggVars(MaggNow,AaggNow,KtoLnow,RfreeNow,wRteNow,PermShkAggNow,TranShkAggNow)
@@ -1371,7 +1376,7 @@ class CobbDouglasMarkovEconomy(CobbDouglasEconomy):
         w, v = np.linalg.eig(np.transpose(self.MrkvArray))
         idx = (np.abs(w-1.0)).argmin()
         x = v[:,idx].astype(float)
-        LR_dstn = (x/np.sum(x))
+        LR_dstn = (old_div(x,np.sum(x)))
         
         # Return the weighted average of aggregate permanent income growth factors
         PermGroFacAggLR = np.dot(LR_dstn,np.array(self.PermGroFacAgg))
@@ -1486,7 +1491,7 @@ class CobbDouglasMarkovEconomy(CobbDouglasEconomy):
         w, v = np.linalg.eig(np.transpose(self.MrkvArray))
         idx = (np.abs(w-1.0)).argmin()
         x = v[:,idx].astype(float)
-        LR_dstn = (x/np.sum(x))
+        LR_dstn = (old_div(x,np.sum(x)))
         
         # Initialize the Markov history and set up transitions
         MrkvNow_hist = np.zeros(self.act_T_orig,dtype=int)
@@ -1520,12 +1525,12 @@ class CobbDouglasMarkovEconomy(CobbDouglasEconomy):
                 never_visited = np.where(np.array(state_T == 0))[0]
                 MrkvNow = np.random.choice(never_visited)
             else: # Otherwise, use logit choice probabilities to visit an underrepresented state
-                emp_dstn   = state_T/act_T
-                ratios     = LR_dstn/emp_dstn
+                emp_dstn   = old_div(state_T,act_T)
+                ratios     = old_div(LR_dstn,emp_dstn)
                 ratios_adj = ratios - np.max(ratios)
-                ratios_exp = np.exp(ratios_adj/logit_scale)
+                ratios_exp = np.exp(old_div(ratios_adj,logit_scale))
                 ratios_sum = np.sum(ratios_exp)
-                jump_probs = ratios_exp/ratios_sum
+                jump_probs = old_div(ratios_exp,ratios_sum)
                 cum_probs  = np.cumsum(jump_probs)
                 MrkvNow    = np.searchsorted(cum_probs,draws[-1])
             
@@ -1867,8 +1872,8 @@ if __name__ == '__main__':
         # Make a Krusell-Smith agent type
         # NOTE: These agents aren't exactly like KS, as they don't have serially correlated unemployment
         KSexampleType = deepcopy(AggShockMrkvExample)
-        KSexampleType.IncomeDstn[0] = [[np.array([0.96,0.04]),np.array([1.0,1.0]),np.array([1.0/0.96,0.0])],
-                                      [np.array([0.90,0.10]),np.array([1.0,1.0]),np.array([1.0/0.90,0.0])]]
+        KSexampleType.IncomeDstn[0] = [[np.array([0.96,0.04]),np.array([1.0,1.0]),np.array([old_div(1.0,0.96),0.0])],
+                                      [np.array([0.90,0.10]),np.array([1.0,1.0]),np.array([old_div(1.0,0.90),0.0])]]
         
         # Make a KS economy
         KSeconomy = deepcopy(MrkvEconomyExample)
