@@ -16,40 +16,44 @@ import csv
 from time import clock
 from copy import deepcopy
 import subprocess
-from StickyEmodel import StickyEmarkovConsumerType, StickyEmarkovRepAgent, StickyCobbDouglasMarkovEconomy
-from HARK.ConsumptionSaving.ConsAggShockModel import SmallOpenMarkovEconomy
+from StickyEmodel import StickyEmarkovConsumerType, StickyEmarkovRepAgent,\
+        StickyCobbDouglasMarkovEconomy, StickySmallOpenMarkovEconomy
 from HARK.utilities import plotFuncs
 import matplotlib.pyplot as plt
 import StickyEparams as Params
 from StickyEtools import makeStickyEdataFile, runStickyEregressions, makeResultsTable,\
                   runStickyEregressionsInStata, makeParameterTable, makeEquilibriumTable,\
                   makeMicroRegressionTable, extractSampleMicroData, makeuCostVsPiFig, \
-                  makeValueVsAggShkVarFig, makeValueVsPiFig, runStickyEregressionLagged
+                  makeValueVsAggShkVarFig, makeValueVsPiFig, runStickyEregressionLagged, \
+                  runParkerExperiment
 # Import module to check RAM size:
 import warnings
 import psutil
 
 # Choose which models to do work for
-do_SOE  = False
+do_SOE  = True
 do_DSGE = False
 do_RA   = False
 
 # Choose what kind of work to do for each model
-run_models = False       # Whether to solve models and generate new simulated data
-calc_micro_stats = False # Whether to calculate microeconomic statistics (only matters when run_models is True)
-make_tables = False      # Whether to make LaTeX tables in the /Tables folder
+run_models = True        # Whether to solve models and generate new simulated data
+calc_micro_stats = True  # Whether to calculate microeconomic statistics (only matters when run_models is True)
+make_tables = True       # Whether to make LaTeX tables in the /Tables folder
 make_emp_table = False   # Whether to run regressions for the U.S. empirical table (automatically done in Stata)
 make_histogram = False   # Whether to construct the histogram of "habit" parameter estimates (automatically done in Stata)
 use_stata = False        # Whether to use Stata to run the simulated time series regressions
-save_data = False        # Whether to save data for use in Stata (as a tab-delimited text file)
+save_data = True         # Whether to save data for use in Stata (as a tab-delimited text file)
 run_ucost_vs_pi = False  # Whether to run an exercise that finds the cost of stickiness as it varies with update probability
 run_value_vs_aggvar = False # Whether to run an exercise to find value at birth vs variance of aggregate permanent shocks
+run_alt_beliefs = True   # Whether to run an alternate specification in which agents think their sticky expectations are the true shock structure
+run_parker = False       # Whether to run an experiment based on Parker & Souleles (2006) that is not reported in the paper
+verbose_main = True      # Whether to display figures to screen; this should only be True when in a graphical environment like iPython
 
 
 # Check RAM size and warn user if less than 32G:
 memory_specs = psutil.virtual_memory()
 actual_RAM_size_GB  = int(round(memory_specs.total / (2.**30)))
-desired_RAM_size_GB = 64
+desired_RAM_size_GB = 32
 warning_message = """\n\nWARNING: you have selected to run either SOE or DSGE, with RAM < """+ str(desired_RAM_size_GB) +"""G. This may fill up your memory and crash your computer. Please run this code on a machine with >= """+ str(desired_RAM_size_GB) +"""G of RAM. Relevant values:
     
     do_SOE      = """ + str(do_SOE)  + """
@@ -86,7 +90,6 @@ else:
 # Run models and save output if this module is called from main
 if __name__ == '__main__':
 
-    verbose_main = False
     ###############################################################################
     ########## SMALL OPEN ECONOMY WITH MACROECONOMIC MARKOV STATE##################
     ###############################################################################
@@ -104,7 +107,7 @@ if __name__ == '__main__':
                 StickySOEmarkovConsumers[-1].DiscFac = Params.DiscFacSetSOE[n]
 
             # Make a small open economy for the agents
-            StickySOmarkovEconomy = SmallOpenMarkovEconomy(agents=StickySOEmarkovConsumers, **Params.init_SOE_mrkv_market)
+            StickySOmarkovEconomy = StickySmallOpenMarkovEconomy(agents=StickySOEmarkovConsumers, **Params.init_SOE_mrkv_market)
             StickySOmarkovEconomy.track_vars += ['TranShkAggNow','wRteNow']
             StickySOmarkovEconomy.makeAggShkHist() # Simulate a history of aggregate shocks
             for n in range(Params.TypeCount):
@@ -118,13 +121,15 @@ if __name__ == '__main__':
 
             # Plot the consumption function in each Markov state
             my_new_title = 'Consumption function for one type in the small open Markov economy:'
-            m = np.linspace(0,20,500)
+            m = np.linspace(0.,20.,500)
             M = np.ones_like(m)
             c = np.zeros((Params.StateCount,m.size))
             for i in range(Params.StateCount):
                 c[i,:] = StickySOEmarkovConsumers[0].solution[0].cFunc[i](m,M)
                 plt.plot(m,c[i,:])
             plt.title(my_new_title)
+            plt.xlim([0.,20.])
+            plt.ylim([0.,None])
             if verbose_main:
                 print(my_new_title)
                 plt.show()
@@ -161,7 +166,60 @@ if __name__ == '__main__':
             if calc_micro_stats:
                 frictionless_SOEmarkov_micro_data = extractSampleMicroData(StickySOmarkovEconomy, np.minimum(StickySOmarkovEconomy.act_T-ignore_periods-1,periods_to_sim_micro), np.minimum(StickySOmarkovEconomy.agents[0].AgentCount,AgentCount_micro), ignore_periods)
                 makeMicroRegressionTable('CGrowCross', [frictionless_SOEmarkov_micro_data,sticky_SOEmarkov_micro_data])
-
+                
+            # If the alternate belief structure exercise was requested, re-solve the model with the alternate beliefs
+            if run_alt_beliefs:
+                # Save the original consumption function for comparison to the "alternate belief" cFunc
+                cFunc_original_list = []
+                for n in range(Params.TypeCount):
+                    cFunc_original_list.append(deepcopy(StickySOEmarkovConsumers[n].solution[0].cFunc))
+                
+                for n in range(Params.TypeCount):
+                    StickySOEmarkovConsumers[n].installAltShockBeliefs()
+                        
+                t_start = clock()
+                StickySOmarkovEconomy.solveAgents()
+                t_end = clock()
+                print('Re-solving the small open Markov economy with alternate beliefs took ' + mystr(t_end-t_start) + ' seconds.')
+                
+                t_start = clock()
+                for agent in StickySOmarkovEconomy.agents:
+                    agent(UpdatePrb = Params.UpdatePrb)
+                StickySOmarkovEconomy.makeHistory()
+                t_end = clock()
+                print('Simulating the alternate belief small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
+                
+                desc = 'Results for the alternate belief small open Markov economy with update probability ' + mystr(Params.UpdatePrb)
+                name = 'SOEmarkovStickyAlt'
+                makeStickyEdataFile(StickySOmarkovEconomy,ignore_periods,description=desc,filename=name,save_data=save_data,calc_micro_stats=calc_micro_stats)
+                
+                # Calculate the difference in consumption between baseline and alternate beliefs in each state for each household
+                AgentCount = np.sum([StickySOEmarkovConsumers[n].AgentCount for n in range(Params.TypeCount)])
+                cAlt = np.zeros((AgentCount,Params.StateCount)) + np.nan
+                cBase = np.zeros((AgentCount,Params.StateCount)) + np.nan
+                for j in range(Params.StateCount):
+                    start = 0
+                    for n in range(Params.TypeCount): 
+                        end = start + StickySOEmarkovConsumers[n].AgentCount
+                        mNrm_temp = StickySOEmarkovConsumers[n].mNrmNow
+                        Mnrm_temp = 0.5*np.ones_like(mNrm_temp)
+                        cAlt[start:end,j] = StickySOEmarkovConsumers[n].solution[0].cFunc[j](mNrm_temp,Mnrm_temp)
+                        cBase[start:end,j] = cFunc_original_list[n][j](mNrm_temp,Mnrm_temp)
+                        start = end
+                cAltVsBasePctDiff = np.log(cAlt/cBase)
+                my_tol = 0.0005
+                AltBeliefResultString = ''
+                AltBeliefResultString += 'The mean difference between baseline and alternate belief consumption functions is ' + '{:.4%}'.format(np.mean(cAltVsBasePctDiff)) + '.\n'
+                AltBeliefResultString += 'The stdev of differences between baseline and alternate belief consumption functions is ' + '{:.4%}'.format(np.std(cAltVsBasePctDiff)) + '.\n'
+                AltBeliefResultString += 'The highest percentage difference between baseline and alternate belief consumption functions is ' + '{:.4%}'.format(np.max(cAltVsBasePctDiff)) + '.\n'
+                AltBeliefResultString += 'The lowest percentage difference between baseline and alternate belief consumption functions is ' + '{:.4%}'.format(np.min(cAltVsBasePctDiff)) + '.\n'
+                AltBeliefResultString += 'The fraction of absolute differences less than ' + '{:.2%}'.format(my_tol) + ' is ' + '{:.2%}'.format(np.mean(np.abs(cAltVsBasePctDiff) < my_tol)) + '.\n'
+                with open(Params.results_dir + 'AltBeliefStats.txt','w') as f:
+                    f.write(AltBeliefResultString)
+                    f.close()
+                print(AltBeliefResultString)
+                
+                
             if run_ucost_vs_pi:
                 # Find the birth value and cost of stickiness as it varies with updating probability
                 UpdatePrbVec = np.linspace(0.025,1.0,40)
@@ -219,7 +277,7 @@ if __name__ == '__main__':
                 os.remove(results_dir + 'TEMPResults.csv')
                 os.remove(results_dir + 'TEMPBirthValue.csv')
 
-        # Process the coefficients, standard errors, etc into a LaTeX table
+        # Process the coefficients, standard errors, etc into LaTeX tables
         if make_tables:
             t_start = clock()
             frictionless_panel = runRegressions('SOEmarkovFrictionlessData',interval_size,False,False,True)
@@ -227,8 +285,10 @@ if __name__ == '__main__':
             frictionless_long_panel = runRegressions('SOEmarkovFrictionlessData',interval_size*interval_count,True,False,True)
             sticky_panel = runRegressions('SOEmarkovStickyData',interval_size,False,True,True)
             sticky_me_panel = runRegressions('SOEmarkovStickyData',interval_size,True,True,True)
+            sticky_alt_panel = runRegressions('SOEmarkovStickyAltData',interval_size,True,True,True)
             sticky_long_panel = runRegressions('SOEmarkovStickyData',interval_size*interval_count,True,True,True)
             makeResultsTable('Aggregate Consumption Dynamics in SOE Model',[frictionless_me_panel,sticky_me_panel],my_counts,'SOEmrkvSimReg','tPESOEsim')
+            makeResultsTable('Aggregate Consumption Dynamics in SOE Model (Alternate Beliefs)',[frictionless_me_panel,sticky_alt_panel],my_counts,'SOEmrkvSimRegAlt','tPESOEsimAlt')
             makeResultsTable('Aggregate Consumption Dynamics in SOE Model',[frictionless_panel,sticky_panel],my_counts,'SOEmrkvSimRegNoMeasErr','tPESOEsimNoMeasErr')
             makeResultsTable('Aggregate Consumption Dynamics in SOE Model',[frictionless_long_panel,sticky_long_panel],alt_counts,'SOEmrkvSimRegLong','tSOEsimLong')
             makeResultsTable(None,[frictionless_me_panel],my_counts,'SOEmrkvSimRegF','tPESOEsimF')
@@ -239,6 +299,33 @@ if __name__ == '__main__':
             # Extra code to see how long the smoothness dynamic lasts
             lag_coeffs_array = runStickyEregressionLagged('SOEmarkovStickyData',interval_size,False,True,True)
             lag_coeffs_array_me = runStickyEregressionLagged('SOEmarkovStickyData',interval_size,True,True,True)
+            
+        # Run the "Parker experiment"
+        if run_parker and run_models:
+            t_start = clock()
+            
+            # First, clear the simulation histories for all of the types to free up memory space;
+            # this allows the economy to be copied without blowing up the computer.
+            attr_list = ['aLvlNow','cLvlNow','yLvlNow','pLvlTrue','t_age','TranShkNow']
+            for agent in StickySOmarkovEconomy.agents:
+                for attr in attr_list:
+                    delattr(agent,attr+'_hist')
+                agent.track_vars = [] # Don't need to track any simulated variables
+                
+            # The market is at the end of its pre-generated simulated shock history, so it needs to be
+            # reset back to an earlier shock index that has the same Markov state as the current one.
+            MrkvNow = StickySOmarkovEconomy.MrkvNow
+            Shk_idx_reset = np.where(StickySOmarkovEconomy.MrkvNow_hist == MrkvNow)[0][0]
+            StickySOmarkovEconomy.Shk_idx = Shk_idx_reset
+            
+            # Run Parker experiments for different lead times for the policy
+            runParkerExperiment(StickySOmarkovEconomy,0.05,1,4,True) # One quarter ahead
+            runParkerExperiment(StickySOmarkovEconomy,0.05,2,4,True) # Two quarters ahead
+            runParkerExperiment(StickySOmarkovEconomy,0.05,3,4,True) # Three quarters ahead
+            
+            t_end = clock()
+            print('Running the "Parker experiment" took ' + str(t_end-t_start) + ' seconds.')
+        
 
     ###############################################################################
     ########## COBB-DOUGLAS ECONOMY WITH MACROECONOMIC MARKOV STATE ###############
@@ -319,7 +406,7 @@ if __name__ == '__main__':
                 frictionless_DSGEmarkov_micro_data = extractSampleMicroData(StickyDSGEmarkovEconomy, np.minimum(StickyDSGEmarkovEconomy.act_T-ignore_periods-1,periods_to_sim_micro), np.minimum(StickyDSGEmarkovEconomy.agents[0].AgentCount,AgentCount_micro), ignore_periods)
                 makeMicroRegressionTable('CGrowCrossDSGE', [frictionless_DSGEmarkov_micro_data,sticky_DSGEmarkov_micro_data])
 
-        # Process the coefficients, standard errors, etc into a LaTeX table
+        # Process the coefficients, standard errors, etc into LaTeX tables
         if make_tables:
             t_start = clock()
             frictionless_panel = runRegressions('DSGEmarkovFrictionlessData',interval_size,False,False,True)
@@ -388,7 +475,7 @@ if __name__ == '__main__':
 
 
         if make_tables:
-            # Process the coefficients, standard errors, etc into a LaTeX table
+            # Process the coefficients, standard errors, etc into LaTeX tables
             t_start = clock()
             frictionless_panel = runRegressions('RAmarkovFrictionlessData',interval_size,False,False,True)
             frictionless_me_panel = runRegressions('RAmarkovFrictionlessData',interval_size,True,False,True)

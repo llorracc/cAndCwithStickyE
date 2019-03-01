@@ -1,5 +1,5 @@
 
-This appendix presents a representative agent model for analyzing the consequences of sticky expectations in a DSGE framework while abstracting from idiosyncratic income shocks and the death (and replacement) of households.  It builds upon the modeling assumptions in Section~\ref{section:Models} to formulate the representative agent model, then presents simulated results analogous to Section~\ref{sec:Results}.  The primary advantage of this model is that it allows fast analysis of sticky expectations in a closed economy, yielding very similar results to the heterogeneous agents DSGE model with less than a minute of computation, rather than a few hours.  However, the model is not truly ``representative agent'' under sticky expectations, as the representative household's perception of the aggregate state is ``smeared'' over the state space. As presented below, the realized level of consumption represents the average level of consumption chosen by the ``multiple minds'' of the representative household.
+This appendix presents a representative agent model for analyzing the consequences of sticky expectations in a DSGE framework while abstracting from idiosyncratic income shocks and the death (and replacement) of households.  It builds upon the modeling assumptions in section~\ref{sec:models} to formulate the representative agent model, then presents simulated results analogous to section~\ref{sec:Results}.  The primary advantage of this model is that it allows fast analysis of sticky expectations in a closed economy, yielding very similar results to the heterogeneous agents DSGE model with less than a minute of computation, rather than a few hours.  However, the model is not truly a ``representative agent'' model under sticky expectations; instead it is as though there is an agent whose beliefs about the aggregate state are ``smeared'' over the state space with a probability distribution that reflects the distribution of perceptual delay implied by the Calvo updating probability. That is, the ealized level of consumption represents the weighted average level of consumption chosen by the ``many minds'' of the representative household, with weights reflecting the likelihood of each possible degree of perceptual delay.
 
 
 \subsection{Model and Solution}
@@ -12,9 +12,9 @@ productivity shocks $\Psi$ and $\Theta$ are distributed as usual.
 
 The representative agent's problem can be written in Bellman form as:\footnote{Subject to definitions \eqref{eq:AggRandWalk}, \eqref{eq:Ktp1}, \eqref{eq:Lt}, \eqref{eq:Mtp1} and \eqref{eq:MargProd}.}
 \begin{eqnarray*}
-\textbf{V}(\MLevBF_t,\PLev_t,\PtyGro_t) &=& \max_{\CLevBF_t} \big\{ \uFunc(\CLevBF_t) + \Ex \big[\textbf{V}(\MLevBF_{t_+1},\PLev_{t+1},\PtyGro_{t+1})\big]   \big\} \nonumber 
+\textbf{V}(\MLevBF_t,\PLev_t,\PtyGro_t) &=& \max_{\CLevBF_t} \big\{ \uFunc(\CLevBF_t) + \Ex \big[\textbf{V}(\MLevBF_{t_+1},\PLev_{t+1},\PtyGro_{t+1})\big]   \big\} \nonumber
 \\  & \mbox{s.t.} & \nonumber
-\\ \ALevBF_t &=& \MLevBF_t - \CLevBF_t. \nonumber 
+\\ \ALevBF_t &=& \MLevBF_t - \CLevBF_t. \nonumber
 \end{eqnarray*}
 
 Normalizing the representative agent's problem by the productivity level $\PLev_t$ as in
@@ -60,7 +60,7 @@ To handle this departure from the usual representative agent framework,
 we take a ``multiple minds'' or quasi-representative agent approach.  That is,
 we model the representative agent as being made up of a continuum of
 households who all correctly perceive the level of aggregate market
-resources $\MLevBF_t$, but might have different perceptions of the aggregate productivity
+resources $\MLevBF_t$, but have different perceptions of the aggregate productivity
 state.  Each household chooses their level of consumption based on their
 perception of the productivity state; the realized level of aggregate consumption
 is simply the sum across all households.
@@ -98,11 +98,7 @@ which would otherwise cause it to be undefined.  When no households perceive gro
 rate $\PtyGro_j$, the average perception of productivity does not exist for this state and is quantitatively
 irrelevant, but must exist for \eqref{eq:PLevPercRA} to not fail in the next period.}
 
-Households who perceive each growth rate $\PtyGro$ act as a partial representative
-agent, choosing their level of consumption according to their perception of normalized
-market resources.  Defining $\perc{\MLev}_t^j = \MLevBF_t/\perc{\PLev}_t^j$ as
-perceived normalized market resources for households who perceive the aggregate
-growth rate is $\PtyGro_j$, aggregate consumption is:
+Households who perceive each growth rate $\PtyGro$ choose their level of consumption according to their perception of normalized market resources, as though they knew their perception to be the truth.  Defining $\perc{\MLev}_t^j = \MLevBF_t/\perc{\PLev}_t^j$ as perceived normalized market resources for households who perceive the aggregate growth rate is $\PtyGro_j$, aggregate consumption is:
 \begin{equation}\label{eq:cLvlRA}
 \CLevBF_t = \sum_{\PtyGro_j \in \{\PtyGro\}} \perc{\PLev}_t^j \text{C}(\perc{\MLev}_t^j,\PtyGro_j) \varphi_t^j.
 \end{equation}
@@ -127,11 +123,11 @@ similar results.}
 \input\econtexRoot/Tables/RepAgentMrkvSimReg.tex
 
 We calibrate the RA model using the same parameters as for the
-HA-DSGE model (see Section~\ref{sec:MacroCal} and Table~\ref{table:calibration}),
+HA-DSGE model (see section~\ref{sec:MacroCal}, Table~\ref{table:calibration}, and Appendix~\ref{appendix:HADSGEresults}),
 except that there are no idiosyncratic income shocks
 ($\sigma^2_\psi = \sigma^2_\theta = \wp = 0$) and the possibility
 of death is irrelevant ($\PDies=0$).  After solving the model, we
-utilize the same simulation procedure described in Section \ref{sec:Results},
+utilize the same simulation procedure described in section~\ref{sec:Results},
 taking 100 samples of 200 quarters each; average coefficients
 and standard errors across the samples are reported in Table~\ref{tRAsim}.
 

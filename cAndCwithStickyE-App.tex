@@ -1,0 +1,213 @@
+\input{./econtexRoot}
+\input{\econtexRoot/econtexPaths.tex}
+\documentclass[titlepage]{\econtex}
+\newcommand{\texname}{cAndCwithStickyE}
+\usepackage{\econtexSetup}\usepackage{\econtexShortcuts}
+\usepackage[nolists,nomarkers,tablesonly]{endfloat}
+\setcounter{secnumdepth}{4}
+\input{./Revision/Notation.tex}
+\usepackage{xr}
+\externaldocument{\texname} % Let appendix access references from main paper
+
+\provideboolean{ifWeb}
+\setboolean{ifWeb}{false}
+\opt{Web}{\setboolean{ifWeb}{true}}
+
+\ifthenelse{\boolean{ifWeb}}{\usepackage{grfext}
+	\PrependGraphicsExtensions*{.svg,.jpg,.JPG,.png,.PNG,.pdf,.PDF}
+}{}
+
+
+%\titleformat{\paragraph}
+%{\sffamily\mdseries\normalsize}{\theparagraph}{1em}{}
+%\titlespacing*{\paragraph}
+%{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\hypersetup{pdfauthor={Christopher Carroll <ccarroll@jhu.edu>, Edmund Crawley <ecrawle2@jhu.edu>, Jiri Slacalek <jiri.slacalek@ecb.europa.eu>, Kiichi Tokuoka <kiichi.tokuoka@mof.go.jp>, Matthew N White <mnwecon@udel.edu>},
+	pdftitle={Sticky Expectations and Consumption Dynamics},
+	pdfsubject={Sticky Expectations and Consumption Dynamics},
+	pdfkeywords={Sticky Expectations, Consumption Dynamics, Habit Formation, Inattention; JEL: E21, F41},
+	pdfproducer = {LaTeX with hyperref and thumbpdf},
+	pdfcreator = {pdflatex}
+}
+
+\newlength\TableWidth
+
+\provideboolean{StandAlone}
+\setboolean{StandAlone}{false}
+\write18{\TabsDir/StandAloneOff.command} % Tell input files that they are being pulled in from the master (and are not standalone documents)
+
+\begin{document}\bibliographystyle{\econtexBibStyle}
+	
+	\input Switches.tex
+	
+	\begin{verbatimwrite}{\jobname.title}
+		Sticky Expectations and Consumption Dynamics --- Online Appendix
+	\end{verbatimwrite}
+	
+	\hfill{\tiny \jobname}
+	
+	\title{Sticky Expectations and Consumption Dynamics --- Online Appendix}
+	
+	\ifthenelse{\boolean{ifWeb}}{
+		\author{
+			Christopher D. Carroll\authNum
+			\and
+			Edmund Crawley\authNum
+			\and
+			Jiri Slacalek\authNum
+			\and
+			Kiichi Tokuoka\authNum
+			\and
+			Matthew N. White\authNum
+		}
+	}{
+		\author{
+			Christopher D. Carroll\authNum \\ {\small JHU}
+			\and
+			Edmund Crawley\authNum   \\ {\small JHU}
+			\and
+			Jiri Slacalek\authNum    \\ {\small ECB}
+			\and
+			Kiichi Tokuoka\authNum   \\ {\small MoF Japan}
+			\and
+			Matthew N. White\authNum \\ {\small UDel}
+		}
+	} % End ifWeb
+	
+	\keywords{Consumption, Expectations, Habits, Inattention}
+	\jelclass{D83, D84, E21, E32}
+	% \aspublished{Final version as published in [].}
+	
+	
+	\date{\today}
+	\maketitle
+	
+	\hypertarget{Abstract}{}
+	\begin{abstract}
+		\opt{JournalFormatting}{\doublespacing}
+		\begin{verbatimwrite}{./\jobname-abstract.metadata}
+			To match empirical evidence about aggregate consumption dynamics, representative agent macroeconomic models require some mechanism to generate `excess smoothness' in consumption growth.   But a large literature has found no evidence of corresponding smoothness in microeconomic data; consequently, existing microfounded models constructed to match the microdata fail to match the macro smoothness facts.  We show that the micro and macro evidence can be reconciled by a microfounded model in which consumers have accurate knowledge of their personal circumstances but `sticky expectations' about the macroeconomy, and the persistence of aggregate consumption growth reflects consumers' imperfect attention to aggregate shocks. Our proposed degree of (macro) inattention has negligible utility costs because aggregate shocks constitute only a tiny proportion of the uncertainty that consumers face.% R2 - contribution
+		\end{verbatimwrite}
+		\input{./\jobname-abstract.metadata}
+	\end{abstract}
+	
+	\ifthenelse{\boolean{ifWeb}}{}{\begin{small}}
+		\parbox{\textwidth}{
+			\begin{center}
+				\begin{tabbing}
+					\texttt{~~~~PDF:~} \= \= \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \kill \\  % This line establishes the locations of the tabs, but is not printed because of the \kill directive
+					\texttt{~~~Repo:~} \= \= \url{https://github.com/llorracc/cAndCwithStickyE}  \\
+					\texttt{~~~~PDF:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \\
+					\texttt{~~~~Web:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE/} \\
+					%\texttt{~BibTeX:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.bib} \\
+					%\texttt{Archive:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.zip} \\
+					\texttt{~Slides:~} \> \> Versions to \href{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE-Slides.pdf}{View} or \href{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE-Slides-Print.pdf}{Print} \\
+					\texttt{Toolkit:~} \> \> \url{http://github.com/Econ-ARK/HARK} \\
+					%\texttt{~~~~~~~~~} \> \> {\it (Contains data and estimation software producing paper's results)}
+				\end{tabbing}
+			\end{center}
+		}
+		\ifthenelse{\boolean{ifWeb}}{}{\end{small}}
+	
+	\begin{authorsinfo}
+		\name{Carroll: Department of Economics, Johns Hopkins University, \url{http://econ.jhu.edu/people/ccarroll/}, \href{mailto:ccarroll@jhu.edu}{\texttt{ccarroll@jhu.edu}}}
+		\name{Crawley: Department of Economics, Johns Hopkins University, \href{mailto:ecrawle2@jhu.edu}{\texttt{ecrawle2@jhu.edu}}}
+		\name{Slacalek: DG Research, European Central Bank, \url{http://www.slacalek.com/}, \href{mailto:jiri.slacalek@ecb.europa.eu}{\texttt{jiri.slacalek@ecb.europa.eu}}}
+		\name{Tokuoka: Ministry of Finance, Japan, \href{mailto:kiichi.tokuoka@mof.go.jp}{\texttt{kiichi.tokuoka@mof.go.jp}}}
+		\name{White: Department of Economics, University of Delaware,  \href{mailto:mnwecon@udel.edu}{\texttt{mnwecon@udel.edu}}}
+	\end{authorsinfo}
+	
+	\titlepagefinish
+	\setcounter{page}{1}
+	\setcounter{table}{4} % This needs to be changed if tables are changed in the main paper
+	\setcounter{equation}{20} % This needs to be changed if equations are changed in the main paper
+	
+	\pagebreak
+
+\appendix
+
+
+
+\begin{verbatimwrite}{./cAndCwithStickyE-App.texinput}
+\hypertarget{Calibration-Appendix}{}
+\section{Calibration}\label{app:Calibration}
+
+\input\econtexRoot/LaTeX/appendices/Calibration.tex
+
+\section{Heterogeneous Agents Dynamic Stochastic General Equilibrium (HA-DSGE) Model}
+\label{sec:HADSGE}
+
+\input\econtexRoot/LaTeX/appendices/HADSGE.tex
+
+
+
+\section{Representative Agent (RA) Model}\label{sec:RepAgent}
+
+\input\econtexRoot/LaTeX/appendices/RepAgent.tex
+
+
+\section{Numerical Methods}\label{appendix:Numeric}
+
+\subsection{Solution Methods}\label{appendix:Solution}
+
+\input\econtexRoot/LaTeX/appendices/Solution.tex
+
+
+\subsection{Simulation Procedures}\label{appendix:Simulation}
+
+\input\econtexRoot/LaTeX/appendices/Simulation.tex
+
+
+\subsection{Cost of Stickiness Calculation}\label{appendix:uCost}
+
+\input\econtexRoot/LaTeX/appendices/uCost.tex
+
+
+\hypertarget{How-MLP-Generates-Smoothness}{}
+\section{Muth--Lucas--Pischke}
+
+\input\econtexRoot/LaTeX/appendices/MuthSmooth.tex
+
+
+\section{Alternate Belief Specification}\label{appendix:AltBelief}
+
+\input\econtexRoot/LaTeX/appendices/AltBelief.tex
+
+
+\section{Additional Calculations}
+
+\subsection{Quadratic Utility Consumption Dynamics}\label{appendix:QuadCDyn}
+
+\input\econtexRoot/LaTeX/appendices/QuadCDyn.tex
+
+
+%\subsection{Calibration of Aggregate Income Process}\label{appendix:AggCalib}
+
+%\input\econtexRoot/Empirical/US/Results/LaTeX/AggCalibPermTran.tex
+
+%\input Appendix/EYGivenMandL.tex
+
+
+
+\subsection{Population Variance of Idiosyncratic Permanent Income}\label{appendix:pss}
+
+\input\econtexRoot/LaTeX/appendices/Blanchard/pVarianceSteadyState.tex
+
+\subsection{Converting Annual to Quarterly Variances for Idiosyncratic Shocks}\label{appendix:Ann2Qtr}
+
+\input\econtexRoot/LaTeX/appendices/Ann2Qtr.tex
+
+\subsection{\cite{muthOptimal} Signal Extraction}\label{appendix:Muth}
+
+\input\econtexRoot/LaTeX/appendices/MuthPre-muthOptimal.texinput
+%\input\eq/muthOptimal.tex
+
+\end{verbatimwrite}
+\input{./cAndCwithStickyE-App.texinput}
+
+\small
+\bibliography{economics,\texname,\texname-Add}
+\normalsize
+
+\end{document}

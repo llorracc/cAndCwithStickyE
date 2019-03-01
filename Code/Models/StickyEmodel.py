@@ -22,7 +22,9 @@ from __future__ import absolute_import
 from builtins import range, str
 
 import numpy as np
-from HARK.ConsumptionSaving.ConsAggShockModel import AggShockConsumerType, AggShockMarkovConsumerType, CobbDouglasEconomy, CobbDouglasMarkovEconomy
+from copy import deepcopy
+from HARK.ConsumptionSaving.ConsAggShockModel import AggShockConsumerType, AggShockMarkovConsumerType,\
+                CobbDouglasEconomy, CobbDouglasMarkovEconomy, SmallOpenMarkovEconomy
 from HARK.ConsumptionSaving.RepAgentModel import RepAgentConsumerType, RepAgentMarkovConsumerType
 
 # Make an extension of the base type for the heterogeneous agents versions
@@ -144,7 +146,29 @@ class StickyEconsumerType(AggShockConsumerType):
         PermShkPcvd[self.update] *= self.pLvlErrNow[self.update] # Updaters see the true permanent shock and all missed news
         self.pLvlErrNow[self.update] = 1.0
         self.PermShkNow = PermShkPcvd
-
+        
+        # The block of code below will only ever activate during an experiment about the MPC
+        # from the arrival of a transitory shock that can be foreseen and borrowed against
+        # by individuals who update.  The results of this experiment do not appear in the
+        # main text of the paper.
+        if not hasattr(self,'parker_experiment'): # This attribute is added for an experiment
+            return
+        if not hasattr(self,'noticed'): # If the "noticed" attribute does not exist, initialize it
+            self.noticed = np.zeros(self.AgentCount,dtype=bool)
+        if self.BonusLvl > 0.:
+            if self.t_until_bonus > 0: # Which agents "notice" the future bonus this period
+                noticers = np.logical_and(self.update, np.logical_not(self.noticed)) 
+            else: # Everyone notices when bonus check actually arrives
+                noticers = np.logical_not(self.noticed) 
+            BonusNrm = np.zeros_like(self.TranShkNow)
+            BonusNrm[noticers] = self.BonusLvl/(self.pLvlNow[noticers]*self.PermShkNow[noticers])
+            self.TranShkNow += BonusNrm*self.getRfree()**(-self.t_until_bonus)
+            # Agents who notice the check perceive it as a transitory shock to their income,
+            # normalized by their perception of their permanent income and discounted by
+            # the interest factor T periods ahead.
+            self.noticed[noticers] = True
+            self.t_until_bonus -= 1 # Bonus check arrival is one period closer
+        
 
     def getStates(self):
         '''
@@ -285,6 +309,55 @@ class StickyEmarkovConsumerType(AggShockMarkovConsumerType,StickyEconsumerType):
         pLvlErr = np.ones(self.AgentCount)
         pLvlErr[self.dont] = self.PermShkAggNow/self.PermGroFacAgg[self.MrkvNowPcvd[self.dont]]
         return pLvlErr
+    
+    
+    def installAltShockBeliefs(self):
+        '''
+        Makes this agent type believe that aggregate permanent shocks only arrive
+        at all with UpdatePrb probability-- that their sticky expectations are the
+        true aggregate shock process.  Puts the attribute PermShkAggDstnAlt into
+        the attribute IncomeDstn and swaps MrkvArray for MrkvArrayAlt.
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
+        if not hasattr(self,'beliefs_alt'):
+            self.beliefs_alt = False # Initialize alternate beliefs flag
+            
+        if not self.beliefs_alt:
+            self.MrkvArray_orig = deepcopy(self.MrkvArray)
+            self.IncomeDstn_orig = deepcopy(self.IncomeDstn)
+            self.MrkvArray = self.MrkvArrayAlt
+            self.addAggShkDstn(self.AggShkDstnAlt)
+            self.beliefs_alt = True # Set alternate beliefs flag
+            
+            
+    def resetShockBeliefs(self):
+        '''
+        Returns this agent type's attributes to the standard values, undoing the
+        the swaps in installAltShockBeliefs().  This should be called before
+        simulating the model.
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        '''
+        if not hasattr(self,'beliefs_alt'):
+            self.beliefs_alt = False # Initialize alternate beliefs flag
+            
+        if self.beliefs_alt: # This only actually does something if installAltShockBeliefs() has been run
+            self.MrkvArray = self.MrkvArray_orig
+            self.IncomeDstn = self.IncomeDstn_orig
+            self.beliefs_alt = False # Set alternate beliefs flag
 
 
 
@@ -578,3 +651,44 @@ class StickyCobbDouglasMarkovEconomy(CobbDouglasMarkovEconomy):
             temp(RfreeNow = self.RfreeNow_overwrite[t])
 
         return temp
+    
+    
+class StickySmallOpenMarkovEconomy(SmallOpenMarkovEconomy):  
+    '''
+    This is identical to the class SmallOpenMarkovEconomy from ConsAggShockModel,
+    but it adds one method that is only used for an experiment that is not reported
+    in the main text of the paper.
+    '''
+    
+    def runParkerExperiment(self,T_sim):
+        '''
+        Simulates T_sim periods of the "Parker experiment", in which a "bonus check"
+        is announced to households in advance of it actually arriving, but only
+        households who update to the latest macroeconomic news "notice" the future
+        arrival of the bonus.  Households who "notice" the bonus in advance may
+        borrow against it to finance consumption, and thus perceive it as a discounted
+        transitory shock to income.  Households who don't notice the announcement
+        will see it when it actually arrives in their bank account.
+        
+        Parameters
+        ----------
+        T_sim : int
+            Number of periods to simulate.
+            
+        Returns
+        -------
+        cLvlMean_hist : np.array
+            Array of size T_sim with population average consumption for each simulated period.
+        '''
+        cLvlMean_hist = np.zeros(T_sim) + np.nan
+        
+        for t in range(T_sim):
+            self.sow()       # Distribute aggregated information/state to agents
+            self.cultivate() # Agents take action
+            self.reap()      # Collect individual data from agents
+            self.mill()      # Process individual data into aggregate data
+            cLvl_new = np.concatenate([self.agents[i].cLvlNow for i in range(len(self.agents))])
+            cLvlMean_hist[t] = np.mean(cLvl_new)
+        
+        return cLvlMean_hist
+            

@@ -1,0 +1,5 @@
+The mean difference between baseline and alternate belief consumption functions is -0.0100%.
+The stdev of differences between baseline and alternate belief consumption functions is 0.0480%.
+The highest percentage difference between baseline and alternate belief consumption functions is 0.1077%.
+The lowest percentage difference between baseline and alternate belief consumption functions is -0.2200%.
+The fraction of absolute differences less than 0.05% is 85.54%.

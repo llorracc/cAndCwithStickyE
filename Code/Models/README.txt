@@ -8,8 +8,13 @@ requirements.txt file (type "pip install -r \path\to\requirements.txt" at the An
 prompt), run Spyder, and execute the MAIN file; see notes below.  All packages used 
 by the StickyE project will be installed by following this process.  The only 
 exception occurs if you try to run the "beta dist" specification of the HA-DSGE model,
- which is commented out in the parameters file.  To successfully run this exercise, 
+which is commented out in the parameters file.  To successfully run this exercise, 
 you must install the package joblib by typing "conda install joblib" at a command prompt.
+
+The boolean variables declared near the top of Sticky_MAIN.py choose the work to be
+executed. You should set these variables as appropriate; some work items take many
+hours to run and/or have very large memory requirements.  See notes below.  Setting all
+booleans to True requires a computer with at least 64GB memory and Stata installed.
 
 NOTE ON SPYDER: Anaconda comes with an IDE called Spyder.  On most operating systems,
 Spyder can be run by typing "spyder" at a command prompt.  On Windows 10, this does
@@ -26,7 +31,7 @@ are set to True.
 
 NOTE ON MEMORY: The heterogeneous agents models are set to simulate 20,000 households
 for about 21,000 periods, saving the entire history of several household-level variables
-in in double precision.  As such, running the SOE or HA-DSGE models is very memory
+in double precision.  As such, running the SOE or HA-DSGE models is very memory
 intensive.  We recommend that you run the code on a computer with at least 32GB of RAM
 to ensure that memory problems are not encountered.  To run the SOE and HA-DSGE models
 back-to-back on the same call to the MAIN file, we recommend that you have at least
@@ -65,20 +70,17 @@ This file contains the model code, building heavily off the rest of the HARK too
 This file does most of the post-processing after simulation.  It runs regression, calculates
 equilibrium outcomes, etc.  It is a collection of functions that are called by StickyE_MAIN.py
 
-5) StickyETimeSeries.do
+5) BetaDistEstimation.py
+This is a standalone module that was used to estimate the distribution of the discount
+factor (beta) a la "The Distribution of Wealth and the Marginal Propensity to Consume"
+in a simplified environment.  This module is not invoked by MAIN, but the estimation results
+are included in StickyEparams.py, commented out.  These parameters are used in the excess
+sensitivity experiment in section 5.4 of the paper.
+
+6) StickyETimeSeries.do
 This is a Stata do file. The regressions are run in Stata in order to produce the KP statistic.
 
-All other Python files are part of the HARK toolkit, available at www.github.com/econ-ark/HARK:
 
-- HARKcore.py
-- HARKinterpolation.py
-- HARKestimation.py
-- HARKparallel.py
-- HARKsimulation.py
-- HARKutilities.py
-- ConsIndShockModel.py
-- ConsAggShockModel.py
-- RepAgentModel.py
 
 
 Relative locations of other folders are defined near the top of StickyEparams.py.

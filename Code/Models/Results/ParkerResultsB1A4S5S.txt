@@ -1,0 +1,7 @@
+The bonus check is announced to sticky households one period in advance.
+One period before the bonus arrives, households consume 6.1% of the bonus amount.
+In the period that the bonus arrives, households consume 22.7% of the bonus amount.
+One period after the bonus arrives, households consume 15.4% of the bonus amount.
+Two periods after the bonus arrives, households consume 11.1% of the bonus amount.
+Three periods after the bonus arrives, households consume 8.2% of the bonus amount.
+Four periods after the bonus arrives, households consume 6.3% of the bonus amount.

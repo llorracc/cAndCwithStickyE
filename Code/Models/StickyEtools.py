@@ -512,8 +512,6 @@ def runStickyEregressionLagged(infile_name,interval_size,meas_err,sticky,all_spe
         StdErrArray = np.zeros((N,7)) # Same order as above
         RsqArray = np.zeros((N,5))
         PvalArray = np.zeros((N,5))
-        OIDarray = np.zeros((N,5)) + np.nan
-        InstrRsqVec = np.zeros(N)
     
         # Loop through subsample intervals, running various regressions
         for n in range(N):
@@ -871,24 +869,24 @@ def makeParameterTable(filename, params):
     # Calibrated macroeconomic parameters
     macro_panel = "\multicolumn{3}{c}{\\textbf{Macroeconomic Parameters} }  \n"
     macro_panel += "\\\\ $\\kapShare$ & " + "{:.2f}".format(params.CapShare) + " & Capital's Share of Income   \n"
-    macro_panel += "\\\\ $\\daleth$ & " + "{:.2f}".format(params.DeprFacAnn) + "^{1/4} & Depreciation Factor   \n"
+    macro_panel += "\\\\ $\\delta$ & \multicolumn{1}{c}{$1-" + "{:.2f}".format(params.DeprFacAnn) + "^{1/4}$} & Depreciation Rate   \n"
     macro_panel += "\\\\ $\sigma_{\Theta}^{2}$ & "+ "{:.5f}".format(params.TranShkAggVar) +" & Variance Aggregate Transitory Shocks \n"
     macro_panel += "\\\\ $\sigma_{\Psi}^{2}$ & "+ "{:.5f}".format(params.PermShkAggVar) +" & Variance Aggregate Permanent Shocks \n"
 
     # Steady state values
     SS_panel = "\multicolumn{3}{c}{ \\textbf{Steady State of Perfect Foresight DSGE Model} } \\  \n"
     SS_panel += "\\\\ \multicolumn{3}{c}{ $(\\sigma_{\\Psi}=\\sigma_{\\Theta}=\\sigma_{\\psi}=\\sigma_{\\theta}=\wp=\\PDies=0$, $\\Phi_t = 1)$} \\  \n"
-    SS_panel += "\\\\ $\\breve{K}/\\breve{K}^{\\kapShare}$ & " + "{:.1f}".format(params.KYratioSS) + " & SS Capital to Output Ratio  \n"
-    SS_panel += "\\\\ $\\breve{K}$ & " + "{:.2f}".format(params.KSS) + " & SS Capital to Labor Productivity Ratio ($=12^{1/(1-\\kapShare)}$) \n"
-    SS_panel += "\\\\ $\\breve{\\Wage}$ &  " + "{:.2f}".format(params.wRteSS) + " & SS Wage Rate ($=(1-\\kapShare)\\breve{K}^{\\kapShare}$) \n"
-    SS_panel += "\\\\ $\\breve{\\mathsf{r}}$ & " + "{:.2f}".format(params.rFreeSS) + " & SS Interest Rate ($=\\kapShare \\breve{K}^{\\kapShare-1}$) \n"
-    SS_panel += "\\\\ $\\breve{\\Rprod}$ & " + "{:.3f}".format(params.RfreeSS) + "& SS Between-Period Return Factor ($=\\daleth + \\breve{\\mathsf{r}}$) \n"
-
+    SS_panel += "\\\\ ${K}/{K}^{\\kapShare}$ & " + "{:.1f}".format(params.KYratioSS) + " & SS Capital to Output Ratio  \n"
+    SS_panel += "\\\\ ${K}$ & " + "{:.2f}".format(params.KSS) + " & SS Capital to Labor Productivity Ratio ($=12^{1/(1-\\kapShare)}$) \n"
+    SS_panel += "\\\\ ${\\Wage}$ &  " + "{:.2f}".format(params.wRteSS) + " & SS Wage Rate ($=(1-\\kapShare){K}^{\\kapShare}$) \n"
+    SS_panel += "\\\\ ${\\mathsf{r}}$ & " + "{:.2f}".format(params.rFreeSS) + " & SS Interest Rate ($=\\kapShare {K}^{\\kapShare-1}$) \n"
+    SS_panel += "\\\\ ${\\Rprod}$ & " + "{:.3f}".format(params.RfreeSS) + "& SS Between-Period Return Factor ($=1 - \\delta + {\\mathsf{r}}$) \n"
+    SS_note = '\\multicolumn{3}{p{0.95\\textwidth}}{ \\footnotesize \\textbf{Note:} As discussed in online Appendix~\\ref{app:Calibration}, we calibrate to the steady state values from a perfect foresight DGSE model.}'
     # Calibrated preference parameters
     pref_panel = "\multicolumn{3}{c}{ \\textbf{Preference Parameters} }  \n"
     pref_panel += "\\\\ $\\rho$ & "+ "{:.0f}".format(params.CRRA) +". & Coefficient of Relative Risk Aversion \n"
-    pref_panel += "\\\\ $\\beta_{SOE}$ &  " + "{:.3f}".format(params.DiscFacSOE) +" & SOE Discount Factor \n" #($=0.99 \\cdot \\PLives / (\\breve{\\mathcal{R}} \\Ex [\\pmb{\\psi}^{-\CRRA}])$)\n"
-    pref_panel += "\\\\ $\\beta_{DSGE}$ &  " + "{:.3f}".format(params.DiscFacDSGE) +" & HA-DSGE Discount Factor ($=\\breve{\\Rprod}^{-1}$) \n"
+    pref_panel += "\\\\ $\\beta$ &  " + "{:.3f}".format(params.DiscFacSOE) +" & Discount Factor (SOE Model) \n" #($=0.99 \\cdot \\PLives / (\\breve{\\mathcal{R}} \\Ex [\\pmb{\\psi}^{-\CRRA}])$)\n"
+    #pref_panel += "\\\\ $\\beta_{DSGE}$ &  " + "{:.3f}".format(params.DiscFacDSGE) +" & HA-DSGE Discount Factor ($={\\Rprod}^{-1}$) \n"
     pref_panel += "\\\\ $\Pi$                    & " + "{:.2f}".format(params.UpdatePrb) +"  & Probability of Updating Expectations (if Sticky) \n"
 
     # Idiosyncratic shock parameters
@@ -914,7 +912,7 @@ def makeParameterTable(filename, params):
     paper_output += pref_panel
     paper_output += "\\\\ \\midrule  \n"
     paper_output += idio_panel
-    paper_output += "\\\\ \\bottomrule  \n"
+    paper_output += "\\\\ \\bottomrule \n " + SS_note + "\n"    
     paper_output += "\end{tabular}\n"
     paper_output += "\end{table}\n"
     paper_output += "\end{minipage}\n"
@@ -943,7 +941,7 @@ def makeParameterTable(filename, params):
     slides2_output += pref_panel
     slides2_output += "\\\\ \\midrule  \n"
     slides2_output += idio_panel
-    slides2_output += "\\\\ \\bottomrule  \n"
+    slides2_output += "\\\\ \\bottomrule  \n"    
     slides2_output += "\end{tabular}  \n"
     slides2_output += "\end{center}  \n"
     with open(tables_dir + filename + '_2.tex','w') as f:
@@ -1355,6 +1353,151 @@ def makeValueVsPiFig(value_filename):
     plt.savefig(figures_dir + 'ValueVsPi.svg')
     plt.show()
     plt.close()
+    
+    
+def runParkerExperiment(BaseEconomy,BonusSize,T_before_bonus,T_after_bonus,verbose):
+    '''
+    Run an experiment in which a universal tax refund ("bonus") is announced T periods ahead
+    of when households will actually get their checks.  However, each household only "notices"
+    this upcoming bonus check when they update to the latest macroeconomic news (or when it
+    actually arrives in their bank account).  Households are able to borrow against the bonus,
+    so they perceive it as a (discounted) transitory shock when they notice it.
+    
+    Results are saved to text files in the Results directory.
+    
+    Parameters
+    ----------
+    BaseEconomy : StickySmallOpenMarkovEconomy
+        Baseline economy (used in the "main" part of the work) to be replicated for the experiment.
+    BonusSize : float
+        Size of the "bonus" check relative to average quarterly earnings.
+    T_before_bonus : int
+        Number of periods in advance the "bonus" checks are announced.
+    T_after_bonus : int
+        Number of periods after the arrival of the "bonus" to simulate and report.
+    verbose : bool
+        Whether to print the results to screen.
+        
+    Returns
+    -------
+    None
+    '''
+    # Calculate the absolute level of the bonus based on its relative size and aggregate productivity
+    pLvlBase = BaseEconomy.agents[0].PlvlAggNow # Average permanent income level
+    BonusLvl = BonusSize*BaseEconomy.wRte*pLvlBase # Bonus check of 5% of average quarterly income
+    T_sim_parker = T_before_bonus + T_after_bonus + 1
+    
+    # Make four copies of the economy: frictionless vs sticky, bonus vs none
+    StickyNoneEconomy = deepcopy(BaseEconomy)
+    StickyBonusEconomy = deepcopy(BaseEconomy)
+    FrictionlessNoneEconomy = deepcopy(BaseEconomy)
+    FrictionlessBonusEconomy = deepcopy(BaseEconomy)
+    for agent in StickyNoneEconomy.agents:
+        agent(UpdatePrb = UpdatePrb)
+        agent(parker_experiment = False, BonusLvl = 0.0, t_until_bonus = 0)
+    for agent in StickyBonusEconomy.agents:
+        agent(UpdatePrb = UpdatePrb)
+        agent(parker_experiment = True, BonusLvl = BonusLvl, t_until_bonus = T_before_bonus)
+    for agent in FrictionlessNoneEconomy.agents:
+        agent(UpdatePrb = 1.0)
+        agent(parker_experiment = False, BonusLvl = 0.0, t_until_bonus = 0)
+    for agent in FrictionlessBonusEconomy.agents:
+        agent(UpdatePrb = 1.0)
+        agent(parker_experiment = True, BonusLvl = BonusLvl, t_until_bonus = T_before_bonus)
+        
+    # Run the "Parker experiment" for the four economies and collect mean consumption change data
+    cLvl_StickyNone = StickyNoneEconomy.runParkerExperiment(T_sim_parker)
+    cLvl_StickyBonus = StickyBonusEconomy.runParkerExperiment(T_sim_parker)
+    cLvl_FrictionlessNone = FrictionlessNoneEconomy.runParkerExperiment(T_sim_parker)
+    cLvl_FrictionlessBonus = FrictionlessBonusEconomy.runParkerExperiment(T_sim_parker)
+    
+    # Format and save the results of the "Parker experiment"
+    policy_text = 'B' + str(T_before_bonus) + 'A' + str(T_after_bonus) + 'S' + str(int(100*BonusSize))
+    parker_results_sticky = makeParkerExperimentText(BonusLvl,T_before_bonus,cLvl_StickyNone,cLvl_StickyBonus,True,'ParkerResults' + policy_text + 'S')
+    parker_results_frictionless = makeParkerExperimentText(BonusLvl,T_before_bonus,cLvl_FrictionlessNone,cLvl_FrictionlessBonus,False,'ParkerResults' + policy_text + 'F')
+    if verbose:
+        print(parker_results_sticky + '\n')
+        print(parker_results_frictionless + '\n')
+        
+    return None
+    
 
-
-
+def makeParkerExperimentText(BonusLvl,T_ahead,cLvlNone_hist,cLvlBonus_hist,sticky_bool,out_filename=None):
+    '''
+    Makes a string of text to describe the results of the "Parker experiment", in which
+    a "bonus" payment is announced T_ahead periods in advance, but only households who
+    update to the latest macroeconomic news notice this.  Advance knowledge of the bonus
+    allows households to borrow against it.
+    
+    Parameters
+    ----------
+    BonusLvl : float
+        Absolute level of the bonus check that households will receive.
+    T_ahead : int
+        Number of periods ahead of bonus arrival that the policy is announced.
+    cLvlNone_hist : np.array
+        Array with average consumption levels in a world with no bonus announcement.
+    cLvlBonus_hist : np.array
+        Array with average consumption levels in a world with the bonus policy.
+    sticky_bool : bool
+        Whether results are for sticky (True) or frictionless agents.
+    out_filename : str
+        Name of txt file in which to save the output, if not None.
+        
+    Returns
+    -------
+    output : str
+        String describing the period by periods results of the Parker experiment.
+    '''
+    before_text_P = ' periods before the bonus arrives, '
+    before_text_S = ' period before the bonus arrives, '
+    after_text_P = ' periods after the bonus arrives, '
+    after_text_S = ' period after the bonus arrives, '
+    arrival_text =  'In the period that the bonus arrives, '
+    con_text1 = 'households consume '
+    con_text2 = ' of the bonus amount.'
+    Number_text = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten']
+    number_text = ['zero','one','two','three','four','five','six','seven','eight','nine','ten']
+    if sticky_bool:
+        agent_text = 'sticky households '
+    else:
+        agent_text = 'frictionless households '
+    if T_ahead !=1:
+        period_text = ' periods'
+    else:
+        period_text = ' period'
+    
+    output = 'The bonus check is announced to ' + agent_text + number_text[T_ahead] + period_text + ' in advance.\n'
+    T_total = cLvlNone_hist.size
+    
+    for t in range(-T_ahead,T_total-T_ahead):
+        s = t+T_ahead
+        abs_t = np.abs(t)
+        if abs_t != 0:
+            text_now = Number_text[abs_t]
+            if t > 0:
+                if abs_t > 1:
+                    temp = after_text_P
+                else:
+                    temp = after_text_S
+            else:
+                if abs_t > 1:
+                    temp = before_text_P
+                else:
+                    temp = before_text_S
+            text_now += temp
+        else:
+            text_now = arrival_text
+        text_now += con_text1
+        text_now += '{:.1%}'.format((cLvlBonus_hist[s] - cLvlNone_hist[s])/BonusLvl)
+        text_now += con_text2
+        text_now += '\n'
+        output += text_now
+        
+    if out_filename is not None:
+        with open(results_dir + out_filename + '.txt','w') as f:
+            f.write(output)
+            f.close()
+    
+    return output
+        

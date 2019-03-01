@@ -7,20 +7,20 @@ with $\pDies_{t,i}=1$.  Let $\tau_{i,n}$ be the $n$-th time $t$ index where $\pD
 $N_i = \sum_{t=0}^T \pDies_{t,i}$, the number of replacement events for household index $i$.
 
 A single consumer's (normalized) discounted sum of lifetime utility is then:
-\begin{equation}
+\begin{equation*}
 \vFunc_{i,n} =  \PLev_{\tau_{i,n}}^{\CRRA-1} \sum_{t=\tau_{i,n}}^{\tau_{i,n+1}-1} \beta^{t-\tau_{i,n}} \uFunc(\cLevBF_{t,i}).
-\end{equation}
+\end{equation*}
 Normalizing by aggregate productivity at birth $\PLev_t$ is equivalent to normalizing by the consumer's
 total productivity at birth $\pLev_{t,i}$ because $p_{t,i}=1$ at birth by assumption.
 
 The total number of households who are born and die in the history is:
-\begin{equation}
+\begin{equation*}
 N_I = \sum_{i=1}^I (N_i - 1).
-\end{equation}
+\end{equation*}
 The overall expected lifetime value at birth can then be computed as:
-\begin{equation}
+\begin{equation*}
 \overline{\vFunc}_0 = N_I^{-1} \sum_{i=1}^I \sum_{n=1}^{N_i-1} \vFunc_{i,n}.
-\end{equation}
+\end{equation*}
 
 Because we use $T=20,000$ and $I=20,000$, and agents live for 200 periods on average ($\PDies = 0.005$),
 our simulated history includes about $N_I \approx I T \PDies =$ 2 million consumer lifetimes.  The standard errors
@@ -48,7 +48,7 @@ state frictionlessly.  Critically, we \textit{do not} actually calculate $\ALevB
 each period; instead, we use the \textit{same sequence} of $\ALevBF_t$ that occurred in the
 ordinary sticky simulation.  Thus our simulated population of $I$ households represents an infinitesimally
 small portion of an economy made up (almost) entirely of consumers with sticky expectations.  The
-calculated $\omega$ is thus the willingness-to-pay to be the very first agent to ``wake up''.
+calculated $\omega$ is thus the willingness-to-pay to be the very first agent to ``wake up.''
 
 The formula for willingness-to-pay \eqref{eq:WTP} arises from the homotheticity of the household's
 problem with respect to $\pLev_{t,i}$.  If a consumer gives up an $\omega$ portion of their permanent

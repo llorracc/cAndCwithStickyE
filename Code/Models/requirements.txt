@@ -5,3 +5,5 @@ scipy
 dill
 statsmodels
 future
+econ-ark
+

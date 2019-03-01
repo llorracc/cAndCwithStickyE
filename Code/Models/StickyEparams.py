@@ -18,7 +18,7 @@ from past.utils import old_div
 import os
 import numpy as np
 from copy import copy
-from HARK.utilities import approxUniform
+from HARK.utilities import approxUniform, approxMeanOneLognormal, addDiscreteOutcome, combineIndepDstns
 
 # Choose file where the Stata executable can be found.  This should point at the
 # exe file itself, but the string does not need to include '.exe'.  Two examples
@@ -51,13 +51,13 @@ def importParam(param_name):
     return float(np.max(np.genfromtxt(calibration_dir + param_name + '.txt')))
 
 # Import primitive parameters from calibrations folder
-CRRA = importParam('CRRA')             # Coefficient of relative risk aversion
-DeprFacAnn = importParam('DeprFacAnn') # Annual depreciation factor
-CapShare = importParam('CapShare')     # Capital's share in production function
-KYratioSS = importParam('KYratioSS')   # Steady state capital to output ratio (PF-DSGE)
-UpdatePrb = importParam('UpdatePrb')   # Probability that each agent observes the aggregate productivity state each period (in sticky version)
-UnempPrb = importParam('UnempPrb')     # Unemployment probability
-DiePrb = importParam('DiePrb')         # Quarterly mortality probability
+CRRA = importParam('CRRA')                   # Coefficient of relative risk aversion
+DeprFacAnn = importParam('DeprFacAnn')       # Annual depreciation factor
+CapShare = importParam('CapShare')           # Capital's share in production function
+KYratioSS = importParam('KYratioSS')         # Steady state capital to output ratio (PF-DSGE)
+UpdatePrb = importParam('UpdatePrb')         # Probability that each agent observes the aggregate productivity state each period (in sticky version)
+UnempPrb = importParam('UnempPrb')           # Unemployment probability
+DiePrb = importParam('DiePrb')               # Quarterly mortality probability
 TranShkVarAnn = importParam('TranShkVarAnn') # Annual variance of idiosyncratic transitory shocks
 PermShkVarAnn = importParam('PermShkVarAnn') # Annual variance of idiosyncratic permanent shocks
 TranShkAggVar = importParam('TranShkAggVar') # Variance of aggregate transitory shocks
@@ -74,8 +74,6 @@ LivPrb = 1. - DiePrb                             # Quarterly survival probabilit
 DiscFacDSGE = RfreeSS**(-1)                      # Discount factor, HA-DSGE and RA models
 TranShkVar = TranShkVarAnn*4.                    # Variance of idiosyncratic transitory shocks
 PermShkVar = old_div(PermShkVarAnn,4.)           # Variance of idiosyncratic permanent shocks
-#TempDstn = approxMeanOneLognormal(N=7,sigma=np.sqrt(PermShkVar))
-#DiscFacSOE = 0.99*LivPrb/(RfreeSS*np.dot(TempDstn[0],TempDstn[1]**(-CRRA))) # Discount factor, SOE model
 
 # Choose basic simulation parameters
 periods_to_sim = 21010 # Total number of periods to simulate; this might be increased by DSGEmarkov model
@@ -89,23 +87,28 @@ periods_to_sim_micro = 4000
 AgentCount_micro = 5000
 
 # Choose extent of discount factor heterogeneity (inapplicable to representative agent models)
-TypeCount = 1           # Number of heterogeneous discount factor types
+# These parameters are used in all specifications of the main text
+TypeCount = 1                  # Number of heterogeneous discount factor types
 DiscFacMeanSOE  = DiscFacSOE   # Central value of intertemporal discount factor for SOE model
 DiscFacMeanDSGE = DiscFacDSGE  # ...for HA-DSGE and RA
-DiscFacSpread = 0.0     # Half-width of intertemporal discount factor band, a la cstwMPC
+DiscFacSpread = 0.0            # Half-width of intertemporal discount factor band, a la cstwMPC
+IncUnemp = 0.0                 # Zero unemployment benefits as baseline
 
-# These parameters are for a rough "beta-dist" specification that fits the wealth distribution in DSGE simple
-#TypeCount = 7
-#DiscFacMeanSOE = 0.96738
-#DiscFacMeanDSGE = 0.96738
-#DiscFacSpread = 0.0227
+# These parameters were estimated to match the distribution of liquid wealth a la
+# cstwMPC in the file BetaDistEstimation.py; these use unemployment benefits of 30%.
+# To reproduce the excess sensitivity experiment in the paper, uncomment these lines.
+#TypeCount = 11
+#DiscFacMeanSOE = 0.93286
+#DiscFacMeanDSGE = 0.93286
+#DiscFacSpread = 0.0641
+#IncUnemp = 0.3
 
 # Choose parameters for the Markov models
 StateCount = 11         # Number of discrete states in the Markov specifications
 PermGroFacMin = 0.9925  # Minimum value of aggregate permanent growth in Markov specifications
 PermGroFacMax = 1.0075  # Maximum value of aggregate permanent growth in Markov specifications
 Persistence = 0.5       # Base probability that macroeconomic Markov state stays the same; else moves up or down by 1
-RegimeChangePrb = 0.00  # Probability of "regime change", randomly jumping to any Markov state
+RegimeChangePrb = 0.00  # Probability of "regime change", randomly jumping to any Markov state (not used in paper)
 
 # Make the Markov array with chosen states, persistence, and regime change probability
 PolyMrkvArray = np.zeros((StateCount,StateCount))
@@ -122,6 +125,32 @@ PolyMrkvArray += RegimeChangePrb/StateCount
 
 # Define the set of aggregate permanent growth factors that can occur (Markov specifications only)
 PermGroFacSet = np.exp(np.linspace(np.log(PermGroFacMin),np.log(PermGroFacMax),num=StateCount))
+
+# Make an alternative version of the Markov array in which agents believe that their "sticky expectations"
+# is actually the true shock structure.  That is, that the aggregate state only changes with prob UpdatePrb,
+# but that the state changes are as if ~1/UpdatePrb periods have elapsed.
+t_exp_between_updates = int(np.round(1./UpdatePrb))
+PolyMrkvArrayAlt = PolyMrkvArray
+for t in range(t_exp_between_updates-1): # Premultiply T-1 times
+    PolyMrkvArrayAlt = np.dot(PolyMrkvArray,PolyMrkvArrayAlt)
+PolyMrkvArrayAlt *= UpdatePrb # Scale down all transitions so they only happen with UpdatePrb probability
+PolyMrkvArrayAlt += (1.-UpdatePrb)*np.eye(StateCount) # Move that probability weight to no change
+    
+# In the alternate specification, agents also think that permanent aggregate shocks only
+# happen with UpdatePrb probability, but are 1/UpdatePrb times larger when they do happen.
+# Transitory aggregate shocks are interpreted to be much larger when not updating.
+PermShkAggVarAlt = PermShkAggVar/UpdatePrb
+PermShkAggStdAlt = np.sqrt(PermShkAggVarAlt)
+PermShkAggDstnAlt_update = approxMeanOneLognormal(5,PermShkAggStdAlt)
+TranShkAggDstnAlt_update = approxMeanOneLognormal(5,np.sqrt(TranShkAggVar))
+AggShkDstnAlt_update = combineIndepDstns(PermShkAggDstnAlt_update,TranShkAggDstnAlt_update)
+AggShkDstnAlt_update[0] *= UpdatePrb
+PermShkAggDstnAlt_dont = [np.array([1.0]),np.array([1.0])] # Degenerate distribution
+TranShkAggDstnAlt_dont = approxMeanOneLognormal(5,np.sqrt(TranShkAggVar + PermShkAggVar/UpdatePrb))
+AggShkDstnAlt_dont = combineIndepDstns(PermShkAggDstnAlt_dont,TranShkAggDstnAlt_dont)
+AggShkDstnAlt_dont[0] *= 1.-UpdatePrb
+AggShkDstnAlt = StateCount*[[np.concatenate([AggShkDstnAlt_update[n],AggShkDstnAlt_dont[n]]) for n in range(3)]]
+
 
 # Define the set of discount factors that agents have (for SOE and DSGE models)
 DiscFacSetSOE  = approxUniform(N=TypeCount,bot=DiscFacMeanSOE-DiscFacSpread,top=DiscFacMeanSOE+DiscFacSpread)[1]
@@ -146,7 +175,7 @@ init_SOE_consumer = { 'CRRA': CRRA,
                       'TranShkCount': 7,
                       'UnempPrb': UnempPrb,
                       'UnempPrbRet': 0.0,
-                      'IncUnemp': 0.0,
+                      'IncUnemp': IncUnemp,
                       'IncUnempRet': 0.0,
                       'BoroCnstArt':0.0,
                       'tax_rate':0.0,
@@ -182,6 +211,8 @@ init_SOE_market = {  'PermShkAggCount': 5,
 # Define parameters for the small open Markov economy version of the model
 init_SOE_mrkv_consumer = copy(init_SOE_consumer)
 init_SOE_mrkv_consumer['MrkvArray'] = PolyMrkvArray
+init_SOE_mrkv_consumer['MrkvArrayAlt'] = PolyMrkvArrayAlt
+init_SOE_mrkv_consumer['AggShkDstnAlt'] = AggShkDstnAlt
 
 # Define market parameters for the small open Markov economy
 init_SOE_mrkv_market = copy(init_SOE_market)

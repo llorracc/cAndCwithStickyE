@@ -18,12 +18,12 @@ Macroeconomic models often invoke consumption 'habits' to explain the substantia
 
 -- to replicate  all of the tables, figures, and results that appear in the paper: 
 1. Go to www.continuum.io, install Anaconda for Python 2
-2. Run Spyder, and open ./Software/Models/StickyE_main.py
+2. Run Spyder, and open ./Code/Models/StickyE_main.py
 3. Set boolean flags (False or True) to choose which results to produce
 4. Run the code by clicking the green arrow button
 
-See also ./Software/Models/README.txt for a detailed description of the project files and how to reproduce all of the tables, figures, and results in the paper. The vast majority of the project is written in Python 2.7, but some empirical work uses Stata.  
+See also ./Code/Models/README.txt for a detailed description of the project files and how to reproduce all of the tables, figures, and results in the paper. The vast majority of the project is written in Python 2.7, but some empirical work uses Stata.  
 
-See ./Software/README.txt for a description about the folder structure under ./Software
+See ./Code/README.txt for a description about the folder structure under ./Code
 
 
