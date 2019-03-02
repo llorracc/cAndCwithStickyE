@@ -24,7 +24,7 @@ We set the variances of the quarterly transitory and permanent shocks at the app
 which allow the model to match high degree of persistence in aggregate labor income.\footnote{We measure labor income using U.S.\ NIPA data as wages and salaries plus transfers minus personal contributions for social insurance.} These values are consistent with papers such as \cite{jermannProduction}, \cite{bcfHabits}, and \cite{ckmCritique}, considered standard  in the RBC literature. These authors model the state of technology as either a highly persistent AR(1) process or a random walk; but the underlying calibrations come from the autocorrelation properties of measured aggregate dynamics, which are matched about as well by our specification of the income process.
 
 To finish the calibration, we consider a simple perfect foresight model (PF-DSGE), with all aggregate and idiosyncratic shocks turned off.  We set the perfect foresight steady state aggregate capital-to-output ratio to \input \ParmDir/KYratioSS.txt on a quarterly basis (corresponding to the usual ratio of 3 for capital divided by annual income).  Along with the calibrated values of $\kapShare$ and $\delta$, this choice implies values for the other steady-state characteristics of the PF-DSGE model:
-\begin{eqnarray*} % Removed the \breve's as a concession to referees' dislike of notational innovation
+\begin{eqnarray*}
 	{\KLev} & = & \input \ParmDir/KYratioSS.txt ^{1/(1-\kapShare)},
 	\\ \ifnumSw {\Wage} & = & (1-\kapShare) {\KLev}^{\kapShare},
 	\\ \ifnumSw {\Rprod} & = & \DeprFac+\kapShare {\KLev}^{\kapShare-1}

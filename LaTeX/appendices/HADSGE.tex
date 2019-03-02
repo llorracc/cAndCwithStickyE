@@ -31,10 +31,6 @@ problem can be written in Bellman form as:\footnote{Subject to definitions \eqre
 \eqref{eq:Ktp1}, \eqref{eq:Lt}, \eqref{eq:Mtp1}, \eqref{eq:MargProd} and \eqref{eq:AggSaving}.}
 \begin{eqnarray}
 \textbf{v}(\mLevBF_{t,i},\MLevBF_t,p_{t,i},\PLev_t,\PtyGro_t) &=& \max_{\cLevBF_{t,i}} \big\{ \uFunc(\cLevBF_{t,i}) + \beta \Ex\big[(1-\pDies_{t,i})\textbf{v}(\mLevBF_{t+1,i},\MLevBF_{t+1},p_{t+1,i},\PLev_{t+1},\PtyGro_{t+1})\big] \big\}. \nonumber \\ \label{eq:DSGEproblem}
-%\\ & \text{s.t.} &
-%\\ \aLevBF_{t,i} & = & \mLevBF_{t,i} - \cLevBF_{t,i}, \nonumber
-%\\ \kLevBF_{t+1,i} & = & \aLevBF_{t,i}/\PLives, \nonumber
-%\\ \mLevBF_{t+1,i} & = & \Rprod_{t+1} \kLevBF_{t+1,i} + \Theta_{t+1} \theta_{t+1,i} P_{t+1} p_{t+1,i} \Wage_{t+1}, \nonumber
 \end{eqnarray}
 
 As in the SOE model, the household's problem can be normalized by the combined productivity level $\pLev_{t,i}$, reducing the state space by two continuous dimensions.  Dividing \eqref{eq:DSGEproblem} by $\pLev_{t,i}^{1-\CRRA}$ and substituting normalized variables, the reduced problem is:
@@ -61,7 +57,6 @@ Households in the DSGE model choose their level of consumption using their perce
 \cLevBF_{t,i} = \perc{\pLev}_{t,i} \cFunc(\perc{\mLev}_{t,i},\perc{\MLev}_{t,i},\perc{\PtyGro}_{t,i}) = \cFuncLev(\mLevBF_{t,i},\MLevBF_{t},p_{t,i},\perc{\PLev}_{t,i},\perc{\PtyGro}_{t,i}).
 \end{equation*}
 Households who misperceive the aggregate productivity state will incorrectly predict aggregate saving at the end of the period, and thus aggregate capital and the distribution of factor prices next period.\footnote{This incorrect prediction is short-lived: all households will learn the true \textit{levels} of next period's aggregate capital and output.}
-%This additional source of behavioral error will tend to increase the `cost of stickiness' relative to the SOE model.
 
 Because households who misperceive the aggregate productivity state will make (slightly) different consumption--saving decisions than they would have if fully informed, \textit{aggregate} saving behavior will be different under sticky than under frictionless expectations.  Consequently, the equilibrium aggregate saving rule $\aleph$ will be slightly different under sticky vs frictionless expectations.  When the HA-DSGE model is solved under sticky expectations, we implicitly assume that all households understand that all other households also have sticky expectations, and the equilibrium aggregate saving rule is the one that emerges from this belief structure.
 
