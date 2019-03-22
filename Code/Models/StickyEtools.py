@@ -177,7 +177,7 @@ def makeStickyEdataFile(Economy,ignore_periods,description='',filename=None,save
             f.close()
         if calc_micro_stats and hasattr(Economy,'agents'):
             with open(results_dir + filename + 'BirthValue.csv','w') as f:
-                my_writer = csv.writer(f, delimiter = ',')
+                my_writer = csv.writer(f, delimiter = ',', lineterminator = '\n')
                 my_writer.writerow(vBirth)
                 f.close()
 
@@ -191,7 +191,7 @@ def makeStickyEdataFile(Economy,ignore_periods,description='',filename=None,save
                 DataArray = np.hstack((DataArray,np.reshape(R,(R.size,1))))
                 VarNames.append('R')
             with open(results_dir + filename + 'Data.txt','w') as f:
-                my_writer = csv.writer(f, delimiter = '\t')
+                my_writer = csv.writer(f, delimiter = '\t', lineterminator = '\n')
                 my_writer.writerow(VarNames)
                 for i in range(DataArray.shape[0]):
                     my_writer.writerow(DataArray[i,:])
@@ -900,7 +900,7 @@ def makeParameterTable(filename, params):
     paper_output = "\provideboolean{Slides} \setboolean{Slides}{false}  \n"
 
     paper_output += "\\begin{minipage}{\\textwidth}\n"
-    paper_output += "  \\begin{table}\n"
+    paper_output += "  \\begin{table}\\hypertarget{Calibration}{}\n"
     paper_output += "    \\caption{Calibration}\label{table:calibration}\n"
 
     paper_output += "\\begin{tabular}{cd{5}l}  \n"
@@ -1240,7 +1240,7 @@ def makeMicroRegressionTable(out_filename, micro_data):
         f.close()
 
 
-def makeuCostVsPiFig(uCost_filename):
+def makeuCostVsPiFig(uCost_filename,show=True):
     '''
     Make two versions of a figure that plots the cost of stickiness vs updating probability.
     Saves pdf files to the figures directory.
@@ -1249,6 +1249,8 @@ def makeuCostVsPiFig(uCost_filename):
     ----------
     uCost_filename : str
         Name of data file, as a two line csv.  First line is UpdatePrb, second line is uCost.
+    show : bool
+        Indicator for whether the figure should be displayed to screen.
 
     Returns
     -------
@@ -1270,7 +1272,10 @@ def makeuCostVsPiFig(uCost_filename):
     plt.savefig(figures_dir + 'uCostvsPi.png')
     plt.savefig(figures_dir + 'uCostvsPi.jpg')
     plt.savefig(figures_dir + 'uCostvsPi.svg')
-    plt.show()
+    if show:
+        plt.show()
+    else:
+        plt.clf()
     plt.close()
 
     # Plot uCost vs 1/Pi
@@ -1284,16 +1289,22 @@ def makeuCostVsPiFig(uCost_filename):
     plt.savefig(figures_dir + 'uCostvsPiInv.png')
     plt.savefig(figures_dir + 'uCostvsPiInv.jpg')
     plt.savefig(figures_dir + 'uCostvsPiInv.svg')
-    plt.show()
+    if show:
+        plt.show()
+    else:
+        plt.clf()
     plt.close()
 
 
-def makeValueVsAggShkVarFig(value_filename):
+def makeValueVsAggShkVarFig(value_filename,show=True):
     '''
     Parameters
     ----------
     value_filename : str
-        Name of data file, as a two line csv.  First line is PermShkAggVar, second line is birth value.
+        Name of data file, as a two line csv.  First line is PermShkAggVar,
+        second line is birth value.
+    show : bool
+        Indicator for whether the figure should be displayed to screen.
 
     Returns
     -------
@@ -1317,16 +1328,22 @@ def makeValueVsAggShkVarFig(value_filename):
     plt.savefig(figures_dir + 'ValueVsPermShkAggVar.png')
     plt.savefig(figures_dir + 'ValueVsPermShkAggVar.jpg')
     plt.savefig(figures_dir + 'ValueVsPermShkAggVar.svg')
-    plt.show()
+    if show:
+        plt.show()
+    else:
+        plt.clf()
     plt.close()
 
 
-def makeValueVsPiFig(value_filename):
+def makeValueVsPiFig(value_filename,show=True):
     '''
     Parameters
     ----------
     value_filename : str
-        Name of data file, as a two line csv.  First line is UpdatePrb, second line is birth value.
+        Name of data file, as a two line csv.  First line is UpdatePrb,
+        second line is birth value.
+    show : bool
+        Indicator for whether the figure should be displayed to screen.
 
     Returns
     -------
@@ -1351,7 +1368,10 @@ def makeValueVsPiFig(value_filename):
     plt.savefig(figures_dir + 'ValueVsPi.png')
     plt.savefig(figures_dir + 'ValueVsPi.jpg')
     plt.savefig(figures_dir + 'ValueVsPi.svg')
-    plt.show()
+    if show:
+        plt.show()
+    else:
+        plt.clf()
     plt.close()
     
     

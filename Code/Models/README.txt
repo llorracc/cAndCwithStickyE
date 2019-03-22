@@ -5,16 +5,15 @@ Stata. It should also run on versions of Python 3.
 To run the code, you should install the Anaconda distribution of Python (from
 www.continuum.io, it has been tested for versions 2.7 and 3.6), pip install the 
 requirements.txt file (type "pip install -r \path\to\requirements.txt" at the Anaconda 
-prompt), run Spyder, and execute the MAIN file; see notes below.  All packages used 
-by the StickyE project will be installed by following this process.  The only 
-exception occurs if you try to run the "beta dist" specification of the HA-DSGE model,
-which is commented out in the parameters file.  To successfully run this exercise, 
-you must install the package joblib by typing "conda install joblib" at a command prompt.
+prompt).  All packages used  by the StickyE project will be installed by following
+this process.  The MAIN file performs all of the work for the project,
+but it needs some boolean variables to be set before it will run properly.  These
+variables are set by files in the ./Options folder.  To run the code, you should
+run do_min.py, do_mid.py, or do_all.py in the root directory of this project.
 
-The boolean variables declared near the top of Sticky_MAIN.py choose the work to be
-executed. You should set these variables as appropriate; some work items take many
-hours to run and/or have very large memory requirements.  See notes below.  Setting all
-booleans to True requires a computer with at least 64GB memory and Stata installed.
+do_min.py will run the representative agent model, which will take under a minute
+do_mid.py will run the small open economy model (main results), which takes about 30 minutes
+do_all.py will run every single result in the paper and appendix, which takes 1-2 days
 
 NOTE ON SPYDER: Anaconda comes with an IDE called Spyder.  On most operating systems,
 Spyder can be run by typing "spyder" at a command prompt.  On Windows 10, this does
@@ -106,3 +105,9 @@ This folder contains Stata code and data files to produce the histogram of exces
 smoothness coefficient estimates (Figure 1) and the time series regressions on
 U.S. consumption data.  Stata code in this folder is called from the MAIN file
 if the appropriate booleans are set to True; stata_exe must be valid for this to work.
+
+6) ./Options
+This folder contains several very small .py files with sets of options that are
+loaded by the do_XXX.py files.  They represent common choices of what work to
+(not) do on a given execution run.
+

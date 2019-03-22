@@ -1,8 +1,8 @@
 Empirical:
- -- contains STATA files for the U.S. empirical estimation (Table 3).
+ -- contains STATA files for the U.S. empirical estimation (Table 2).
  -- contains STATA files for the meta analysis histogram (Figure 1).
  
- See also ./Empirical/_readMe.txt for more details about how to produce Table 3 and Figure 1. 
+ See also ./Empirical/_readMe.txt for more details about how to produce Table 2 and Figure 1. 
 
 
 Models:

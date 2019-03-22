@@ -18,34 +18,17 @@ from past.utils import old_div
 import os
 import numpy as np
 from copy import copy
-from HARK.utilities import approxUniform, approxMeanOneLognormal, addDiscreteOutcome, combineIndepDstns
-
-# Choose file where the Stata executable can be found.  This should point at the
-# exe file itself, but the string does not need to include '.exe'.  Two examples
-# are included (for locations on two authors' local computers).  This variable
-# is irrelevant when the use_stata boolean in cAndCwithStickyE.py is set to False.
-# Using Stata to run the regressions allows the tables to include the KP test
-# statistic; Python's statsmodels.api currently does not have this functionality.
-
-# NOTE: To successfully use_stata, you must have Baum, Schaffer, and Stillman's
-# ivreg2 Stata module installed, as well as Kleibergen and Schaffer's ranktest
-# module.  These modules are archived by RePEc IDEAS at:
-# https://ideas.repec.org/c/boc/bocode/s425401.html
-# https://ideas.repec.org/c/boc/bocode/s456865.html
-# You can also simply type "ssc install ivreg2" and "ssc install ranktest" in Stata.
-
-#stata_exe = "C:\Program Files (x86)\Stata14\stataMP-64"
-stata_exe = "C:\Program Files (x86)\Stata15\StataSE-64"
+from HARK.utilities import approxUniform, approxMeanOneLognormal, combineIndepDstns
 
 # Choose directory paths relative to the StickyE files
 # See: https://stackoverflow.com/questions/918154/relative-paths-in-python
 my_file_path = os.path.dirname(os.path.abspath(__file__))
 
-calibration_dir = os.path.join(my_file_path, "../../Calibration/Parameters/") # Relative directory for primitive parameter files
-tables_dir = os.path.join(my_file_path, "../../Tables/")           # Relative directory for saving tex tables
-results_dir = os.path.join(my_file_path, "./Results/")         # Relative directory for saving output files
-figures_dir = os.path.join(my_file_path, "../../Figures/")         # Relative directory for saving figures
-empirical_dir = os.path.join(my_file_path, "../Empirical/")     # Relative directory with empirical files
+calibration_dir = os.path.join(my_file_path, "../../Calibration/Parameters/") # Absolute directory for primitive parameter files
+tables_dir = os.path.join(my_file_path, "../../Tables/")       # Absolute directory for saving tex tables
+results_dir = os.path.join(my_file_path, "./Results/")         # Absolute directory for saving output files
+figures_dir = os.path.join(my_file_path, "../../Figures/")     # Absolute directory for saving figures
+empirical_dir = os.path.join(my_file_path, "../Empirical/")    # Absolute directory with empirical files
 
 def importParam(param_name):
     return float(np.max(np.genfromtxt(calibration_dir + param_name + '.txt')))
@@ -97,11 +80,11 @@ IncUnemp = 0.0                 # Zero unemployment benefits as baseline
 # These parameters were estimated to match the distribution of liquid wealth a la
 # cstwMPC in the file BetaDistEstimation.py; these use unemployment benefits of 30%.
 # To reproduce the excess sensitivity experiment in the paper, uncomment these lines.
-#TypeCount = 11
-#DiscFacMeanSOE = 0.93286
-#DiscFacMeanDSGE = 0.93286
-#DiscFacSpread = 0.0641
-#IncUnemp = 0.3
+TypeCount_parker = 11
+DiscFacMeanSOE_parker = 0.93286
+DiscFacMeanDSGE_parker = 0.93286
+DiscFacSpread_parker = 0.0641
+IncUnemp_parker = 0.3
 
 # Choose parameters for the Markov models
 StateCount = 11         # Number of discrete states in the Markov specifications
@@ -155,6 +138,9 @@ AggShkDstnAlt = StateCount*[[np.concatenate([AggShkDstnAlt_update[n],AggShkDstnA
 # Define the set of discount factors that agents have (for SOE and DSGE models)
 DiscFacSetSOE  = approxUniform(N=TypeCount,bot=DiscFacMeanSOE-DiscFacSpread,top=DiscFacMeanSOE+DiscFacSpread)[1]
 DiscFacSetDSGE = approxUniform(N=TypeCount,bot=DiscFacMeanDSGE-DiscFacSpread,top=DiscFacMeanDSGE+DiscFacSpread)[1]
+DiscFacSetSOE_parker  = approxUniform(N=TypeCount_parker,
+                                      bot=DiscFacMeanSOE_parker-DiscFacSpread_parker,
+                                      top=DiscFacMeanSOE_parker+DiscFacSpread_parker)[1]
 
 ###############################################################################
 
