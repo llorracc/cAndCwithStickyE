@@ -733,7 +733,8 @@ def makeResultsPanel(Coeffs,StdErrs,Rsq,Pvals,OID,Counts,meas_err,sticky,all_spe
         sig_symb = '*'
     def sigFunc(coeff,stderr):
         z_stat = np.abs(coeff/stderr)
-        cuts = np.array([1.645,1.96,2.576])
+        #cuts = np.array([1.645,1.96,2.576])
+        cuts = np.array([np.inf,np.inf,np.inf]) # Make "significance" impossible to suppress asterisk notation
         N = np.sum(z_stat > cuts)
         if N > 0:
             sig_text = '^{' + N*sig_symb + '}'
@@ -813,10 +814,10 @@ def makeResultsTable(caption,panels,counts,filename,label):
     note = '\\multicolumn{6}{p{0.95\\textwidth}}{' + note_size + ' \\textbf{Notes:} '
     if counts[1] > 1:
         note += 'Reported statistics are the average values for ' + str(counts[1]) + ' samples of ' + str(counts[0]) + ' simulated quarters each.  '
-        note += 'Bullets indicate that the average sample coefficient divided by average sample standard error is outside of the inner 90\%, 95\%, and 99\% of the standard normal distribution.  '
+        #note += 'Bullets indicate that the average sample coefficient divided by average sample standard error is outside of the inner 90\%, 95\%, and 99\% of the standard normal distribution.  '
     else:
         note += 'Reported statistics are for a single simulation of ' + str(counts[0]) + ' quarters.  '
-        note += 'Stars indicate statistical significance at the 90\%, 95\%, and 99\% levels, respectively.  '
+        #note += 'Stars indicate statistical significance at the 90\%, 95\%, and 99\% levels, respectively.  '
     note += 'Instruments $\\textbf{Z}_t = \\{\Delta \log \mathbf{C}_{t-2}, \Delta \log \mathbf{C}_{t-3}, \Delta \log \mathbf{Y}_{t-2}, \Delta \log \mathbf{Y}_{t-3}, A_{t-2}, A_{t-3}, \Delta_8 \log \mathbf{C}_{t-2}, \Delta_8 \log \mathbf{Y}_{t-2}   \\}$.'
     note += '}'
 

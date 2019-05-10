@@ -31,7 +31,7 @@
 \ProvidesClass{handout}[2014/10/29 LaTeX class for handouts written by Christopher Carroll]
 \NeedsTeXFormat{LaTeX2e}
 % \RequirePackage{rotating}
-
+\RequirePackage{snapshot} % Creates list of external files used by a LaTeX document
 \RequirePackage{ifthen}
 \RequirePackage{chngpage}
 
@@ -114,7 +114,41 @@ amsmath,amssymb,amsfonts,amsthm
 ,color
 }
 
-\RequirePackage{handout}
+% \RequirePackage{handout} % Removed 20170801 because won't work when invoked from nonroot paths
+% Contents of the file are pasted in below
+
+%---------------Custom Definitions--------------
+
+\def\liminf{\mathop{\rm lim\, inf}\limits} 
+\DeclareMathOperator{\Ex}{\mathbb{E}} % Expectations operator 
+\def\var{\operatorname{var}} % variance
+\def\cov{\operatorname{cov}} % covariance
+\def\std{\operatorname{std}} % standard deviation
+\def\argmax{\operatornamewithlimits{arg\,max}} % argmax
+
+%---------------Custom Modifications----------------------
+
+% \htline defines a thick horizontal line in table
+\def\htline{\noalign{\hrule height 2\arrayrulewidth}}
+
+% \hdline defines a dotted horizontal line in table
+\def\hdline{\noalign{.\dotfill{}.}}
+
+%To keep footnotes on a single page except in extreme cases
+\interfootnotelinepenalty=5000 %from 0 to 10000
+
+%To prevent hyphenation
+\hyphenpenalty=5000 %from 0 to 10000, default is 200
+
+%To prevent breaking math formula
+\relpenalty=4000 %from 0 to 10000, default is 500
+
+%To prevent breaking math formula after binary operator 
+\binoppenalty=10000 %from 0 to 10000, default is 700
+
+%--------------------------------------------------------
+
+
 \RequirePackage[mathscr]{eucal}
 \RequirePackage[normalem]{ulem}
 \providecommand\bmmax{0} % Prevent boldmath package from using up too much memory
@@ -154,7 +188,7 @@ amsmath,amssymb,amsfonts,amsthm
 
 % citations and bibliography
 \RequirePackage[authoryear]{natbib}
-\AtBeginDocument{\renewcommand{\refname}{\clearpage References}
+\AtBeginDocument{\renewcommand{\refname}{References}
 \renewcommand\@makefnmark
   {\mbox{\textsuperscript{\tiny\@thefnmark}}} % Restore footnote defn after titlepage redefines it
 \ifdvi

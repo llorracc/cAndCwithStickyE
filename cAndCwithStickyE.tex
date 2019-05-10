@@ -14,9 +14,11 @@
 \opt{Web}{\setboolean{ifWeb}{true}}
 
 \ifthenelse{\boolean{ifWeb}}{\usepackage{grfext}
-\PrependGraphicsExtensions*{.svg,.jpg,.JPG,.png,.PNG,.pdf,.PDF}
+  \PrependGraphicsExtensions*{.svg,.jpg,.JPG,.png,.PNG,.pdf,.PDF}
+  \usepackage{endnotes}
+  \let\footnote=\endnote
+  \newcommand{\webWidth}{1.0}
 }{}
-
 
 
 \hypersetup{pdfauthor={Christopher Carroll <ccarroll@jhu.edu>, Edmund Crawley <ecrawle2@jhu.edu>, Jiri Slacalek <jiri.slacalek@ecb.europa.eu>, Kiichi Tokuoka <kiichi.tokuoka@mof.go.jp>, Matthew N White <mnwecon@udel.edu>},
@@ -32,18 +34,18 @@
 \provideboolean{StandAlone}
 \setboolean{StandAlone}{false}
 \write18{\TabsDir/StandAloneOff.command} 
+\input Switches.tex
 
 \begin{document}\bibliographystyle{\econtexBibStyle}
-
-\input Switches.tex
+\begin{adjustwidth}{-1em}{-1em}
 
 \begin{verbatimwrite}{\jobname.title}
 Sticky Expectations and Consumption Dynamics
 \end{verbatimwrite}
 
-\hfill{\tiny \jobname}
+\hfill{\tiny \jobname, \today}
 
-\title{Sticky Expectations and \\ Consumption Dynamics}
+\title{Sticky~Expectations~and~Consumption~Dynamics}
 
 \ifthenelse{\boolean{ifWeb}}{
 \author{
@@ -57,7 +59,8 @@ Sticky Expectations and Consumption Dynamics
   \and
   Matthew N. White\authNum
 }
-}{
+} %\end{Web}
+{
 \author{
   Christopher D. Carroll\authNum \\ {\small JHU}
   \and
@@ -75,18 +78,18 @@ Sticky Expectations and Consumption Dynamics
 \jelclass{D83, D84, E21, E32}
 
 
-\date{March 1, 2019}
+\date{May 9, 2019 \\ \large{Forthcoming, \textit{American Economic Journal: Macroeconomics}}}
 \maketitle
 
 \hypertarget{Abstract}{} \opt{JournalFormatting}{\doublespacing}
-\begin{abstract} 
+\begin{abstract}
   \begin{verbatimwrite}{./\jobname-abstract.metadata}
-   To match evidence about aggregate consumption dynamics, representative agent macroeconomic models require a mechanism to generate `excess smoothness' in consumption.   But a large literature has found no evidence of corresponding smoothness in micro data; consequently, existing microfounded models constructed to match the micro data fail to match the macro smoothness facts.  We show that the micro and macro evidence can be reconciled by a microfounded model in which consumers have accurate knowledge of their personal circumstances but `sticky expectations' about the macroeconomy.  The persistence of aggregate consumption growth in our model reflects consumers' imperfect attention to aggregate shocks. Our proposed degree of (macro) inattention has negligible utility costs because aggregate shocks constitute only a tiny proportion of the uncertainty that consumers face.
+   To match evidence about aggregate consumption dynamics, representative agent macroeconomic models require a mechanism to generate `excess smoothness' in consumption.   But a large literature has found no evidence of corresponding smoothness in micro data; consequently, models constructed to match the micro data fail to match the macro smoothness facts.  We show that the micro and macro evidence can be reconciled by a microfounded model in which consumers have accurate knowledge of their personal circumstances but `sticky expectations' about the macroeconomy.  The persistence of aggregate consumption growth in our model reflects consumers' imperfect attention to aggregate shocks. Our proposed degree of (macro) inattention has negligible utility costs because aggregate shocks constitute only a tiny proportion of the uncertainty that consumers face.
   \end{verbatimwrite}
   \input{./\jobname-abstract.metadata}
 \end{abstract}
 
-\ifthenelse{\boolean{ifWeb}}{}{\begin{small}}
+\ifthenelse{\boolean{ifWeb}}{}{\begin{small}} %\end{Web}
 \parbox{\textwidth}{
   \begin{center}
 \begin{tabbing}
@@ -99,7 +102,7 @@ Sticky Expectations and Consumption Dynamics
 \end{tabbing}
 \end{center}
 }
-\ifthenelse{\boolean{ifWeb}}{}{\end{small}}
+\ifthenelse{\boolean{ifWeb}}{}{\end{small}} 
 
 \begin{authorsinfo}
   \name{Carroll: Department of Economics, Johns Hopkins University, \url{http://econ.jhu.edu/people/ccarroll/}, \href{mailto:ccarroll@jhu.edu}{\texttt{ccarroll@jhu.edu}}}
@@ -108,11 +111,11 @@ Sticky Expectations and Consumption Dynamics
 \name{Tokuoka: Ministry of Finance, Japan, \href{mailto:kiichi.tokuoka@mof.go.jp}{\texttt{kiichi.tokuoka@mof.go.jp}}}
 \name{White: Department of Economics, University of Delaware,  \href{mailto:mnwecon@udel.edu}{\texttt{mnwecon@udel.edu}}}
 \end{authorsinfo}
-\thanks{The computational results in this paper were constructed using tools in the \href{http://github.com/Econ-ARK/HARK}{Econ-ARK/HARK} toolkit.  The toolkit can be cited by its digital object identifier, \href{https://doi.org/10.5281/zenodo.1001068}{10.5281/zenodo.1001068}, in the references as \cite{matthew_n_white_2017_1001068}.  Thanks to Robert King, Dirk Krueger, Bartosz Ma\'ckowiak, Giorgio Primiceri, Kathrin Schlafmann, Lenno Uusk\"ula, Gianluca Violante, Mirko Wiederholt and seminar participants in the NBER Summer Institute, the Copenhagen Conference on Heterogeneity, the McMaster University, the University of Michigan, and the University of Delaware for constructive and insightful comments which substantially improved this paper. The views presented in this paper are those of the authors, and should not be attributed to the European Central Bank or to the Japanese Ministry of Finance.}
+\thanks{The computational results in this paper were constructed using tools in the \href{http://github.com/Econ-ARK/HARK}{Econ-ARK/HARK} toolkit.  The toolkit can be cited by its digital object identifier, \href{https://doi.org/10.5281/zenodo.1001068}{10.5281/zenodo.1001068}, as is done in the paper's own references as \cite{matthew_n_white_2017_1001068}.  Thanks to Robert King, Dirk Krueger, Bartosz Ma\'ckowiak, Giorgio Primiceri, Kathrin Schlafmann, Lenno Uusk\"ula, Gianluca Violante, Mirko Wiederholt and seminar participants in the NBER Summer Institute, the Copenhagen Conference on Heterogeneity, the McMaster University, the University of Michigan, and the University of Delaware for constructive and insightful comments which substantially improved this paper. The views presented in this paper are those of the authors, and should not be attributed to the European Central Bank or to the Japanese Ministry of Finance.}
 
 \titlepagefinish
 \setcounter{page}{1}
-
+\end{adjustwidth}
 \pagebreak
 
 \hypertarget{Introduction}{}
@@ -120,15 +123,18 @@ Sticky Expectations and Consumption Dynamics
 
 
 \begin{figure}
+  \centering
 \caption{Distribution of Estimates of Habit Persistence in Macro and Micro Studies}
-\label{microMacroMetaHistogram}\hypertarget{microMacroMetaHistogram}{}
+\label{microMacroMetaHistogram}
+\hypertarget{microMacroMetaHistogram}{}
 \ifthenelse{\boolean{ifWeb}}{
-  \begin{minipage}{\textwidth}
-      \centerline{\includegraphics[width=1.5\textwidth]{./Figures/microMacroMetaHistogram}}
-    \end{minipage}
-      }
-{ \includegraphics[width=1.0\textwidth]{./Figures/microMacroMetaHistogram}}
-\footnotesize Notes: Reproduced from \cite{hrsHabit}, Figure~2. The figure shows the distribution of estimates of habit persistence in studies based on macro and micro data. Solid and dashed lines show the median estimates in micro (0.0) and macro (0.6) studies, respectively.
+      \includegraphics[width=\webWidth\textwidth]{./Figures/microMacroMetaHistogram}
+    } 
+    { \includegraphics[width=1.0\textwidth]{./Figures/microMacroMetaHistogram}}
+
+    \begin{flushleft}
+      \footnotesize Notes: Reproduced from \cite{hrsHabit}, Figure~2. The figure shows the distribution of estimates of habit persistence in studies based on macro and micro data. Solid and dashed lines show the median estimates in micro (0.0) and macro (0.6) studies, respectively.
+      \end{flushleft}
 \end{figure}
 
 Starting with \cite{cdSmooth}, the macroeconomics, finance, and international economics literatures have concluded that aggregate consumption exhibits `excess smoothness' compared to the benchmark \cite{hallRandomWalk} random walk model of consumption.\footnote{In finance, early references are \cite{abel:aerhabits} and \cite{constantinidesHabits}; in international economics, \cite{gru04}.}  For a standard measure of excess smoothness $\chi$ (defined more precisely below), Figure~\ref{microMacroMetaHistogram} shows that studies using aggregate data estimate that $\chi=0.6$ on average.\footnote{Figure~\ref{microMacroMetaHistogram} is reproduced from a recent comprehensive meta-analysis of 597 published estimates by \cite{hrsHabit}.} A careful reading of the literature suggests that the coefficient is higher, perhaps 0.75, in papers where the data are better measured.
@@ -138,18 +144,19 @@ In contrast, parallel work using household-level data rejects the existence of a
 
 We add a simple (and tractable) information friction to an existing benchmark `microfounded' macro model, and show that the modified model can reconcile the micro and macro empirical facts. As in the standard full-information rational expectations setup, consumers in our framework perfectly (`frictionlessly') perceive their own personal circumstances (employment status, wage rate, wealth, etc). However, information about \textit{macroeconomic} quantities (e.g., aggregate productivity growth) arrives only occasionally (as in the Calvo model of firms' price updating), so that households' macroeconomic expectations are ``sticky,'' as in \cite{mrSlumps} and~\cite{carroll:epidemicinflQJE}. We calculate that our proposed degree of (macro) inattention has negligible utility costs because aggregate shocks are small compared to idiosyncratic shocks.
 
-Aggregate consumption sluggishness {\it \`{a} la} \cite{cdSmooth} arises in our model as follows.  A household whose beliefs about the aggregate economy are out of date will behave in the ways that would have been macroeconomically appropriate (for the consumer's currently observed level of wealth, etc) at the time of their last perception of macroeconomic circumstances.  The lag in perception generates a lag in the response of aggregate spending to aggregate developments; the amount of sluggishness will depend on the frequency with which consumers update.  When our model's updating frequency is calibrated to match estimates of the degree of inattention for other aggregate variables (e.g., inflation) using direct expectations data from surveys of households, the model's implications for the persistence in aggregate consumption growth match the estimates of the `excess smoothness' in the macro literature. We demonstrate this using a Campbell--Mankiw regression augmented with lagged consumption growth.
+Aggregate consumption sluggishness \textit{a la} \cite{cdSmooth} arises as follows.  A household whose beliefs about the aggregate economy are out of date will behave in the ways that would have been macroeconomically appropriate (for the consumer's currently observed level of wealth, etc) at the time of their last perception of macroeconomic circumstances.  The lag in perception generates a lag in the response of aggregate spending to aggregate developments; the amount of sluggishness will depend on the frequency with which consumers update.  When our model's updating frequency is calibrated to match estimates of the degree of inattention for other aggregate variables (e.g., inflation) using direct expectations data from surveys of households, the model's implications for the persistence in aggregate consumption growth match the estimates of the `excess smoothness' in the macro literature. 
 
+\hypertarget{dynanR2}{0.02}
 \hypertarget{Excess-Sesitivity-Flag}{} 
 \begin{verbatimwrite}{./Highlighted/Excess-Sensitivity-Flag}
-Despite generating appropriate aggregate smoothness, when estimated on simulated \emph{individual} data (corresponding to microeconomic evidence), regressions in the spirit of  \cite{dynanHabits} (the seminal paper in the micro `excess smoothness' literature) reproduce her finding that at the level of individual households, consumption growth has little predictability at quarterly frequency---\cite{dynanHabits}'s regressions typically get $\bar{R}^{2}$'s 
- of about 0.01, and her largest reported value is \hypertarget{dynanR2}{0.02}, figures in the ballpark of those generated in our model.\footnote{\hyperlink{Excess-Sensitivity}{Below} we explain why the \cite{hrsHabit} findings, and our model, are not in substantial conflict with the `excess sensitivity' literature---indeed, our model can explain some puzzles in that literature.}
+Despite generating appropriate aggregate smoothness, when estimated on simulated \emph{individual} data (corresponding to microeconomic evidence), regressions in the spirit of  \cite{dynanHabits} (the seminal paper in the micro `excess smoothness' literature) reproduce her finding that at the level of individual households, consumption growth has little predictability at the quarterly frequency -- \cite{dynanHabits}'s regressions typically get $\bar{R}^{2}$'s 
+ of about 0.01, and her largest reported value is 0.02, in the ballpark of the corresponding estimates generated by our model.\footnote{\hyperlink{Excess-Sensitivity}{Below} we explain why the \cite{hrsHabit} findings, and our model, are not in substantial conflict with the `excess sensitivity' literature---indeed, our model can explain some puzzles in that literature.}
 \end{verbatimwrite}
 \input{./Highlighted/Excess-Sensitivity-Flag}
 
-Because our model is formulated as a deviation from a maximizing model, we can calculate explicit utility costs of that deviation, which are small because the comparatively small size of the aggregate shocks means that neglecting them temporarily causes only small and temporary errors in the level of consumption.  Consistent with a theme in the literature all the way back to \cite{ayNearRational}, we find that the utility penalty from these small errors is low, so that our consumers would be willing to pay very little for even perpetually perfect information about macroeconomic conditions.
+Because our model is formulated as a deviation from a maximizing model, we can calculate explicit utility costs of that deviation, which are small because the comparatively small size of the aggregate shocks means that neglecting them temporarily causes only small and temporary errors in the level of consumption.  Consistent with a theme in the literature all the way back to \cite{ayNearRational}, we find that the utility penalty from these small errors is small, so that our consumers would be willing to pay very little for even perpetually perfect information about macroeconomic conditions.
 
-There are many ways besides ours in which information can be imperfect.  But the review of the literature in the next section of the paper shows that the alternative imperfect information frameworks that have been proposed to explain excess smoothness are inconsistent with first-order facts from the micro or the macro literatures (sometimes both).
+There are many ways besides ours in which information can be imperfect.  But the review of the literature in our next section shows that the alternative imperfect information frameworks that have been proposed to explain excess smoothness are inconsistent with first-order facts from the micro or the macro literatures (sometimes both).
 
 After the literature review, we begin explaining our ideas with a `toy model' (section~\ref{sec:Quadratic}) in which the key mechanisms can be derived analytically, thanks to extreme simplifying assumptions like quadratic utility and constant factor prices.  We next (section \ref{sec:models}) present the full version of our model, which abides by the more realistic assumptions (CRRA utility, aggregate as well as individual shocks, etc) that have become conventional respectively in the micro and macro literatures. After calibrating the model (section~\ref{sec:calibration}), we describe the stylized facts from both the micro and macro literatures that need to be explained by a good microfounded macroeconomic model of consumption, and show that our model robustly reproduces those facts (section \ref{sec:Results}).
 We then (section \ref{sec:uCost}) calculate how much a fully informed consumer would be willing to pay at birth to enjoy instantaneous and perfect knowledge of aggregate developments (not much, it turns out).
@@ -162,17 +169,17 @@ We then (section \ref{sec:uCost}) calculate how much a fully informed consumer w
 \subsection{Imperfect Information}
 Our approach is related to extensive work on other forms of information frictions. These frictions include `noisy information' (cf \cite{pischkeMicroMacro}); costly information processing, as in models with rational inattention (cf \cite{simsInattention}); and models of bounded rationality (cf \cite{gabaixSparsityQJE}).
 
-In rational inattention models, agents have a limited ability to pay attention and allocate it optimally. Early work by \cite{reis:inattentive} showed explicitly how rational inattention could lead to excess consumption smoothness.
-\cite{mw09:RI} built on that work, and more recently \cite{mackWiedREStud15} study a DSGE model with inattentive consumers and firms using a simple New Keynesian framework in which they replace all sources of slow adjustment (habit formation, Calvo pricing, and wage setting frictions) with rational inattention.\footnote{In \cite{mackWiedREStud15} also households' consumption--saving decisions  are subject to rational inattention. In addition, the model features stochastic real interest rates.}  Their setup with rational inattention can match the sluggish responses observed in aggregate data, in response both to monetary policy shocks and to technology shocks. A new paper by \cite{LuoRinGE} studies implications of rational inattention for the dynamics and cross-sectional dispersion of consumption and wealth in a general equilibrium model with CARA utility.
+In rational inattention models, agents have a limited ability to pay attention and allocate that scarce resource optimally. Early work by \cite{reis:inattentive} showed explicitly how rational inattention could lead to excess consumption smoothness.
+\cite{mw09:RI} built on that work, and more recently \cite{mackWiedREStud15} study a DSGE model with inattentive consumers and firms using a simple New Keynesian framework in which they replace all sources of slow adjustment (habit formation, Calvo pricing, and wage setting frictions) with rational inattention.  Their setup with rational inattention can match the sluggish responses observed in aggregate data, in response both to monetary policy shocks and to technology shocks. A new paper by \cite{LuoRinGE} studies implications of rational inattention for the dynamics and cross-sectional dispersion of consumption and wealth in a general equilibrium model with CARA utility.
 
 A challenge to the rational inattention approach has been the complexity of solving models that aim to work out the full implications of rational inattention in contexts where the models that match the microeconomic evidence are already formidably mathematically and computationally complex (see below for why this complexity is necessary to match first-order micro consumption facts).  The consumption literature on rational inattention has therefore had to adopt simplifying assumptions about the utility function like quadratic (\cite{simsInattention}, section~6; \cite{luo:inatC}) or CARA (\cite{LuoRinGE}; \cite{reis:inattentive}), or a highly stylized setup of idiosyncratic and aggregate income shocks.\footnote{\cite{sims_beyondLQ} considers a 2-period consumption--saving model with log utility. Otherwise, to our knowledge, the only paper that employs the CRRA utility to solve a consumption--saving problem under rational inattention is \cite{tutino_RIconsumption}. Her contribution is mainly methodological, as her setup is quite stylized (e.g., an i.i.d.\ income process).  It would be interesting to extend her work to a more realistic setup (with permanent/persistent income shocks) and study quantitative implications of rational inattention in a model with both idiosyncratic and aggregate income components.}
 
 \hypertarget{Gabaix}{}
-As a compromise, \input{./Highlighted/Gabaix-Paragraph}.  
+As a compromise, \input{./Highlighted/Gabaix-Paragraph}.
 
  It would be similarly challenging to determine how to apply the approaches of \cite{woodfordImperfect} or \cite{msInertiaAER} to our question.\footnote{Arguably, our Calvo-style updating is not too different from what one might get in a suitably adapted version of the \cite{msInertiaAER} model.}
 
-Finally, even for a perfectly attentive consumer, information itself can be imperfect.  The seminal work contemplating this possibility was by \cite{muthOptimal}, whose most direct descendant in the consumption literature is \cite{pischkeMicroMacro} (building on \cite{lucas:imperfectInfo}; see also \cite{ludvigson&michaelides:excesses}).  The idea is that (perfectly attentive) consumers face a signal extraction problem in determining whether a shock to income is transitory or permanent.  When a permanent shock occurs, the immediate adjustment to the shock is only partial, since agents' best guess is that the shock is partly transitory and partly permanent.   With the right calibration, such a model could in principle explain any amount of excess smoothness.  But \hyperlink{MuthLucasPischke}{we argue in section}~\ref{sec:Comparisons} that when a model of this kind is calibrated to the actual empirical data, it generates far less smoothness than exhibited in the data.
+Finally, even for a perfectly attentive consumer, information itself can be imperfect.  The seminal work contemplating this possibility was by \cite{muthOptimal}, whose most direct descendant in the consumption literature is \cite{pischkeMicroMacro} (building on \cite{lucas:imperfectInfo}; see also \cite{ludvigson&michaelides:excesses}).  The idea is that perfectly attentive consumers face a signal extraction problem in determining whether a shock to their income is transitory or permanent.  When a permanent shock occurs, the immediate adjustment to the shock is only partial, since agents' best guess is that the shock is partly transitory and partly permanent.   With the right calibration, such a model could in principle explain any amount of excess smoothness.  But \hyperlink{MuthLucasPischke}{we argue in section}~\ref{sec:Comparisons} that when a model of this kind is calibrated to the actual empirical data, it generates far less smoothness than exhibited in the data.
 
 \hypertarget{Microfoundations: Empirical and Theoretical}{}
 \subsection{Microfoundations}
@@ -184,7 +191,8 @@ As for matching ``first-order'' micro facts, a large empirical literature over t
 To better match the micro data, we use the now-conventional microeconomic formulation in which utility takes the Constant Relative Risk Aversion form and uncertainty is calibrated to match micro estimates.  Our assumption that consumers can perfectly observe the idiosyncratic components of their income allows us to use essentially the same solution methods as in the large recent literature exploring models of this kind.
 Implementing the state of the art in the micro literature adds a great deal of complexity and precludes a closed form solution for consumption like the one used by Reis. The payoff is that the model is quantitatively plausible enough that, for example, it might actually be usable by policymakers who wanted to assess the likely aggregate dynamics entailed by specific alternative fiscal policy options.
 
-Finally, there is an interesting and growing literature that uses expectations data from surveys in an attempt to directly measure sluggishness in expectations dynamics.\footnote{We omit a fuller survey of this interesting literature because expectations data will not be our focus here.} For example, \cite{coibGor:AER15} find that the implied degree of information rigidity in inflation expectations is high, with an average duration of six to seven months between information updates. \cite{fuhrer:JME17} and \cite{fuhrerIntrinsicPersistence} find that even for professional forecasters, forecast revisions are explainable using lagged information, which would not be the case under perfect information processing.  These empirical results are consonant with the spirit of our exercise.
+Finally, there is an interesting and growing literature that uses expectations data from surveys in an attempt to directly measure sluggishness in expectations dynamics.
+For example, \cite{coibGor:AER15} find that the implied degree of information rigidity in inflation expectations is high, with an average duration of six to seven months between information updates. \cite{fuhrer:JME17} and \cite{fuhrerIntrinsicPersistence} find that even for professional forecasters, forecast revisions are explainable using lagged information, which would not be the case under perfect information processing.  These empirical results are consonant with the spirit of our exercise.
 
 \hypertarget{Quadratic}{}
 \section{A Quadratic Utility `Toy Model'}\label{sec:Quadratic}
@@ -277,7 +285,7 @@ The first difference of \eqref{eq:Ctp1} yields:
 \begin{eqnarray*}
   \Delta \CLevBF_{t+1} & = &  (1-\Pi) \Delta \CLevBF_{t} + \underbrace{\Pi \Delta \CLevBF^{{\pi}}_{t+1}}_{\equiv\,\varepsilon_{t+1}}, \label{eq:deltac} \label{eq:dCQuadStickyApprox}
 \end{eqnarray*}
-and online Appendix~\ref{appendix:QuadCDyn} shows that $\varepsilon_{t+1}$ is approximately mean zero.\footnote{Intuitively, this term mainly reflects the behavior of updating consumers, and is therefore unpredictable with respect to sufficiently delayed information.}  Thus, in the quadratic utility framework the serial correlation of aggregate per-capita consumption changes is an approximate measure of the proportion of nonupdaters.
+and online Appendix~\ref{appendix:QuadCDyn} shows that $\varepsilon_{t+1}$ is approximately mean zero. Thus, in the quadratic utility framework the serial correlation of aggregate per-capita consumption changes is an approximate measure of the proportion of nonupdaters.
 
 This is the mechanism behind the exercises presented in section \ref{sec:Results}.  While the details of the informational friction are different in the more realistic model we present in section \ref{sec:models}, the same logic and quantitative result hold: the serial correlation of consumption growth approximately equals the proportion of nonupdaters.
 
@@ -366,7 +374,7 @@ Given the assumption that the productivity growth factor $\PtyGro_t$ follows a r
 the second part of the behavioral assumption says that an agent who last observed the true
 aggregate state $n$ periods ago perceives:
 \begin{equation}\label{eq:PLevBelief}
-\{\perc{\PLev}_{t,i},\perc{\PtyGro}_{t,i}\} = \Ex_{t-n}\big[\{\PLev_t,\PtyGro_t\} \big| \{\PLev_{t-n},\PtyGro_{t-n}\}\big] = \left\{\PtyGro_{t-n}^{n} \PLev_{t-n},\PtyGro_{t-n}\right\}. 
+\{\perc{\PLev}_{t,i},\perc{\PtyGro}_{t,i}\} = \Ex_{t-n}\big[\{\PLev_t,\PtyGro_t\} \big| \{\PLev_{t-n},\PtyGro_{t-n}\}\big] = \left\{\PtyGro_{t-n}^{n} \PLev_{t-n},\PtyGro_{t-n}\right\}.
 \end{equation}
 That is, our assumed random walk in productivity growth means that the household believes that the aggregate productivity factor has remained at $\PtyGro_{t-n}$ for the past $n$ periods, and remains there today.\footnote{Because of the boundedness of the random walk in productivity growth, this does not hold exactly when the productivity growth state is in the bottommost or topmost Markov bin; we neglect the small error entailed by this fact.}  For households who observed the true aggregate state this period, $n=0$ and thus \eqref{eq:PLevBelief} says that $\{\perc{\PLev}_{t,i},\perc{\PtyGro}_{t,i}\} = \{\PLev_t,\PtyGro_t\}$.
 
@@ -390,7 +398,7 @@ We track death events using a binary indicator:
 \end{equation*}
 We refer to this henceforth as a `replacement' event, since the consumer who dies is replaced by an unrelated newborn who happens to inhabit the same location on the number line.  The {\it ex ante} probability of death is identical for each consumer, so that the aggregate mass of consumers who are replaced is time invariant at $\PDies = \int_{0}^{1} \pDies_{t,i}\,di$ (again using the notation that capital letters represent aggregate values).
 
-Under the assumption that `newborns' have the population-average productivity level of $1$, the population mean of the idiosyncratic component of permanent income is always $\int_{0}^{1} {p}_{t,i}di = 1$.\footnote{The dynamics and steady state of the population variance of the idiosyncratic component of permanent income $\pRat$ are derived in online Appendix~\ref{appendix:pss}.  The variance will exist so long as $\PLives \Ex[\psi^{2}] < 1$, which imposes a loose restriction on the magnitude of the idiosyncratic permanent shocks.}  Our earlier equation \eqref{eq:IndRandWalk} is thus adjusted to:\footnote{The constant population size permits the analytical convenience of replacing the dying with newborns, but it is important to understand that there is no relationship between successive persons at the same location on the number line; this is not a dynastic model.}
+Under the assumption that `newborns' have the population-average productivity level of $1$, the population mean of the idiosyncratic component of permanent income is always $\int_{0}^{1} {p}_{t,i}di = 1$.\footnote{The dynamics and steady state of the population variance of the idiosyncratic component of permanent income $\pRat$ are derived in online Appendix~\ref{appendix:pss}.  The variance will exist so long as $\PLives \Ex[\psi^{2}] < 1$, which imposes a loose restriction on the magnitude of the idiosyncratic permanent shocks.}  Our earlier equation \eqref{eq:IndRandWalk} is thus adjusted to:%\footnote{The constant population size permits the analytical convenience of replacing the dying with newborns, but it is important to understand that there is no relationship between successive persons at the same location on the number line; this is not a dynastic model.}
 \begin{verbatimwrite}{\eq/pBlanchard.tex}
 \begin{equation*} \ifnumSw
 {p}_{t+1,i} =
@@ -401,6 +409,8 @@ Under the assumption that `newborns' have the population-average productivity le
 \end{equation*}
 \end{verbatimwrite}
 \input \eq/pBlanchard.tex
+There is no relationship between successive persons at the same location on the number line (this is not a dynastic model).
+
 
 Along with its productivity level, the household's primary state variable when the consumption decision is made is the level of market resources $\mLevBF_{t,i}$, which captures both current period labor income $\yLevBF_{t,i}$ (the wage rate times the household's effective labor supply) and the resources that come from the agent's capital stock $\kLevBF_{t,i}$ (the value of the capital itself plus the capital income it yields):
 \begin{verbatimwrite}{\eq/mDef.tex}
@@ -445,7 +455,7 @@ is
   \LLevBF_{t} & = & \int_{0}^{1} \pmb{\ell}_{t,i}\,\text{d}i = \Theta_{t} {P}_{t}.
 \end{eqnarray}
 
-Aggregate market resources can be written as per-capita resources of the survivors times their population mass $\PLives$, plus per-capita resources of the newborns times their population mass $\PDies$:\footnote{This identity can also be derived directly as the population integral of \eqref{eq:mDef}.}
+Aggregate market resources can be written as per-capita resources of the survivors times their population mass $\PLives$, plus per-capita resources of the newborns times their population mass $\PDies$:
 \begin{verbatimwrite}{\eq/Mtp1.tex}
 \begin{eqnarray}
   \MLevBF_{t} & = & \big(\overbrace{\ALevBF_{t-1} {\Rprod}_t/\PLives  + \Theta_{t} {P}_{t}\Wage}^{\text{per-capita $\mLevBF$ for survivors}}\big)\PLives+\overbrace{\Theta_{t} {P}_{t}\Wage_t}^{\text{per-capita $\mLevBF$ for newborns}} \PDies \nonumber \\
@@ -469,7 +479,7 @@ Because of the assumption of a small open economy, the frictionless consumer's s
 
 The household's problem in levels can be written in Bellman form as:\footnote{Subject to definitions \eqref{eq:AggRandWalk}, \eqref{eq:IndRandWalk}, \eqref{eq:ell}, \eqref{eq:mDef}, \eqref{eq:aDef} and \eqref{eq:ktp1icompact}.}
 \begin{eqnarray*}
-\textbf{v}(\mLevBF_{t,i},p_{t,i},P_t,\PtyGro_t)  & = &  \max_{\cLevBF_{t,i}}  \big\{ \uFunc(\cLevBF_{t,i}) + \beta \Ex_t \big[(1-\pDies_{t+1,i})\textbf{v}(\mLevBF_{t+1,i},p_{t+1,i},P_{t+1},\PtyGro_{t+1})\big] \big\}. \nonumber 
+\textbf{v}(\mLevBF_{t,i},p_{t,i},P_t,\PtyGro_t)  & = &  \max_{\cLevBF_{t,i}}  \big\{ \uFunc(\cLevBF_{t,i}) + \beta \Ex_t \big[(1-\pDies_{t+1,i})\textbf{v}(\mLevBF_{t+1,i},p_{t+1,i},P_{t+1},\PtyGro_{t+1})\big] \big\}. \nonumber
 \end{eqnarray*}
 Our assumption that the aggregate and idiosyncratic productivity levels both reflect a combination of purely transitory and purely permanent components now permits us to make a transformation that considerably simplifies analysis and solution of the model: When the utility function is in the CRRA class, the problem can be simplified by dividing by $\pLev_{t,i}^{1-\CRRA} = (p_{t,i}P_t)^{1-\CRRA}$ while converting to normalized variables as above (e.g., $\mLev_{t,i}=\mLevBF_{t,i}/\pLev_{t,i}$).\footnote{This is well understood in the literature; for a full exposition, see, e.g., \cite{BufferStockTheory}.}  This yields the normalized form of the problem, which has only $\mLev_{t,i}$ and $\PtyGro_t$ as state variables:
 \begin{verbatimwrite}{\eq/scaledv.tex}
@@ -543,7 +553,7 @@ Because households in our model never misperceive the \textit{level} of their ow
 
 Our assumption is simply that households with sticky expectations neither perceive nor attempt to extract an estimate of the decomposition of that aggregate state into transitory and permanent components.  Consumers' misperceptions of aggregate permanent income \textit{do} cause them to make systematic errors---but below we present calculations showing that for the value of $\Pi$ that we estimate, those errors have small utility costs.
 
-The utility costs would be a bit smaller if consumers were to perform a certainty-equivalent signal extraction and behaved as though the signal-extracted estimate of the aggregate state is ``truth'' (that is, they ignore the fact that their estimate has an error term), but section~\ref{sec:Comparisons} analyzes the alternative model in which households perform such a signal extraction and shows that the dynamics of aggregate consumption under this assumption do not match the dynamics that are observed in the aggregate data.  
+The utility costs would be a bit smaller if consumers were to perform a certainty-equivalent signal extraction and behaved as though the signal-extracted estimate of the aggregate state is ``truth'' (that is, they ignore the fact that their estimate has an error term), but section~\ref{sec:Comparisons} analyzes the alternative model in which households perform such a signal extraction and shows that the dynamics of aggregate consumption under this assumption do not match the dynamics that are observed in the aggregate data.
 
 \hypertarget{AltBeliefs}{}
 \subsubsection{Alternative Beliefs About the Aggregate Income Process}
@@ -588,7 +598,7 @@ where $X_{t}$ is any variable whose value was known to consumers
 when the period-$t$ consumption decision was made, and $\epsilon_{t+1}$
 is white noise.
 
-For macroeconomic models (including the HA-DSGE setup in online Appendix~\ref{sec:HADSGE}), our simulation analysis\footnote{Readers can confirm these results using the toolkit for solving the model available at the [Econ-ARK/REMARK](https://github.com/econ-ark/REMARK/tree/master/REMARKs/cAndCwithStickyE) resource; the authors can provide particular specifications to produce all claimed results.}
+For macroeconomic models (including the HA-DSGE setup in online Appendix~\ref{sec:HADSGE}), our simulation analysis\footnote{Readers can confirm these results using the toolkit for solving the model available at the \href{https://github.com/econ-ark/REMARK/tree/master/REMARKs/cAndCwithStickyE}{Econ-ARK/REMARK} resource; the authors can provide particular specifications to produce all claimed results.}
 shows that the relationship between the normalized asset stock $A_{t}$ and the expected interest rate $\Ex_{t}[\mathbf{r}_{t+1}]$ is nearly linear, so \eqref{eq:RandomWalkCRRA} can be reformulated with no loss of statistical power as
 \begin{eqnarray*}
   \label{eq:RandomWalkAForm}
@@ -604,7 +614,8 @@ This reformulation is convenient because the literatures on precautionary saving
 
 There is an extensive existing literature on aggregate consumption dynamics, but \cite{som07} is the only paper we are aware of that estimates an equation of precisely this form in aggregate data.  He interprets the serial correlation of consumption growth as reflecting habit formation.\footnote{\cite{weber:ruleofthumb} makes a similar point using a different methodology.}  However, Sommer's choice of instruments, estimation methodology, and tests do not correspond precisely to our purposes here, so we have produced our own estimates using U.S.\ data.
 
-\input\econtexRoot/Tables/CampManVsStickyE.tex
+\input{\econtexRoot/Tables/CampManVsStickyE}
+
 In Table~\ref{table:USCampManVsStickyE} we conduct a simple empirical exercise along the lines of Sommer's work, modified to correspond to the testable implications of our model for aggregate U.S.\ data.
 
 First, while the existing empirical literature has tended to focus on spending on nondurables and services, there are reasons to be skeptical about the measurement of quarterly dynamics (or lack of such dynamics) in large portions of the services component of measured spending.
@@ -633,6 +644,7 @@ Finally, for comparison to empirical results, we take into account~\cite{som07}'
 The standard deviation of $\xi_t$ is set to the value that would cause the observed difference between the OLS and IV estimates of $\chi$ in the univariate regression in Table~\ref{table:USCampManVsStickyE} ($\chi^{OLS}=0.468$ and $\chi^{IV}=0.830$): $\std(\log(\xi))= 0.375\times\std(\Delta \log \mathbf{C}_t)$.
 
 \input\econtexRoot/Tables/SOEmrkvSimReg.tex
+
 The top panel of Table~\ref{tPESOEsim} estimates \eqref{eq:CGrowBench} on simulated data for the frictionless economy.  The second and third rows indicate that consumption growth is moderately predictable by (instrumented versions of) both its own lag and expected income growth, of comparable magnitude to the empirical benchmark.  However, the `horse race' regression in the bottom row reveals that neither variable is significantly predictive of consumption growth when both are present as regressors---contrary to the robust empirical results from the U.S. and other countries (cf \cite{cssIntlStickyC}).  The problem is that for both consumption growth and income growth, most of the predictive power of the instruments stems from the serial correlation of productivity growth $\PtyGro_t$ in the model, so the instrumented versions of the variables are highly correlated with each other.  Thus neither has distinct statistical power when they are both included.
 
 In the sticky expectations specification (lower panel), the second-stage $\bar{R}^{2}$'s are all much higher than in the frictionless model, and more in keeping with the corresponding statistics in NIPA data. This is because high frequency aggregate consumption growth is being driven by the predictable sticky expectations dynamics. The first two rows show that when we introduce measurement error as described above, the OLS estimate is biased downward significantly. As suggested by the analysis of our `toy model' above, the IV estimate of $\chi$ in the second row is close to the $(1-\Pi)=0.75$ figure that measures the proportion of consumers who do not adjust their expectations in any given period; thus the intuition derived from the toy model survives all the subsequent complications and elaborations. The third row reflects what would have been found by Campbell and Mankiw had they estimated their model on data produced by the simulated `sticky expectations' economy:  The coefficient on predictable component of perceived income growth term is large and highly statistically significant.
@@ -707,15 +719,18 @@ We will now consider the implications of our model for what we take to be the be
 
 
 \begin{figure}
+  \centering
 \caption{Effects of Fiscal Stimulus Payments on Consumption, Models vs.\ Data}
 \label{parker}
 \ifthenelse{\boolean{ifWeb}}{
-  \begin{minipage}{\textwidth}
-      \centerline{\includegraphics[width=1.5\textwidth]{./Figures/parkerExperiment}}
-    \end{minipage}
-      }
+      \includegraphics[width=\webWidth\textwidth]{./Figures/parkerExperiment}
+      } %\end{Web}
 { \includegraphics[width=1.0\textwidth]{./Figures/parkerExperiment}}
-\footnotesize Notes: The figure shows how consumption reacts to a fiscal stimulus payment in data and in models with frictionless and sticky expectations. The evidence from data is based on \cite{psjmMPC2008}, Table ~5 and \cite{brodaParker} (the lack of reaction of consumption in quarter $-1$, ``$\sim0$'' before the payment is received). To our knowledge, literature does not estimate the reaction in quarters 2 through 4, ``\#N/A''.
+
+\begin{flushleft}
+  \footnotesize Notes: The figure shows how consumption reacts to a fiscal stimulus payment in data and in models with frictionless and sticky expectations. The evidence from data is based on \cite{psjmMPC2008}, Table ~5 and \cite{brodaParker} (the lack of reaction of consumption in quarter $-1$, ``$\sim0$'' before the payment is received). To our knowledge, literature does not estimate the reaction in quarters 2 through 4, ``\#N/A''.
+  \normalsize
+  \end{flushleft}
 \end{figure}
 
 
@@ -729,6 +744,7 @@ The experiment sharply differentiates the models with frictionless and sticky ex
 The reader's intuition might have been that because our model exhibits little predictability in micro consumption growth when the consumer is experiencing ordinary income shocks (the $R^{2}$ of the predictive regression was only a few percent), and because it generates sluggishness in consumption with respect to aggregate shocks, the model would not be able to match the ample micro evidence showing high average MPCs, or the evidence from Parker and his coauthors showing that there is little ``anticipatory'' spending in advance of stimulus payments but a strong response to such payments once they have arrived.  This section shows that, in fact, the model is capable of matching the broad sweep of those micro facts, while continuing to match the aggregate excess smoothness facts.  The key is simple: In the version of our model calibrated to match high micro MPC's, people react robustly to shocks they know about, but they mostly don't know about the macro shocks until they see the money appear in their bank accounts.
 
 \end{verbatimwrite}
+
 \input{./Highlighted/Excess-Sensitivity}
 
 \hypertarget{Utility-Costs-Of-Sticky-Expectations}{}
@@ -753,6 +769,7 @@ Suppose now (again confirmed numerically---see Figure~\ref{costOfStickiness}) th
 \ifslides{}{.}
 \end{eqnarray}
 \end{verbatimwrite}
+
 \input \eq/vApproxSticky.tex
 
 This assumption has appropriate scaling properties in three senses:
@@ -789,14 +806,14 @@ pick the $\Pi$ satisfying:
 
 
 \begin{figure}
+  \centering
 \caption{Costs of Stickiness $\omega$ and Probability of Aggregate Information Updating $\Pi$}
 \label{costOfStickiness}
 \ifthenelse{\boolean{ifWeb}}{
-  \begin{minipage}{\textwidth}
-      \centerline{\includegraphics[width=1.5\textwidth]{./Figures/uCostvsPiInv}}
-    \end{minipage}
-      }
+      \includegraphics[width=\webWidth\textwidth]{./Figures/uCostvsPiInv}
+      } 
 { \includegraphics[width=1.0\textwidth]{./Figures/uCostvsPiInv}}
+
 \footnotesize Notes: The figure shows how the utility costs of updating $\omega$ depend on the probability of updating of aggregate information $\Pi$ in the SOE model.
 \end{figure}
 
@@ -870,7 +887,6 @@ In future work, it would be interesting to enrich the model so that it has plaus
 \small
 \bibliography{economics,\texname,\texname-Add}
 \normalsize
-
 
 
 

@@ -14,7 +14,7 @@
 %%% from the KOMA script bundle.  For documentation, Google KOMA-Script Documentation
 %%%
 %%% The corresponding BibTeX style file "econtex.bst" should be used
-%%% for the bibliography: \bibliographystyle{\econtexBibStyle}
+%%% for the bibliography: \bibliographystyle{econtex}
 %%%
 %%% In addition to the options for scrartcl, this package includes an additional option
 %%% titlepage = include a title page (with command "\maketitle", or "\maketitleWithForcedDate{}")
@@ -187,7 +187,7 @@ amsmath,amssymb,amsfonts,amsthm
 
 % citations and bibliography
 \RequirePackage[authoryear]{natbib}
-\AtBeginDocument{\renewcommand{\refname}{\clearpage References}
+\AtBeginDocument{\renewcommand{\refname}{References}
 \renewcommand\@makefnmark
   {\mbox{\textsuperscript{\tiny\@thefnmark}}} % Restore footnote defn after titlepage redefines it
 \ifdvi

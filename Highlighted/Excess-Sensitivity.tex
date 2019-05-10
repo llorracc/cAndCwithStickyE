@@ -19,15 +19,19 @@ We will now consider the implications of our model for what we take to be the be
 
 
 \begin{figure}
+  \centering
 \caption{Effects of Fiscal Stimulus Payments on Consumption, Models vs.\ Data}
 \label{parker}
+% \begin{Web}
 \ifthenelse{\boolean{ifWeb}}{
-  \begin{minipage}{\textwidth}
-      \centerline{\includegraphics[width=1.5\textwidth]{./Figures/parkerExperiment}}
-    \end{minipage}
-      }
+      \includegraphics[width=\webWidth\textwidth]{./Figures/parkerExperiment}
+      } %\end{Web}
 { \includegraphics[width=1.0\textwidth]{./Figures/parkerExperiment}}
-\footnotesize Notes: The figure shows how consumption reacts to a fiscal stimulus payment in data and in models with frictionless and sticky expectations. The evidence from data is based on \cite{psjmMPC2008}, Table ~5 and \cite{brodaParker} (the lack of reaction of consumption in quarter $-1$, ``$\sim0$'' before the payment is received). To our knowledge, literature does not estimate the reaction in quarters 2 through 4, ``\#N/A''.
+
+\begin{flushleft}
+  \footnotesize Notes: The figure shows how consumption reacts to a fiscal stimulus payment in data and in models with frictionless and sticky expectations. The evidence from data is based on \cite{psjmMPC2008}, Table ~5 and \cite{brodaParker} (the lack of reaction of consumption in quarter $-1$, ``$\sim0$'' before the payment is received). To our knowledge, literature does not estimate the reaction in quarters 2 through 4, ``\#N/A''.
+  \normalsize
+  \end{flushleft}
 \end{figure}
 
 

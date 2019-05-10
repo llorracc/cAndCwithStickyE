@@ -1,8 +1,6 @@
 
-\providecommand{\YLevBF}{\ensuremath{\textbf{Y}}}
+\providecommand{\YLevBF}{\ensuremath{\mathbf{Y}}}
 \renewcommand{\pDies}{\ensuremath{\mathsf{d}}}
-\renewcommand{\PDies}{\ensuremath{\mathsf{D}}}
-\renewcommand{\PLives}{\ensuremath{(1-\mathsf{D})}}
 
 \providecommand{\aggrSavingRuleCoeff}{\ensuremath{\kappa}}
 \providecommand{\stnRatio}{\ensuremath{\tau}}
@@ -17,18 +15,10 @@
 \newcommand{\ifDepr}{\ifthenelse{\boolean{Depreciation}}}
 \newcommand{\MicroDepr}{\ifthenelse{\boolean{MicroDepr}}}
 
-\ifDepr{
 \newcommand{\RBet}{\mathbf{R}} 
 \newcommand{\rBet}{\mathbf{r}} 
 \newcommand{\RIn}{\mathcal{R}}
 \newcommand{\rIn}{r}
-}{
-\newcommand{\RBet}{R} 
-\newcommand{\rBet}{r} 
-\newcommand{\RIn}{R}
-\newcommand{\rIn}{r}
-\newcommand{\rNet}{\mathfrak{r}} 
-}
 
 
 \provideboolean{Growth}

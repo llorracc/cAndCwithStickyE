@@ -225,6 +225,7 @@ init_DSGE_market['CRRA'] = CRRA
 init_DSGE_market['DiscFac'] = DiscFacMeanDSGE
 init_DSGE_market['intercept_prev'] = 0.0
 init_DSGE_market['slope_prev'] = 1.0
+init_DSGE_market['DampingFac'] = 0.2
 
 ###############################################################################
 

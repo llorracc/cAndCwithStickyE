@@ -1,9 +1,9 @@
 % Resources that need to be accessible from various different locations
 
-\providecommand{\YLevBF}{\ensuremath{\textbf{Y}}}
+\providecommand{\YLevBF}{\ensuremath{\mathbf{Y}}}
 \renewcommand{\pDies}{\ensuremath{\mathsf{d}}}
-\renewcommand{\PDies}{\ensuremath{\mathsf{D}}}
-\renewcommand{\PLives}{\ensuremath{(1-\mathsf{D})}}
+%\renewcommand{\PDies}{\ensuremath{\mathsf{D}}}
+%\renewcommand{\PLives}{\ensuremath{(1-\mathsf{D})}}
 
 \providecommand{\aggrSavingRuleCoeff}{\ensuremath{\kappa}}
 \providecommand{\stnRatio}{\ensuremath{\tau}}
@@ -20,18 +20,10 @@
 \newcommand{\ifDepr}{\ifthenelse{\boolean{Depreciation}}}
 \newcommand{\MicroDepr}{\ifthenelse{\boolean{MicroDepr}}}
 
-\ifDepr{
 \newcommand{\RBet}{\mathbf{R}} % Bold  version is between-period rate; \mathcal version is within
 \newcommand{\rBet}{\mathbf{r}} % Bold  version is between-period rate; \mathcal version is within
 \newcommand{\RIn}{\mathcal{R}}
 \newcommand{\rIn}{r}
-}{
-\newcommand{\RBet}{R} % Bold  version is between-period rate; \mathcal version is within
-\newcommand{\rBet}{r} % Bold  version is between-period rate; \mathcal version is within
-\newcommand{\RIn}{R}
-\newcommand{\rIn}{r}
-\newcommand{\rNet}{\mathfrak{r}} % For defining consumption Euler equation
-}
 
 
 \provideboolean{Growth}

@@ -1265,16 +1265,16 @@ FUNCTION {begin.bib}
   "\newcommand{\BySame}{\leavevmode\rule[.5ex]{3em}{.5pt}\ }"
        write$ newline$
   "\fi" write$ newline$
-%%% KCB: For those who still cling to LaTeX 2.09
-"\ifx\undefined\textsc" write$ newline$
-  "\newcommand{\textsc}[1]{{\sc #1}}"
-       write$ newline$
-  "\newcommand{\emph}[1]{{\em #1\/}}"
-       write$ newline$
-"\let\tmpsmall\small" write$ newline$
-"\renewcommand{\small}{\tmpsmall\sc}" write$ newline$
-  "\fi" write$ newline$
-%%%
+% %%% KCB: For those who still cling to LaTeX 2.09
+% "\ifx\undefined\textsc" write$ newline$
+%   "\newcommand{\textsc}[1]{{\sc #1}}"
+%        write$ newline$
+%   "\newcommand{\emph}[1]{{\em #1\/}}"
+%        write$ newline$
+% "\let\tmpsmall\small" write$ newline$
+% "\renewcommand{\small}{\tmpsmall\sc}" write$ newline$
+%   "\fi" write$ newline$
+% %%%
   "\begin{thebibliography}{}" write$ newline$
 }
 
