@@ -761,20 +761,20 @@ def makeResultsPanel(Coeffs,StdErrs,Rsq,Pvals,OID,Counts,meas_err,sticky,all_spe
     # Add the rest of the specifications if requested
     if all_specs:
         # IV on lagged consumption growth
-        output += '\\\\ ' + mystr1(Coeffs[1]) + sigFunc(Coeffs[1],StdErrs[1]) + ' & & & IV & ' + mystr1(Rsq[1]) + ' & ' + mystr1(Pvals[1]) + '\n'
-        output += '\\\\ (' + mystr1(StdErrs[1]) + ') & & & & &' + mystr1(OID[1]) + '\n'
+        output += '\\\\ ' + mystr1(Coeffs[1]) + sigFunc(Coeffs[1],StdErrs[1]) + ' & & & IV & ' + mystr1(Rsq[1]) + ' & ' + mystr1(OID[1]) + '\n'
+        output += '\\\\ (' + mystr1(StdErrs[1]) + ') & & & & &' + mystr1(np.nan) + '\n'
 
         # IV on expected income growth
-        output += '\\\\ & ' + mystr1(Coeffs[2]) + sigFunc(Coeffs[2],StdErrs[2]) + ' & & IV & ' + mystr1(Rsq[2]) + ' & ' + mystr1(Pvals[2]) + '\n'
-        output += '\\\\ & (' + mystr1(StdErrs[2]) + ') & & & &' + mystr1(OID[2]) + '\n'
+        output += '\\\\ & ' + mystr1(Coeffs[2]) + sigFunc(Coeffs[2],StdErrs[2]) + ' & & IV & ' + mystr1(Rsq[2]) + ' & ' + mystr1(OID[2]) + '\n'
+        output += '\\\\ & (' + mystr1(StdErrs[2]) + ') & & & &' + mystr1(np.nan) + '\n'
 
         # IV on aggregate assets
-        output += '\\\\ & & ' + mystr2(Coeffs[3]) + sigFunc(Coeffs[3],StdErrs[3]) + ' & IV & ' + mystr1(Rsq[3]) + ' & ' + mystr1(Pvals[3]) + '\n'
-        output += '\\\\ & & (' + mystr2(StdErrs[3]) + ') & & &' + mystr1(OID[3]) + '\n'
+        output += '\\\\ & & ' + mystr2(Coeffs[3]) + sigFunc(Coeffs[3],StdErrs[3]) + ' & IV & ' + mystr1(Rsq[3]) + ' & ' + mystr1(OID[3]) + '\n'
+        output += '\\\\ & & (' + mystr2(StdErrs[3]) + ') & & &' + mystr1(np.nan) + '\n'
 
         # Horse race
-        output += '\\\\ ' + mystr1(Coeffs[4]) + sigFunc(Coeffs[4],StdErrs[4]) + ' & ' + mystr1(Coeffs[5]) + sigFunc(Coeffs[5],StdErrs[5]) + ' & ' + mystr2(Coeffs[6]) + sigFunc(Coeffs[6],StdErrs[6]) + ' & IV & ' + mystr1(Rsq[4]) + ' & ' + mystr1(Pvals[4]) + '\n'
-        output += '\\\\ (' + mystr1(StdErrs[4]) + ') & (' + mystr1(StdErrs[5]) + ') & (' + mystr2(StdErrs[6]) + ') & & & ' + mystr1(OID[4]) + '\n'
+        output += '\\\\ ' + mystr1(Coeffs[4]) + sigFunc(Coeffs[4],StdErrs[4]) + ' & ' + mystr1(Coeffs[5]) + sigFunc(Coeffs[5],StdErrs[5]) + ' & ' + mystr2(Coeffs[6]) + sigFunc(Coeffs[6],StdErrs[6]) + ' & IV & ' + mystr1(Rsq[4]) + ' & ' + mystr1(OID[4]) + '\n'
+        output += '\\\\ (' + mystr1(StdErrs[4]) + ') & (' + mystr1(StdErrs[5]) + ') & (' + mystr2(StdErrs[6]) + ') & & & ' + mystr1(np.nan) + '\n'
     output += memo
 
     if Counts[0] is not None and Counts[2] > 1 and False:
@@ -829,8 +829,8 @@ def makeResultsTable(caption,panels,counts,filename,label):
         output = '\\begin{center} \n'
         output += '$ \Delta \log \mathbf{C}_{t+1} = \\varsigma + \chi \Delta \log \mathbf{C}_t + \eta \mathbb{E}_t[\Delta \log \mathbf{Y}_{t+1}] + \\alpha A_t + \epsilon_{t+1} $ \\\\  \n'
     output += '\\begin{tabular}{d{4}d{4}d{5}cd{4}c}\n \\toprule \n'
-    output += '\multicolumn{3}{c}{Expectations : Dep Var} & OLS &  \multicolumn{1}{c}{2${}^{\\text{nd}}$ Stage}  &  \multicolumn{1}{c}{KP $p$-val} \n'
-    output += '\\\\ \multicolumn{3}{c}{Independent Variables} & or IV & \multicolumn{1}{c}{$\\bar{R}^{2} $} & \multicolumn{1}{c}{Hansen J $p$-val} \n'
+    output += '\multicolumn{3}{c}{Expectations : Dep Var} & OLS &  \multicolumn{1}{c}{2${}^{\\text{nd}}$ Stage}  &  \multicolumn{1}{c}{Hansen J } \n'
+    output += '\\\\ \multicolumn{3}{c}{Independent Variables} & or IV & \multicolumn{1}{c}{$\\bar{R}^{2} $} & \multicolumn{1}{c}{$p$-val} \n'
 
     for panel in panels:
         output += panel
