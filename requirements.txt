@@ -1,0 +1,8 @@
+numpy
+matplotlib
+Sphinx
+numpydoc
+future
+joblib
+dill
+scipy

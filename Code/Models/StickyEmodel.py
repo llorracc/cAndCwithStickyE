@@ -25,7 +25,7 @@ import numpy as np
 from copy import deepcopy
 from HARK.ConsumptionSaving.ConsAggShockModel import AggShockConsumerType, AggShockMarkovConsumerType,\
                 CobbDouglasEconomy, CobbDouglasMarkovEconomy, SmallOpenMarkovEconomy
-from HARK.ConsumptionSaving.RepAgentModel import RepAgentConsumerType, RepAgentMarkovConsumerType
+from HARK.ConsumptionSaving.ConsRepAgentModel import RepAgentConsumerType, RepAgentMarkovConsumerType
 
 # Make an extension of the base type for the heterogeneous agents versions
 class StickyEconsumerType(AggShockConsumerType):

@@ -811,7 +811,8 @@ def makeResultsTable(caption,panels,counts,filename,label):
         note_size = '\\footnotesize'
     else:
         note_size = '\\tiny'
-    note = '\\multicolumn{6}{p{0.95\\textwidth}}{' + note_size + ' \\textbf{Notes:} '
+    note = '\\begin{flushleft}\n  '
+    note += note_size + ' \\textbf{Notes:} '
     if counts[1] > 1:
         note += 'Reported statistics are the average values for ' + str(counts[1]) + ' samples of ' + str(counts[0]) + ' simulated quarters each.  '
         #note += 'Bullets indicate that the average sample coefficient divided by average sample standard error is outside of the inner 90\%, 95\%, and 99\% of the standard normal distribution.  '
@@ -819,11 +820,14 @@ def makeResultsTable(caption,panels,counts,filename,label):
         note += 'Reported statistics are for a single simulation of ' + str(counts[0]) + ' quarters.  '
         #note += 'Stars indicate statistical significance at the 90\%, 95\%, and 99\% levels, respectively.  '
     note += 'Instruments $\\textbf{Z}_t = \\{\Delta \log \mathbf{C}_{t-2}, \Delta \log \mathbf{C}_{t-3}, \Delta \log \mathbf{Y}_{t-2}, \Delta \log \mathbf{Y}_{t-3}, A_{t-2}, A_{t-3}, \Delta_8 \log \mathbf{C}_{t-2}, \Delta_8 \log \mathbf{Y}_{t-2}   \\}$.'
-    note += '}'
+    note += '\\normalsize\n'
+    note += '\\end{flushleft}\n'
 
     if caption is not None:
         output = '\\begin{minipage}{\\textwidth}\n'
-        output += '\\begin{table} \caption{' + caption + '} \\label{' + label + '} \n'
+        output += '  \\begin{table}\n'
+        output += '    \\centering\n'
+        output += '    \caption{' + caption + '} \\label{' + label + '} \n'
         output += '  \\centerline{$ \Delta \log \mathbf{C}_{t+1} = \\varsigma + \chi \Delta \log \mathbf{C}_t + \eta \mathbb{E}_t[\Delta \log \mathbf{Y}_{t+1}] + \\alpha A_t + \epsilon_{t+1} $}\n'
     else:
         output = '\\begin{center} \n'
@@ -835,11 +839,13 @@ def makeResultsTable(caption,panels,counts,filename,label):
     for panel in panels:
         output += panel
 
-    output += '\\\\ \\bottomrule \n ' + note + '\n'
-    output += '\end{tabular}\n'
+    output += '\\\\ \\bottomrule \n'  
+    output += '\\end{tabular}\n'
+    output += note + '\n'
 
     if caption is not None:
         output += '\end{table}\n'
+        output += '\\medskip\\medskip\n'
         output += '\end{minipage}\n'
     else:
         output += '\end{center}\n'
@@ -899,9 +905,10 @@ def makeParameterTable(filename, params):
 
     # Make full parameter table for paper
     paper_output = "\provideboolean{Slides} \setboolean{Slides}{false}  \n"
-
+    paper_output += "\\hypertarget{Calibration}{}\n"
     paper_output += "\\begin{minipage}{\\textwidth}\n"
-    paper_output += "  \\begin{table}\\hypertarget{Calibration}{}\n"
+    paper_output += "  \\begin{table}\n"
+    paper_output += "    \\centering\n"
     paper_output += "    \\caption{Calibration}\label{table:calibration}\n"
 
     paper_output += "\\begin{tabular}{cd{5}l}  \n"
@@ -1034,7 +1041,10 @@ def makeEquilibriumTable(out_filename, four_in_files, CRRA):
     paper_bot += "\ifthenelse{\\boolean{StandAlone}}{\\newlength\TableWidth}{}  \n"
     paper_bot += "\settowidth\TableWidth{\\usebox{\EqbmBox}} % Calculate width of table so notes will match  \n"
     paper_bot += "\medskip\medskip \\vspace{0.0cm} \parbox{\TableWidth}{\\footnotesize\n"
-    paper_bot += "\\textbf{Notes}: The cost of stickiness is calculated as the proportion by which the permanent income of a newborn frictionless consumer would need to be reduced in order to achieve the same reduction of expected value associated with forcing them to become a sticky expectations consumer.}  \n"
+    paper_bot += "  \\begin{flushleft}\n"
+    paper_bot += "    \\textbf{Notes}: The cost of stickiness is calculated as the proportion by which the permanent income of a newborn frictionless consumer would need to be reduced in order to achieve the same reduction of expected value associated with forcing them to become a sticky expectations consumer.\n"
+    paper_bot += "  \\end{flushleft}\n"
+    paper_bot += "}\n"
     paper_bot += "\end{table}\n"
     paper_bot += "\end{minipage}\n"
     paper_bot += "\ifthenelse{\\boolean{StandAlone}}{\end{document}}{}  \n"
