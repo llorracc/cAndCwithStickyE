@@ -422,7 +422,7 @@ def runStickyEregressionsInStata(infile_name,interval_size,meas_err,sticky,all_s
     # Run Stata do-file
     stata_status = subprocess.call(cmd,shell = 'true')
     if stata_status!=0:
-        raise ValueError('Stata code could not run. Check the stata_exe in StickyEparams.py')
+        raise ValueError('Stata code could not run. Check the stata_exe in USER_OPTIONS.py')
     stata_output = pd.read_csv(temp_name_full, sep=',',header=0)
 
     # Make results table and return it

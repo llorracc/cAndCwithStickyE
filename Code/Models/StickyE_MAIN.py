@@ -20,7 +20,7 @@ from builtins import range
 import os
 import numpy as np
 import csv
-from time import clock
+from time import time
 from copy import deepcopy
 import subprocess
 from StickyEmodel import StickyEmarkovConsumerType, StickyEmarkovRepAgent,\
@@ -120,10 +120,10 @@ if __name__ == '__main__':
                 StickySOEmarkovConsumers[n].getEconomyData(StickySOmarkovEconomy) # Have the consumers inherit relevant objects from the economy
 
             # Solve the small open Markov model
-            t_start = clock()
+            t_start = time()
             print('Now solving the SOE model; this will take a few minutes.')
             StickySOmarkovEconomy.solveAgents()
-            t_end = clock()
+            t_end = time()
             print('Solving the small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             # Plot the consumption function in each Markov state
@@ -143,11 +143,11 @@ if __name__ == '__main__':
             plt.close()
 
             # Simulate the sticky small open Markov economy
-            t_start = clock()
+            t_start = time()
             for agent in StickySOmarkovEconomy.agents:
                 agent(UpdatePrb = Params.UpdatePrb)
             StickySOmarkovEconomy.makeHistory()
-            t_end = clock()
+            t_end = time()
             print('Simulating the sticky small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             # Make results for the sticky small open Markov economy
@@ -159,11 +159,11 @@ if __name__ == '__main__':
             DeltaLogC_stdev = np.genfromtxt(results_dir + 'SOEmarkovStickyResults.csv', delimiter=',')[3] # For use in frictionless spec
 
             # Simulate the frictionless small open Markov economy
-            t_start = clock()
+            t_start = time()
             for agent in StickySOmarkovEconomy.agents:
                 agent(UpdatePrb = 1.0)
             StickySOmarkovEconomy.makeHistory()
-            t_end = clock()
+            t_end = time()
             print('Simulating the frictionless small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             # Make results for the frictionless small open Markov economy
@@ -184,16 +184,16 @@ if __name__ == '__main__':
                 for n in range(TypeCount):
                     StickySOEmarkovConsumers[n].installAltShockBeliefs()
                         
-                t_start = clock()
+                t_start = time()
                 StickySOmarkovEconomy.solveAgents()
-                t_end = clock()
+                t_end = time()
                 print('Re-solving the small open Markov economy with alternate beliefs took ' + mystr(t_end-t_start) + ' seconds.')
                 
-                t_start = clock()
+                t_start = time()
                 for agent in StickySOmarkovEconomy.agents:
                     agent(UpdatePrb = Params.UpdatePrb)
                 StickySOmarkovEconomy.makeHistory()
-                t_end = clock()
+                t_end = time()
                 print('Simulating the alternate belief small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
                 
                 desc = 'Results for the alternate belief small open Markov economy with update probability ' + mystr(Params.UpdatePrb)
@@ -285,7 +285,7 @@ if __name__ == '__main__':
 
         # Process the coefficients, standard errors, etc into LaTeX tables
         if make_tables:
-            t_start = clock()
+            t_start = time()
             frictionless_panel = runRegressions('SOEmarkovFrictionlessData',interval_size,False,False,True)
             frictionless_me_panel = runRegressions('SOEmarkovFrictionlessData',interval_size,True,False,True)
             frictionless_long_panel = runRegressions('SOEmarkovFrictionlessData',interval_size*interval_count,True,False,True)
@@ -302,7 +302,7 @@ if __name__ == '__main__':
                 makeResultsTable(None,[sticky_me_panel],my_counts,'SOEmrkvSimRegS','tPESOEsimS')
             else:
                 makeResultsTable('Aggregate Consumption Dynamics in SOE Model (Parker Experiment)',[frictionless_me_panel,sticky_me_panel],my_counts,'SOEmrkvSimRegHetero','tPESOEsimHetero')
-            t_end = clock()
+            t_end = time()
             print('Running time series regressions for the small open Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
             
             # Extra code to see how long the smoothness dynamic lasts
@@ -311,7 +311,7 @@ if __name__ == '__main__':
             
         # Run the "Parker experiment"
         if run_parker and run_models:
-            t_start = clock()
+            t_start = time()
             
             # First, clear the simulation histories for all of the types to free up memory space;
             # this allows the economy to be copied without blowing up the computer.
@@ -332,7 +332,7 @@ if __name__ == '__main__':
             runParkerExperiment(StickySOmarkovEconomy,0.05,2,4,True) # Two quarters ahead
             runParkerExperiment(StickySOmarkovEconomy,0.05,3,4,True) # Three quarters ahead
             
-            t_end = clock()
+            t_end = time()
             print('Running the "Parker experiment" took ' + str(t_end-t_start) + ' seconds.')
         
 
@@ -370,9 +370,9 @@ if __name__ == '__main__':
 
             # Solve the sticky heterogeneous agent DSGE model
             print('Now solving the HA-DSGE model; this could take a few hours!')
-            t_start = clock()
+            t_start = time()
             StickyDSGEmarkovEconomy.solve()
-            t_end = clock()
+            t_end = time()
             print('Solving the sticky Cobb-Douglas Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             print('Displaying the consumption functions for the Cobb-Douglas Markov economy would be too much.')
@@ -406,9 +406,9 @@ if __name__ == '__main__':
             StickyDSGEmarkovEconomy.overwrite_hist = False
             for agent in StickyDSGEmarkovEconomy.agents:
                 agent(UpdatePrb = 1.0)
-            t_start = clock()
+            t_start = time()
             StickyDSGEmarkovEconomy.solve()
-            t_end = clock()
+            t_end = time()
             print('Solving the frictionless Cobb-Douglas Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             print('Displaying the consumption functions for the Cobb-Douglas Markov economy would be too much.')
@@ -425,7 +425,7 @@ if __name__ == '__main__':
 
         # Process the coefficients, standard errors, etc into LaTeX tables
         if make_tables:
-            t_start = clock()
+            t_start = time()
             frictionless_panel = runRegressions('DSGEmarkovFrictionlessData',interval_size,False,False,True)
             frictionless_me_panel = runRegressions('DSGEmarkovFrictionlessData',interval_size,True,False,True)
             frictionless_long_panel = runRegressions('DSGEmarkovFrictionlessData',interval_size*interval_count,True,False,True)
@@ -437,7 +437,7 @@ if __name__ == '__main__':
             makeResultsTable('Aggregate Consumption Dynamics in HA-DSGE Model',[frictionless_long_panel,sticky_long_panel],long_counts,'DSGEmrkvSimRegLong','tDSGEsimLong')
             makeResultsTable(None,[frictionless_me_panel],my_counts,'DSGEmrkvSimRegF','tDSGEsimF')
             makeResultsTable(None,[sticky_me_panel],my_counts,'DSGEmrkvSimRegS','tDSGEsimS')
-            t_end = clock()
+            t_end = time()
             print('Running time series regressions for the Cobb-Douglas Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
 
@@ -454,9 +454,9 @@ if __name__ == '__main__':
             StickyRAmarkovConsumer.track_vars = ['cLvlNow','yNrmTrue','aLvlNow','pLvlTrue','TranShkNow','MrkvNow']
 
             # Solve the representative agent Markov economy
-            t_start = clock()
+            t_start = time()
             StickyRAmarkovConsumer.solve()
-            t_end = clock()
+            t_end = time()
             print('Solving the representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             if verbose_main:
@@ -464,11 +464,11 @@ if __name__ == '__main__':
                 plotFuncs(StickyRAmarkovConsumer.solution[0].cFunc,0,50)
 
             # Simulate the sticky representative agent Markov economy
-            t_start = clock()
+            t_start = time()
             StickyRAmarkovConsumer(UpdatePrb = Params.UpdatePrb)
             StickyRAmarkovConsumer.initializeSim()
             StickyRAmarkovConsumer.simulate()
-            t_end = clock()
+            t_end = time()
             print('Simulating the sticky representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             # Make results for the sticky representative agent economy
@@ -478,11 +478,11 @@ if __name__ == '__main__':
             DeltaLogC_stdev = np.genfromtxt(results_dir + 'RAmarkovStickyResults.csv', delimiter=',')[3] # For use in frictionless spec
 
             # Simulate the frictionless representative agent Markov economy
-            t_start = clock()
+            t_start = time()
             StickyRAmarkovConsumer(UpdatePrb = 1.0)
             StickyRAmarkovConsumer.initializeSim()
             StickyRAmarkovConsumer.simulate()
-            t_end = clock()
+            t_end = time()
             print('Simulating the frictionless representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
             # Make results for the frictionless representative agent economy
@@ -493,7 +493,7 @@ if __name__ == '__main__':
 
         if make_tables:
             # Process the coefficients, standard errors, etc into LaTeX tables
-            t_start = clock()
+            t_start = time()
             frictionless_panel = runRegressions('RAmarkovFrictionlessData',interval_size,False,False,True)
             frictionless_me_panel = runRegressions('RAmarkovFrictionlessData',interval_size,True,False,True)
             frictionless_long_panel = runRegressions('RAmarkovFrictionlessData',interval_size*interval_count,True,False,True)
@@ -503,7 +503,7 @@ if __name__ == '__main__':
             makeResultsTable('Aggregate Consumption Dynamics in RA Model',[frictionless_me_panel,sticky_me_panel],my_counts,'RepAgentMrkvSimReg','tRAsim')
             makeResultsTable('Aggregate Consumption Dynamics in RA Model',[frictionless_panel,sticky_panel],my_counts,'RepAgentMrkvSimRegNoMeasErr','tRAsimNoMeasErr')
             makeResultsTable('Aggregate Consumption Dynamics in RA Model',[frictionless_long_panel,sticky_long_panel],long_counts,'RepAgentMrkvSimRegLong','tRAsimLong')
-            t_end = clock()
+            t_end = time()
             print('Running time series regressions for the representative agent Markov economy took ' + mystr(t_end-t_start) + ' seconds.')
 
     ###############################################################################
