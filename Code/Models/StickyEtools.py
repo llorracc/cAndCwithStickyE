@@ -1191,9 +1191,9 @@ def makeMicroRegressionTable(out_filename, micro_data):
     paper_top = "\\begin{minipage}{\TableWidth}\n"
     paper_top += "  \\begin{table}\n"
     paper_top += "    \\caption{Micro Consumption Regression on Simulated Data} \\label{table:CGrowCross}\n"
-    paper_top += "    \\begin{eqnarray} \n"
+    paper_top += "    \\begin{eqnarray\*} \n"
     paper_top += "\\CGrowCross    \\nonumber %\\\CGrowCrossBar \\nonumber \n"
-    paper_top += "    \end{eqnarray}\n"
+    paper_top += "    \end{eqnarray\*}\n"
 
     slides_top = '\\begin{center} \n'
 
