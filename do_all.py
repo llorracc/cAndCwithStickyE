@@ -3,6 +3,9 @@ This file will run absolutely all of the results in the paper.  As fair warning,
 this might take several days to run.  It runs the excess sensitivity experiment
 first, then all of the SOE model exercises, then the DSGE model, then the RA model.
 Please look at USER_OPTIONS.py and set three options there before proceeding.
+
+If you have problems running it, make sure you have installed all of the packages
+specified in the requirements.txt file
 '''
 import os
 here = os.path.dirname(os.path.realpath(__file__))

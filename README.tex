@@ -2,7 +2,7 @@
             \usepackage[dvips,]{graphicx} %draft option suppresses graphics dvi display
             \setlength{\textwidth}{6.5in}
             \setlength{\textheight}{9in}
-            \addtolength{\topmargin}{-\topmargin} 
+            \addtolength{\topmargin}{-\topmargin}
             \setlength{\oddsidemargin}{0in}
             \setlength{\evensidemargin}{0in}
             \addtolength{\headsep}{-\headsep}
@@ -71,7 +71,7 @@ Each of these files specifies particular options and then runs \texttt{./Code/Mo
 
 \begin{itemize}
 
-\item \texttt{./Code/Empirical/} contains Stata code for producing the U.S. empirical regressions reported in the paper.  The script \texttt{\_usConsDynEmp.do} can be run to produce the .tex files for this table, which are saved to \texttt{./Tables}.  The script reads in NIPA data in \texttt{./Code/Empirical/data/} and calls the other scripts found here.
+\item \texttt{./Code/Empirical/} contains Stata code for producing the U.S. empirical regressions reported in the paper.  The script \texttt{\_usConsDynEmp.do} can be run to produce the .tex files for this table, which are saved to \texttt{./Tables}.  The script uses the dataset \texttt{usData\_20170927.xlsx} stored in the folder \texttt{./Code/Empirical/data/} and calls the other scripts found here.  The data are public, from NIPA of the Bureau of Economic Analysis and from Federal Reserve's Financial Accounts (and can be refreshed using the Haver database). The Excel file \texttt{usData\_20170927.xlsx} contains sheet \texttt{New\&Old} with a description of all series.
 
 \item \texttt{./Code/Models/} contains (mostly) Python code for solving, simulating, and processing the results of our models into LaTeX tables and figures for the paper.  Each execution run of our model(s) runs \texttt{StickyE\_MAIN.py} in Python; however, this file cannot be run independently, as it requires several variables (specifying runtime options or model specifications) to be defined first.  These variables are defined by each of \texttt{./do\_min.py}, \texttt{./do\_mid.py}, and \texttt{./do\_all.py}, calling on small options scripts in \texttt{./Code/Models/Options/} to pre-specify some standard choices; all of the options can be set manually by editing \texttt{./do\_custom.py}.  The file \texttt{StickyEmodel.py} contains the solution and simulation code for the models themselves, extending several of the models in the \texttt{HARK} package, while \texttt{StickyEtools.py} has functions for processing simulated data and producing the tables and figures in the paper.  The Stata script \texttt{StickyETimeSeries.do} is called from the main code when the \texttt{use\_stata} option is set to \texttt{True}; this enables the calculation of the Hansen J statistic, which is unavailable in any Python package we could find.  Simulated time series datasets and other intermediate results produced by the main code are saved to files in \texttt{./Code/Models/Results/}.
 

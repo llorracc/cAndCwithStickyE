@@ -3,6 +3,9 @@ This file will run the main results of the project-- the small open economy mode
 presented in the main text.  This will produce the simulated macro time series
 regressions shown as Table 3 in the paper.
 Please look at USER_OPTIONS.py and set three options there before proceeding.
+
+If you have problems running it, make sure you have installed all of the packages
+specified in the requirements.txt file
 '''
 import os
 here = os.path.dirname(os.path.realpath(__file__))

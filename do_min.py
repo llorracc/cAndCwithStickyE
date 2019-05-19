@@ -2,6 +2,9 @@
 This file will run the absolute minimum amount of work that actually produces
 relevant output-- the representative agent model in online Appendix C.  Please
 look at USER_OPTIONS.py and set three options there before proceeding.
+
+If you have problems running it, make sure you have installed all of the packages
+specified in the requirements.txt file
 '''
 import os
 here = os.path.dirname(os.path.realpath(__file__))
