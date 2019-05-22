@@ -33,14 +33,14 @@
 \begin{document}
 
 \begin{center}
-\textbf{Archive Notes for ``Sticky Expectations and Consumption Dynamics''} \\ May 17, 2019
+\textbf{Archive Notes for ``Sticky Expectations and Consumption Dynamics''} \\ May 21, 2019
 \end{center}
 
 This zip archive contains all files needed to replicate all results, tables, and figures in the paper and appendices.  The contents of this archive are also available as a \texttt{git} repository at \texttt{https://github.com/llorracc/cAndCwithStickyE}.  We first present short instructions for running our code on your own computer; a description of the archive's directory and file structure follows.  All instructions assume that you have unpacked the contents of this archive onto your own computer, preserving the internal directory structure.  All directories are relative to the root of this archive.
 
 \vspace{0.5cm}
 
-\noindent \textbf{Replicating the manuscript:} To produce a pdf version of the paper, simply open a terminal, navigate to the root directory of this archive, and run  \texttt{pdflatex cAndCwithStickyE.tex}.
+\noindent \textbf{Replicating the manuscript:} To produce a pdf version of the paper, simply open a terminal, navigate to the root directory of this archive, and run  \texttt{pdflatex cAndCwithStickyE.tex}.  The main paper is cross-referenced with the appendix, so you will need to compile the main paper, then the appendix \texttt{cAndCwithStickyE-App.tex}, then the main paper again.
 
 \vspace{0.5cm}
 
@@ -48,7 +48,7 @@ This zip archive contains all files needed to replicate all results, tables, and
 \begin{enumerate}
 \item Install Python on your local computer.  We recommend using Anaconda, a distribution of Python for scientific computing.  The code has been fully tested on both Python 2 and Python 3, but official support for Python 2 will end on January 1, 2020, so we recommend that you use Python 3.
 
-\item Open a terminal window (on Windows, use the Anaconda terminal; on Mac or Linux, an ordinary terminal window will work) and navigate to \texttt{./Code/Models/}.  Run \texttt{pip install -r requirements.txt}.  This will add necessary Python packages to your computer if they are not already present.  In particular, it will install the \texttt{HARK} package, the modeling framework used for this paper.
+\item Open a terminal window (on Windows, use the Anaconda terminal; on Mac or Linux, an ordinary terminal window will work) and navigate to the root of the archive.  Run \texttt{pip install -r requirements.txt}.  This will add necessary Python packages to your computer if they are not already present.  In particular, it will install the \texttt{HARK} package, the modeling framework used for this paper.
 
 \item Open \texttt{./USER\_OPTIONS.py} and set three simple options there; defaults work fine on all computers.  These options indicate whether figures should be displayed during execution, whether to use Stata to compute some statistics for which no Python package exists, and the absolute path to the Stata executable on your computer.
 
@@ -81,7 +81,11 @@ Each of these files specifies particular options and then runs \texttt{./Code/Mo
 
 \item \texttt{./Figures/} contains all figures produced for this paper, each in several formats: high resolution vector graphics PDFs, rasterized and compressed JPGs, rasterized and uncompressed PNGs, and alternately formatted vector graphics SVGs.  All graphics files are produced by running \texttt{./do\_all.py} except \texttt{parkerExperiment.*}, which is produced by the Stata script \texttt{drawParkerChart.do} here.
 
+\item \texttt{./Highlighted/} Contains several .tex files that are automatically generated when the main paper is compiled; each one is a small snippet of the paper.
+
 \item \texttt{./LaTeX/} contains .tex files for the various appendices, and some subcomponents of the main paper.  These are automatically read in when compiling \texttt{./cAndCwithStickyE.tex} and will not compile as standalone files.
+
+\item \texttt{./Revision/} contains a small .tex file that adjusts notation from its defaults in authors' style files.
 
 \item \texttt{./Slides/} contains tex files for constructing beamer slides for academic presentations.
 

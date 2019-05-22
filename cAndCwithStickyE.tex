@@ -88,7 +88,7 @@ Sticky Expectations and Consumption Dynamics
 \jelclass{D83, D84, E21, E32}
 
 
-\date{May 18, 2019  \\ \medskip\medskip \large{Forthcoming, \textit{American Economic Journal: Macroeconomics}}}
+\date{May 20, 2019  \\ \medskip\medskip \large{Forthcoming, \textit{American Economic Journal: Macroeconomics}}}
 \maketitle
 
 \hypertarget{Abstract}{} \opt{JournalFormatting}{\doublespacing}
@@ -408,7 +408,7 @@ We track death events using a binary indicator:
 \\ \ifnumSw  1 & \text{if consumer at location $i$ dies between $t$ and $t+1$}.
   \end{cases}
 \end{equation*}
-We refer to this henceforth as a `replacement' event, since the consumer who dies is replaced by an unrelated newborn who happens to inhabit the same location on the number line.  The {\it ex ante} probability of death is identical for each consumer, so that the aggregate mass of consumers who are replaced is time invariant at $\PDies = \int_{0}^{1} \pDies_{t,i}\,di$, while the proportion who do not die are denoted by $\PLives$.
+We refer to this henceforth as a `replacement' event, since the consumer who dies is replaced by an unrelated newborn who happens to inhabit the same location on the number line.  The {\it ex ante} probability of death is identical for each consumer, so that the aggregate mass of consumers who are replaced is time invariant at $\PDies = \int_{0}^{1} \pDies_{t,i}\,di$.%, while the proportion who do not die are denoted by $\PLives$.
 
 Under the assumption that `newborns' have the population-average productivity level of $1$, the population mean of the idiosyncratic component of permanent income is always $\int_{0}^{1} {p}_{t,i}di = 1$. %
 Our earlier equation \eqref{eq:IndRandWalk} is thus adjusted to:%\footnote{The constant population size permits the analytical convenience of replacing the dying with newborns, but it is important to understand that there is no relationship between successive persons at the same location on the number line; this is not a dynastic model.}
@@ -445,7 +445,7 @@ market resources minus consumption:
 \input \eq/aDef.tex
 Next period's capital is determined from this period's assets via:
 \begin{eqnarray}
-\kLevBF_{t+1,i} & = & \pDies_{t+1,i} \cdot 0+ \pLives_{t+1,i}\aLevBF_{t,i} \big/\PLives \label{eq:ktp1icompact}
+\kLevBF_{t+1,i} & = & \pDies_{t+1,i} \cdot 0+ (1-\pDies_{t+1,i})\aLevBF_{t,i} \big/\PLives \label{eq:ktp1icompact}
 \ifslides{}{,}
 \end{eqnarray}
 where the first term represents `newborns' having zero assets, and the second term's division of $\aLevBF$ by the survival probability $\PLives$ reflects returns to survivors from the Blanchardian insurance scheme (financed by seizure of the estates of the proportion $\PDies$ who die).
@@ -469,7 +469,7 @@ is
   \LLevBF_{t} & = & \int_{0}^{1} \pmb{\ell}_{t,i}\,\text{d}i = \Theta_{t} {P}_{t}.
 \end{eqnarray*}
 
-Aggregate market resources can be written as per-capita resources of the survivors times their population mass $\PLives$ (for whom the threat of death has been canceled), plus per-capita resources of the newborns times their population mass $\PDies$:
+Aggregate market resources can be written as per-capita resources of the survivors times their population mass $\PLives$, plus per-capita resources of the newborns times their population mass $\PDies$: 
 \begin{verbatimwrite}{\eq/Mtp1.tex}
 \begin{eqnarray}
   \MLevBF_{t} & = & \big(\overbrace{\ALevBF_{t-1} {\Rprod}_t/\PLives  + \Theta_{t} {P}_{t}\Wage}^{\text{per-capita $\mLevBF$ for survivors}}\big)\PLives+\overbrace{\Theta_{t} {P}_{t}\Wage_t}^{\text{per-capita $\mLevBF$ for newborns}} \PDies \nonumber \\
@@ -493,16 +493,16 @@ Because of the assumption of a small open economy, the frictionless consumer's s
 
 The household's problem in levels can be written in Bellman form as:\footnote{Subject to definitions \eqref{eq:AggRandWalk}, \eqref{eq:IndRandWalk}, \eqref{eq:ell}, \eqref{eq:mDef}, \eqref{eq:aDef} and \eqref{eq:ktp1icompact}.}
 \begin{eqnarray*}
-\textbf{v}(\mLevBF_{t,i},p_{t,i},P_t,\PtyGro_t)  & = &  \max_{\cLevBF_{t,i}}  \big\{ \uFunc(\cLevBF_{t,i}) + \beta \Ex_t \big[\pLives_{t,i}\textbf{v}(\mLevBF_{t+1,i},p_{t+1,i},P_{t+1},\PtyGro_{t+1})\big] \big\}. \nonumber
+  \textbf{v}(\mLevBF_{t,i},p_{t,i},P_t,\PtyGro_t)  & = &  \max_{\cLevBF_{t,i}}  \big\{ \uFunc(\cLevBF_{t,i}) + \beta \Ex_t \big[\pLives_{t+1,i}\textbf{v}(\mLevBF_{t+1,i},p_{t+1,i},P_{t+1},\PtyGro_{t+1})\big] \big\}. \nonumber
 \end{eqnarray*}
 Our assumption that the aggregate and idiosyncratic productivity levels both reflect a combination of purely transitory and purely permanent components now permits us to make a transformation that considerably simplifies analysis and solution of the model: When the utility function is in the CRRA class, the Bellman problem can be simplified by dividing utility and value by $\pLev_{t,i}^{1-\CRRA} = (p_{t,i}P_t)^{1-\CRRA}$ while converting to normalized variables as above (e.g., $\mLev_{t,i}=\mLevBF_{t,i}/\pLev_{t,i}$). %
 This yields the normalized form of the problem, which has only $\mLev_{t,i}$ and $\PtyGro_t$ as state variables:
 \begin{verbatimwrite}{\eq/scaledv.tex}
 \begin{eqnarray}
-    \vFunc({m}_{t,i},\PtyGro_t) & = & \max_{\cLev_{t,i}} ~ \phantom{\big\{} \uFunc(\cLev_{t,i}) + \PLives \beta
-    \Ex_{t}\big[ (\PtyGro_{t+1} \pmb{\psi}_{t+1,i})^{1-\CRRA}\vFunc(\mLev_{t+1,i},\PtyGro_{t+1})\big] \phantom{\big\}}
+    \vFunc({m}_{t,i},\PtyGro_t) & = & \max_{\cLev_{t,i}} ~ \big\{ \uFunc(\cLev_{t,i}) + \PLives \beta      \nonumber
+                                      \Ex_{t}\big[ (\PtyGro_{t+1} \pmb{\psi}_{t+1,i})^{1-\CRRA}\vFunc(\mLev_{t+1,i},\PtyGro_{t+1})\big] \big\}
     \label{eq:scaledv}
-\\  & \mbox{s.t.} & \nonumber
+\\  & \mbox{s.t.} & 
 \\ \ifnumSw  \aLev_{t,i}   & = & \mLev_{t,i} - \cLev_{t,i}, \nonumber
 \\ \ifnumSw  \kLev_{t+1,i} & = & \aLev_{t,i} \big/( \PLives \PtyGro_{t+1} \pmb{\psi}_{t+1,i} ),  \nonumber
 \\ \ifnumSw  \mLev_{t+1,i} & = & \Rprod \kLev_{t+1,i} + \Wage \pmb{\theta}_{t+1,i}.  \nonumber
@@ -620,7 +620,7 @@ shows that the relationship between the normalized asset stock $A_{t}$ and the e
   \label{eq:RandomWalkAForm}
   \Delta \log \CLevBF_{t+1} & = & \varsigma+\alpha A_{t}+\mu X_{t}+\epsilon_{t+1}.
 \end{eqnarray*}
-This reformulation is convenient because the literatures on precautionary saving and liquidity constraints since at least \cite{zeldes:jpe,zeldesStochastic} have argued that the effects of capital market imperfections can be captured by incorporating a lagged measure of resources like $A_{t}$ in consumption growth regressions.
+This reformulation is convenient because the literatures on precautionary saving and liquidity constraints since at least \cite{zeldes:jpe} and \citeyear{zeldesStochastic} have argued that the effects of capital market imperfections can be captured by incorporating a lagged measure of resources like $A_{t}$ in consumption growth regressions.
 
 \cite{cmModel} famously proposed a modification of this model in which a proportion $\eta$ of income goes to rule-of-thumb consumers who spend $C=Y$ in every period.  They argued that $\eta$ can be estimated by incorporating the predictable component of income growth as an additional regressor.  Finally, \cite{dynanHabits} and \cite{som07} show that in standard habit formation models, the size of the habit formation parameter can be captured by including lagged consumption growth as a regressor.  These considerations lead to a benchmark specification of the form:
 \begin{eqnarray}
@@ -683,8 +683,8 @@ What is less clear is whether models in this class imply that any residual seria
 The model predicts that the relationship between $\Ex_{t}[\Delta \log \cLev_{t+1,i}]$ and $\aRat_{t,i}$ will be nonlinear and downward sloping, but theory does not imply any specific functional form.  We experimented with a number of ways of capturing the role of $\aRat_{t,i}$ but will spare the reader the unedifying discussion of those experiments because they all reached conclusions similar to those of a particularly simple case, inspired by the original analysis of \cite{zeldes:jpe}: We simply include a dummy variable that indicates whether last period's $\aRat_{t,i}$ is low.  Specifically, we define $\bar{a}_{t,i}$ as 0 if household $i$'s level of ${a}$ in period $t$ is in the bottom 1 percent of the distribution, and $\bar{a}_{t,i}=1$ otherwise.  (We could have chosen, say, 10 or 20 percent with qualitatively similar, though less quantitatively impressive, results). So, in data simulated from our SOE model, we estimate regressions of the form: %
 
 \begin{verbatimwrite}{\eq/CGrowCross.tex}
-   \newcommand{\CGrowCross}{\Delta \log       \cLevBF _{t+1,i}  &=&  \varsigma + \chi \Delta \log      \cLevBF _{t,i} + \eta     {\Ex}_{t,i}[\Delta \log       \yLevBF _{t+1,i}]+ {\alpha} \bar{a}_{t,i}+\epsilon_{t+1,i}.}
-\newcommand{\CGrowCrossBar}{\Delta \log  \perc{\cLevBF}_{t+1,i}  &=&  \varsigma + \chi \Delta \log \perc{\cLevBF}_{t,i} + \eta     {\Ex}_{t,i}[\Delta \log \perc{\yLevBF}_{t+1,i}] + {\alpha} {\perc{a}}_{t,i}+\epsilon_{t+1,i}.}
+   \newcommand{\CGrowCross}{\Delta \log       \cLevBF _{t+1,i}  &=&  \varsigma + \chi \Delta \log      \cLevBF _{t,i} + \eta     {\Ex}_{t,i}[\Delta \log       \yLevBF _{t+1,i}]+ {\alpha} \bar{a}_{t,i}+\epsilon_{t+1,i}}
+\newcommand{\CGrowCrossBar}{\Delta \log  \perc{\cLevBF}_{t+1,i}  &=&  \varsigma + \chi \Delta \log \perc{\cLevBF}_{t,i} + \eta     {\Ex}_{t,i}[\Delta \log \perc{\yLevBF}_{t+1,i}] + {\alpha} {\perc{a}}_{t,i}+\epsilon_{t+1,i}}
 \end{verbatimwrite}
 \input \eq/CGrowCross.tex
 \begin{eqnarray*}

@@ -24,7 +24,7 @@ from HARK.utilities import approxUniform, approxMeanOneLognormal, combineIndepDs
 # See: https://stackoverflow.com/questions/918154/relative-paths-in-python
 my_file_path = os.path.dirname(os.path.abspath(__file__))
 
-calibration_dir = os.path.join(my_file_path, "../../Calibration/Parameters/") # Absolute directory for primitive parameter files
+calibration_dir = os.path.join(my_file_path, "../../Calibration/") # Absolute directory for primitive parameter files
 tables_dir = os.path.join(my_file_path, "../../Tables/")       # Absolute directory for saving tex tables
 results_dir = os.path.join(my_file_path, "./Results/")         # Absolute directory for saving output files
 figures_dir = os.path.join(my_file_path, "../../Figures/")     # Absolute directory for saving figures
