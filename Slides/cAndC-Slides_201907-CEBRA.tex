@@ -1,4 +1,5 @@
 \input{./econtexRoot.tex}\documentclass{beamer}\usepackage{dcolumn}
+% \documentclass[aspectratio=169]{beamer}
 \usepackage{verbatim}
 \usepackage{cancel}
 \usepackage{econtexShortcuts}
@@ -7,8 +8,12 @@
 \usepackage{color}
 \usepackage[latin1]{inputenc}
 \usepackage{booktabs,natbib}
+\usepackage{tikz} 
+\usetikzlibrary{tikzmark,fit,shapes.geometric}
+\usetikzlibrary{tikzmark,calc,arrows,shapes,decorations.pathreplacing}
+\tikzset{every picture/.style={remember picture}}
 \input{\econtexRoot/Switches.tex}
-
+\pdfmapfile{+sansmathaccent.map}
 
 %%% Jirka's colors
 
@@ -29,12 +34,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mode<presentation>
 {
-  \usetheme{Warsaw} % Singapore % Montpellier
+  \usetheme{default} % Singapore % Montpellier
   \setbeamercovered{transparent}
 }
 
 % if this is on, bullets are shown step by step
-\beamerdefaultoverlayspecification{<+->}
+%\beamerdefaultoverlayspecification{<+->}
 
 %\setbeamertemplate{navigation symbols}{}  % Take away navigation symbols
 
@@ -50,13 +55,7 @@
 %\setboolean{Depreciation}{false}
 \provideboolean{MicroDepr}
 \setboolean{MicroDepr}{true}
-% \setboolean{Depreciation}{false}
-
-
-\newboolean{includeTF}
-\setboolean{includeTF}{true}
-
-\newcommand{\ifInclude}[1]{\ifthenelse{\boolean{includeTF}}{#1}}
+%\setboolean{Depreciation}{false}
 \providecommand{\ifDepr}{\ifthenelse{\boolean{Depreciation}}}
 \providecommand{\MicroDepr}{\ifthenelse{\boolean{MicroDepr}}}
 
@@ -108,24 +107,6 @@
 \setboolean{ShowStickyE}{false}
 \providecommand{\StickyE}{\ifthenelse{\boolean{ShowStickyE}}}
 
-\provideboolean{BoE}
-\setboolean{BoE}{true}
-\setboolean{BoE}{false}
-\providecommand{\BoEYN}{\ifthenelse{\boolean{BoE}}}
-
-\providecommand{\BoEHideBegin}{\ifthenelse{\boolean{BoE}}{\setboolean{includeTF}{false}}{}}
-\providecommand{\BoEHideEnd}{  \ifthenelse{\boolean{BoE}}{\setboolean{includeTF}{true}}{}}
-
-\providecommand{\TimeShortHideBegin}{\ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{false}}{}}
-\providecommand{\TimeShortHideEnd}{  \ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{true}}{}}
-
-
-\provideboolean{TimeShort}
-\setboolean{TimeShort}{true}
-%\setboolean{TimeShort}{false}
-\providecommand{\TimeShortYN}{\ifthenelse{\boolean{TimeShort}}}
-
-
 \providecommand{\econtexRoot}{.}
 \providecommand{\eq}{\econtexRoot/Equations}
 
@@ -144,7 +125,7 @@
 %\input PDFDocStart
 \mode<presentation>
 {
-  \usetheme{Warsaw}
+  \usetheme{Madrid}
   % or ...
 
   \setbeamercovered{transparent}
@@ -161,13 +142,15 @@
 \usepackage[latin1]{inputenc}
 % or whatever
 
+\beamertemplatenavigationsymbolsempty
+
 %%%%%%%%%%%%%%%  Opening slide
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\title[Sticky Expectations and Consumption Dynamics]{Sticky Expectations and Consumption Dynamics}
+\title[]{Sticky Expectations and Consumption Dynamics}
 
-\author[Carroll, Crawley, Slacalek, Tokuoka, White]{Christopher D. Carroll\inst{1} \and Edmund Crawley\inst{2} \and Jiri Slacalek\inst{3} \and Kiichi Tokuoka\inst{4} \and Matthew N. White\inst{5}}
+\author[]{Christopher D. Carroll \and Edmund Crawley \and Jiri Slacalek \and Kiichi Tokuoka \and Matthew N. White}
 
 %\institute % (optional, but mostly needed)
 %{
@@ -175,19 +158,18 @@
 %}
 % - Use the \inst command only if there are several affiliations.
 % - Keep it simple, no one is interested in your street address.
-\institute{
-  \inst{1} Johns Hopkins and NBER, \texttt{ccarroll@jhu.edu} %\\ \texttt{http://www.econ.jhu.edu/people/ccarroll/}
-  \and
-  \inst{2} Johns Hopkins,  \texttt{ecrawle2@jhu.edu} %\\ \texttt{http://www.slacalek.com/}
-  \and
-  \inst{3} European Central Bank,  \texttt{jiri.slacalek@ecb.int} %\\ \texttt{http://www.slacalek.com/}
-  \and
-  \inst{4} MoF Japan,  \texttt{kiichi.tokuoka@mof.go.jp}
-  \and
- \inst{5} University of Delaware,  \texttt{mnwecon@udel.edu}\\
-}
-\BoEYN{\date{June 5, 2018 \\ Bank of England Seminar}}{
-       \date{\href{https://econ-ark.org}{\includegraphics[width=0.2\textwidth]{../Figures/PoweredByEconARK}} \\ February 2018 } % BoEYN end
+%\institute{
+%  \inst{1} Johns Hopkins and NBER, \texttt{ccarroll@jhu.edu} %\\ \texttt{http://www.econ.jhu.edu/people/ccarroll/}
+%  \and
+%  \inst{2} Johns Hopkins,  \texttt{ecrawle2@jhu.edu} %\\ \texttt{http://www.slacalek.com/}
+%  \and
+%  \inst{3} European Central Bank,  \texttt{jiri.slacalek@ecb.int} %\\ \texttt{http://www.slacalek.com/}
+%  \and
+%  \inst{4} MoF Japan,  \texttt{kiichi.tokuoka@mof.go.jp}
+%  \and
+% \inst{5} University of Delaware,  \texttt{mnwecon@udel.edu}\\
+%  }
+\date[]{CEBRA Annual Meeting, New York, July 2019 % venue
 }
 
 \begin{document}
@@ -203,72 +185,124 @@
 %%%%%%%%%%%%%%% Other slides
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Consumption: Micro Vs Macro}
-\subsection{Habits?  No!  It's Inattention}
+%\section{Consumption: Micro Vs Macro}
+%\subsection{Habits?  No!  It's Inattention}
 \begin{frame}
-  \frametitle{Consumption Dynamics: Macro vs Micro}
-%  \jbemph{\large C growth persistent in macro but not micro data}
-  \begin{block}{Macro: Representative Agent Models}
-      \begin{itemize}
-      \item  Theory (With Separable Utility):
-        \begin{itemize}
-        \item         C responds instantly, completely to shock
-          \item Consequences of uncertainty are trivial
-        \end{itemize}
-%        \item Uncertainty has trivial effects
-    \item Evidence: Consumption is too smooth {\scriptsize (Campbell {\&} Deaton, 1989)}
-      \item Solution: \jbemph{``Habits'' parameter $\chi^{\text{Macro}}\approx 0.6\sim~0.8$}\\
-\centerline{       $\Delta \log \mathbf{C}_{t+1} = \varsigma + \chi \Delta \log \mathbf{C}_t +\epsilon $}
-      \end{itemize}
-    \end{block}
+\frametitle{Consumption Dynamics: Macro vs Micro}
+Macro
+\begin{itemize}
+	\item \textit{Aggregate} consumption exhibits \textbf{`excess\tikz[baseline]{\node(excess){}} smoothness'}
+\end{itemize}
+Micro
+\begin{itemize}
+	\item \textit{Idiosyncratic} consumption does not \tikz[baseline]{\node(idio){}}
+\end{itemize}
+\bigskip
+\only<1-3>{
+	\textcolor{white}{This paper}
+	\begin{itemize}
+		\item[]
+		\begin{itemize}
+			\item[]
+			\item[]
+			\item[]
+		\end{itemize}
+	\end{itemize}
+}
+	\only<2->{
+	\begin{tikzpicture}[remember picture,overlay]
+	\node (excessa)  at ([shift={(0,0.3)}]excess) {};
+	\node (excessb)  at ([shift={(0,1)}]excessa) {};
+	\draw[blue,thick,->] (excessa)  to [in=270,out=90] (excessb) node[anchor=south,text = blue] { Modeling response: `habits'};
+	\end{tikzpicture}
+}
+	\only<3->{
+	\begin{tikzpicture}[remember picture,overlay]
+	\node (idioa)  at ([shift={(0,0.1)}]idio) {};
+	\node (idiob)  at ([shift={(0.8,0.0)}]idioa) {};
+	\draw[blue,thick,->] (idioa)  to [in=180,out=0] (idiob) node[anchor=west,text = blue] {Habits strongly rejected};
+	\end{tikzpicture}
+}
+\only<4->{
+This paper
+	\begin{itemize}
+		\item Builds a model that reconciles these empirical facts
+		\begin{itemize}
+			\item Sticky Expectations replace habits
+			\item Tractable
+			\item Quantitatively plausible (both micro and macro)
+		\end{itemize}
+	\end{itemize}
+}
 
-  \begin{block}{Micro: Heterogeneous Agent Models}
-    \begin{itemize}
-    \item  \jbemph{Uninsurable risk is essential, changes everything}
-    \item Var of micro income shocks much larger than of macro shocks:\\
-\centerline{    \jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
-    \item Evidence: \jbemph{``Habits'' parameter $\chi^{\text{Micro}}\approx 0.0\sim 0.1$}
-    \end{itemize}
-  \end{block}
 
 \end{frame}
+\begin{comment}
+\begin{frame}
+\frametitle{Consumption Dynamics: Macro vs Micro}
+%  \jbemph{\large C growth persistent in macro but not micro data}
+\begin{block}{Macro: Representative Agent Models}
+	\begin{itemize}
+		\item  Basic Theory: C responds instantly, completely to shock
+		\item Evidence: Consumption is too smooth {\scriptsize (Campbell {\&} Deaton, 1989)}
+		\item Solution: \jbemph{``Habits'' parameter $\chi^{\text{Macro}}\approx 0.6$--$0.8$}\\
+		\centerline{       $\Delta \log \mathbf{C}_{t+1} = \varsigma + \chi \Delta \log \mathbf{C}_t +\epsilon $}
+	\end{itemize}
+\end{block}
+
+\begin{block}{Micro: Heterogeneous Agent Models}
+	\begin{itemize}
+		\item  \jbemph{Uninsurable risk is essential, changes everything}
+		\item Var of micro income shocks much larger than of macro shocks:\\
+		\centerline{    \jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
+		\item Evidence: \jbemph{``Habits'' parameter $\chi^{\text{Micro}}\approx 0.0$--$0.1$}
+	\end{itemize}
+\end{block}
+\end{frame}
+\end{comment}
 
 \begin{frame}
-  \frametitle{Persistence of Consumption Growth: Macro vs Micro}
-
-  \begin{itemize}
-  \item New paper in EER, \cite*{havranek:metaHabits}\\ ~~~~Meta analysis of 597 estimates of $\chi$
-  \item $ \Delta \log \mathbf{C}_{t+1} = \varsigma + \chi \Delta \log \mathbf{C}_t +\epsilon $
-  \item  \jemph{$\{\chi^{\text{Macro}},\chi^{\text{Micro}}\} = \{0.6,0.1\}$}
-  \begin{figure}
+  \frametitle{Excess Smoothness: Macro vs Micro}
+Estimate $\chi$ in \\ 
+\centering
+$ \Delta \log \mathbf{C}_{t+1} = \varsigma + \chi \Delta \log \mathbf{C}_t +\epsilon $\\
+\bigskip
+597 estimates of $\chi$ in \cite*{havranek:metaHabits}
+	\begin{columns}
+	\column{0.7\linewidth}
+	\centering
+\begin{figure}
 \begin{center}
-\includegraphics[width=.75\textwidth]{../Figures/microMacroMetaHistogram}
+\includegraphics[width=.90\textwidth]{../Figures/microMacroMetaHistogram}
 \end{center}
 \end{figure}
-
-  \end{itemize}
+\column{0.3\linewidth}
+$\chi^{\text{Macro}}\approx 0.6$ \\
+\bigskip
+$\chi^{\text{Micro}}\approx 0.1$ \\
+\end{columns}
 
 \end{frame}
 
 
-
 \begin{frame}
-\frametitle{Claim: It's Not Habits, It's Inattention! (Macro not Micro)}
-\jbemph{\large Our Setup}
+\frametitle{Claim: It's Not Habits, It's (Macro) Inattention! }
+\jbemph{\large Our Income Process}
 \begin{itemize}
-\item   Income Has Idiosyncratic and Aggregate Components
-\item   Idiosyncratic Component Is Perfectly Observed
-\item   \jbemph{Aggregate Component Is Stochastically Observed}\\
+\item   Idiosyncratic Component: Perfectly Observed
+\item   \jbemph{Aggregate Component: Stochastically Observed}\\
   \begin{itemize}
 \item Updating \`a la \cite{calvoPrices}
   \end{itemize}
 
 \end{itemize}
-\begin{block}{ Not {\em ad hoc}}
+\begin{block}{ Advantages}
 \begin{itemize}
-\item Identical: \cite{mrSlumps}, \cite{carroll:epidemicinflQJE}
-\item Similar: \cite{reis:inattentive}, \cite{simsInattention},   \dots
-% \cite{woodfordImperfect},
+\item Resolves macro/micro habits dissonance
+\item Simple to apply in heterogenous agent settings
+  \begin{itemize}
+	\item e.g. \cite{arsInvestmentInattention}
+\end{itemize}
 \end{itemize}
 \end{block}
 
@@ -290,50 +324,16 @@
 \begin{itemize}
 \item  Micro: Critical (and Easy) To Notice You're Unemployed
 % \item Unlike \cite{pischkeMicroMacro}
-\item  Macro: {\it Not} Critical To {\it Instantly} Notice If U $\uparrow$
+\item  Macro: {\it Not} Critical To Instantly Notice If U $\uparrow$
 \end{itemize}
 \end{block}
 \end{frame}
-
-\TimeShortHideBegin
-
-%\ifInclude{
-\begin{frame}
-\frametitle{Literature on C Dynamics and Info Frictions}
-\small
-\begin{itemize}
-\item \jemph{C Smoothness:}
-\cite{cdSmooth}; \cite{pischkeMicroMacro};
-\cite{rotemberg&woodford:macroannual}
-
-\item \jemph{Inattention:}
-\cite{mrSlumps}; \cite{reis:inattentive}; \cite{simsInattention}; \cite{mackWiedREStud15}; \cite{gabaixSparsityQJE}; \dots
-
-\item \jemph{Adjustment Costs:} \cite{alvarezGuisoLippi:DurCons}; \cite{chettySzeidl:cCommitmentsEcta}
-\item \jemph{Empirical Evidence on Info Frictions:} \cite{coibGor:AER15}; \cite{fuhrerIntrinsicPersistence}; \dots
-
-\item \jemph{Macro Habits:}
-\cite{abel:aerhabits}; \cite{constantinidesHabits}; all papers since \cite{cee:habits}
-
-\item \jemph{Micro Habits:}
-\cite{dynanHabits}; many recent papers
-
-\end{itemize}
-
-\end{frame}
-%}{}
-
-
-
-
-
-
 
 
 %\section{\href{http://www.econ2.jhu.edu/people/ccarroll/public/LectureNotes/Consumption/StickyExpectationsC/}{Toy Model}}
 %\subsection{Toy Model}
 \begin{frame}
-\frametitle{Quadratic Utility Frictionless Benchmark}
+\frametitle{Quadratic Utility `Toy Model'}
 
 \begin{block}{\cite{hallRandomWalk} Random Walk}
 \phantom{.}
@@ -342,7 +342,7 @@
 \begin{center}
 {$\wAllLev_{t+1} = (\wAllLev_{t}-\cLevBF_{t})\Rfree+\zeta_{t+1}$}
 \end{center}
-\item \jemph{C Euler Equation}: \\
+\item \jemph{Euler Equation}: \\
 \begin{center}
 {$\uFunc^{\prime}(\cLevBF_{t}) = \Rfree\beta \Ex_{t}[\uFunc^{\prime}(\cLevBF_{t+1})]$}
 \end{center}
@@ -391,9 +391,7 @@ Implies that $\Delta^{n} \wAllLev_{t+n} \equiv \wAllLev_{t+n}-\wAllLev_{t}$ is w
 
 \begin{itemize}
 \setlength{\itemsep}{2mm}
-\item Pop normed to one, uniformly dist on $[0,1]$:
-$\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
-
+\item Aggregate: $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 \item \jbemph{\cite{calvoPrices}-Type Updating of Expectations:}
 \begin{itemize}
 \item Probability $\Pi = 0.25$ (per quarter)
@@ -414,35 +412,32 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 
 
 \begin{frame}
-\frametitle{One More Ingredient: Idiosyncratic Uncertainty \dots}
-
-\begin{itemize}
-\setlength{\itemsep}{3mm}
-\item  \jbemph{Differences: Idiosyncratic vs Aggregate shocks}
+\frametitle{One More Ingredient \dots}
 
 \begin{itemize}
 \setlength{\itemsep}{2mm}
-\item  \jemph{Idiosyncratic shocks:} Frictionless observation
+\item[] \jemph{Idiosyncratic shocks:} Frictionless observation
   \begin{itemize}
   \setlength{\itemsep}{1mm}
   \item I notice if I am fired, promoted, somebody steals my wallet
-  \item  True RW with respect to these
   \end{itemize}
-\item \jemph{Aggregate shocks:} Sticky observation
+\item[] \jemph{Aggregate shocks:} Sticky observation
  \begin{itemize}
    \setlength{\itemsep}{1mm}
   \item May not instantly notice changes in aggregate productivity
   \end{itemize}
 \end{itemize}
-
-\item \jbemph{Result:}
+\bigskip
+So...
 \begin{itemize}
   \setlength{\itemsep}{1mm}
-\item  \jemph{Idiosyncratic $\Delta \mathbf{c}$}: dominated by frictionless RW part
-\item  \jemph{Aggregate     $\Delta \mathbf{C}$}: highly serially correlated\\
-  Law of large numbers $\Rightarrow$ idiosyncratic part vanishes
+\item[]  \jemph{Idiosyncratic $\Delta \mathbf{c}$}: dominated by frictionless dynamics
 \end{itemize}
+But law of large numbers $\Rightarrow$ idiosyncratic part vanishes
+\begin{itemize}
+\item[]  \jemph{Aggregate     $\Delta \mathbf{C}$}: highly serially correlated
 \end{itemize}
+
 
 \end{frame}
 
@@ -451,28 +446,37 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 %\section{The Real Model}
 %\subsection{Frictionless Setup}
 \begin{frame}
-\frametitle{Serious Models}
+\frametitle{Full Model}
 
 \begin{block}{Partial Equilibrium/Small Open Economy}
 \begin{itemize}
 \item  CRRA Utility
 \item  Idiosyncratic Shocks Calibrated From Micro Data
 \item  Aggregate Shocks Calibrated From Macro Data
-\item Markov Process (Discrete RW) for Aggr Income Growth
+\item Markov Process (Discrete RW) for Agg. Income Growth
   \begin{itemize}
   \item Handles changing growth `eras'
   \end{itemize}
 \item  Liquidity Constraint
 \item  Mildly Impatient Consumers
+\item  \cite{blanchardFinite} Mortality and Insurance
 \end{itemize}
 \end{block}
 
-\begin{block}{DSGE Heterogeneous Agents (HA) Model}
-\begin{itemize}
-\item  Same!
-\end{itemize}
-\end{block}
+
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Solving the Model}
+
+All results are generated using the open-source Econ-ARK toolkit:
+\bi
+\item \url{http://econ-ark.org}
+\ei
+
+\end{frame}
+
 
 
 \begin{frame}
@@ -502,89 +506,6 @@ $$
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{\cite{blanchardFinite} Mortality and Insurance}
-
-\begin{itemize}
-\item  Household survives from $t$ to $t+1$ with probability $(1-\PDies)$:
-\begin{equation*} \ifnumSw
-{p}_{t+1,i} =
-  \begin{cases}
-    1 & \text{for newborns}
-\\ \ifnumSw  {p}_{t,i} \psi_{t+1,i} & \text{for survivors}
-  \end{cases}
-\end{equation*}
-
-
-\item Blanchardian scheme:
-\begin{equation*} \ifnumSw
-\kLevBF_{t+1,i}  =
-\begin{cases}
-                         0                       & \text{if HH $i$ dies, is replaced by newborn}
-\\ \aLevBF_{t,i} \big/(1-\PDies) & \text{if household $i$ survives}
-\end{cases} \label{eq:tontine}
-\end{equation*}
-\item Implies for aggregate:
-\begin{eqnarray*}
-\ifnumSw      \KLevBF_{t+1} & = & \int_{0}^{1} \left(\frac{1-\pDies_{t+1,i}}{1-\PDies}\right) \aLevBF_{t,i}   \,\text{d}i   \label{eq:Ktp1} = \ALevBF_{t}
-\ifnumSw  \\          K _{t+1} & = &  \ALev_{t}\big/(\Psi_{t+1} \PtyGro_{t+1}) \ifnumSw
-\end{eqnarray*}
-
-
-%\item Implies steady-state distribution of ${p}$ with variance:
-%
-%\begin{eqnarray}
-% \text{var}(p) & = & \left(\frac{\PDies}{1-(1-\PDies) \Ex[\pShk^{2}]}-1\right) \nonumber
-%\end{eqnarray}
-
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Resources}
-
-\begin{itemize}
-\item  Market resources:
-%labor income+capital+capital income:
-$$\mLevBF_{t,i} = \underbrace{{\bf \Wage_t} \pmb{\ell}_{t,i}}_{\equiv\, \yLevBF_{t}} + \underbrace{{\Rprod_t}}_{\daleth\,+\,\rfree_t} \kLevBF_{t,i}$$
-\item End-of-Period `Assets'---Unspent resources:
-\begin{eqnarray*}
-\ifnumSw \mathbf{a}_{t,i} & = & \mathbf{m}_{t,i}-\mathbf{c}_{t,i}
-\end{eqnarray*}
-
-\item Capital transition depends on prob of survival $1-\PDies$:
-\begin{eqnarray*}
-\ifnumSw  \mathbf{k}_{t+1,i} & = &   \mathbf{a}_{t,i}\big/(1-\PDies)
-\end{eqnarray*}
-
-\end{itemize}
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Frictionless Solution}
-
-\begin{itemize}
-\setlength{\itemsep}{2mm}
-\item  For exposition: Assume constant $\Wage$ and $\Rprod$
-\item  Normalize everything by $\pLev_{t,i}\equiv{p}_{t,i} {P}_{t}$, e.g.\ $m_{t,i}=\mathbf{m}_{t,i}\big/({p}_{t,i}{P}_{t})$
-\item $\cFunc(m,\PtyGro)$ is the function that solves:
-\begin{equation*}
- v(m_{t,i},\Phi_t) = \max_{\cRat} \util(\cRat) + \PLives\DiscFac \Ex_{t}\big[(\Phi_{t+1}\pmb{\pShk}_{t+1,i})^{1-\CRRA}v(m_{t+1,i},\Phi_{t+1})\big]
-\end{equation*}
-
-\item Level of consumption:
-$$\cLevBF_{t,i} = \cFunc(m_{t,i}, \PtyGro_t) \times {p}_{t,i}{P}_{t}$$
-
-%\item Test: $\eta=\chi=\alpha=0$ in
-%\input \eq/microEuler.tex
-\end{itemize}
-\end{frame}
-
 %\subsection{Sticky Expectations}
 \begin{frame}
 \frametitle{Sticky Expectations about Aggregate Income}
@@ -597,92 +518,73 @@ $$\cLevBF_{t,i} = \cFunc(m_{t,i}, \PtyGro_t) \times {p}_{t,i}{P}_{t}$$
 $$
   \perc{P}_{t,i}=\Ex_{t-n}\big[P_t\big\vert\Omega_{t-n}\big]=\Phi_{t-n}^nP_{t-n}
 $$
-because $\Phi$ is random walk 
+because $\Phi$ is random walk
 \ei
+\bigskip  
+\jemph{\textbf{Key Assumption:}}\\
+\begin{itemize}
+	\item  People act as if their perceptions about aggregate state $\{\perc{P}_{t,i},\perc{\PtyGro}_{t,i}\}$
+	are the true aggregate state $\{P_t,\PtyGro_t\}$
+	\item[] $\implies$ Model solution is \textit{exactly} the same as the frictionless model
+\end{itemize}
 \end{frame}
 
 
-
+\begin{comment}
 \begin{frame}
 \frametitle{Sticky Expectations about Aggregate Income}
 
 \jbemph{\large Sequence Within Period}\\
 \begin{enumerate}
 \setlength{\itemsep}{2mm}
-\item Income shocks are realized and every individual sees her true $\mathbf{y}$ and $\mathbf{m}$,
-i.e.\ $\mathbf{y}_{t,i}=\perc{\mathbf{y}}_{t,i}$ and $\mathbf{m}_{t,i}=\perc{\mathbf{m}}_{t,i}$ for all $t$ and $i$
+\item Income shocks are realized and every individual sees her true income, $\mathbf{y}$ and market resources, $\mathbf{m}$
 
-\item Updating shocks realized: $i$ observes true $P_t, \PtyGro_t$ w/ prob $\Pi$;\\
-forms perceptions of her normalized market resources $\perc{\mLev}_{t,i}$
+\item Updating shocks realized: $i$ observes true $P_t, \PtyGro_t$ w/ prob $\Pi$
 
-\item Consumes based on her perception, \jemph{using $\cFunc(\perc{m}_{t,i},\perc{\PtyGro}_{t,i})$}\\[1mm]
-
+\item Consumes based on her perception of the aggregate state\\
+\bigskip
   \jemph{\textbf{Key Assumption:}}\\
     \begin{itemize}
     \item  People act as if their perceptions about aggregate state $\{\perc{P}_{t,i},\perc{\PtyGro}_{t,i}\}$
 are the true aggregate state $\{P_t,\PtyGro_t\}$
+\item[] $\implies$ Model solution is \textit{exactly} the same as the frictionless model
     \end{itemize}
 
 \end{enumerate}
 
 \end{frame}
-
+\end{comment}
 
 \begin{frame}
-\frametitle{Behavior under Sticky Expectations}
-\bi
-\setlength{\itemsep}{2mm}
-\item \jemph{Normalized resources:}
-  \begin{itemize}
-  \item   $\jemph{m_{t,i}}\equiv\mathbf{m}_{t,i}\big/({p}_{t,i}{P}_{t})$ is {\it actual}\\
-\item \jemph{\phantom{Normalized resources:}} $\jemph{\perc{m}_{t,i}}\equiv\mathbf{m}_{t,i}\big/({p}_{t,i}\perc{P}_{t,i})$ is {\it perceived}
-  \end{itemize}
+\frametitle{Key Parameter Values}
+\label{key_parameters}
+%\ptsize{9}
+\small
+\begin{center}
+	\begin{tabular}{cd{5}l}  
+		\\ \toprule  
+		\multicolumn{3}{c}{ \textbf{Preference Parameters} }  
+		\\ $\rho$ & 2 & Coefficient of Relative Risk Aversion 
+		\\ $\beta$ &  0.970 & Discount Factor (SOE Model) 
+		\\ $\Pi$                    & 0.25  & Probability of Updating Expectations (if Sticky) 
+		\\ ${K}/{K}^{\kapShare}$ & 12.0 & SS Capital to Output Ratio 
+		\\ \midrule  
+		\multicolumn{3}{c}{ \textbf{Shock Parameters} }  
+		\\ $\sigma_{\theta}^{2}$    & 0.120     & Variance Idiosyncratic Tran Shocks (=$4 \times$ Annual) 
+		\\ $\sigma_{\psi}^{2}$      &0.003      & Variance Idiosyncratic Perm Shocks (=$\frac{1}{4} \times$ Annual) 
+		\\ $\sigma_{\Theta}^{2}$ & 0.00001 & Variance Aggregate Transitory Shocks 
+		\\ $\sigma_{\Psi}^{2}$ & 0.00004 & Variance Aggregate Permanent Shocks 
+		\\ $\wp$                    & 0.050  & Probability of Unemployment Spell 
+		\\ $\PDies$             & 0.005  & Probability of Mortality 
+		\\ \bottomrule  
+	\end{tabular}  
+\end{center} 
 
-\item \jbemph{Usually $\perc{m}_{t,i}\not={m}_{t,i}$ because $P_{t}$ not perfectly observed}\\
-  \begin{itemize}
-  \item in levels: $\perc{\mathbf{m}}_{t,i}=\mathbf{m}_{t,i}$; but normalized: $\perc{m}_{t,i}\not={m}_{t,i}$ 
-  \end{itemize}
+\hyperlink{calibration1}{\beamerbutton{Full Calibration}}
 
-\item {\small Consumers behave according to frictionless consumption function}
-
-\item But \jbemph{based on $\perc{m}_{t,i}$} (not ${m}_{t,i}$):
-\begin{eqnarray*}
- \perc{c}_{t,i} & = & \cFunc(\perc{m}_{t,i},\perc{\PtyGro}_{t,i}) \\
- \cLevBF_{t,i} & = & \perc{c}_{t,i}\times{p}_{t,i}\perc{P}_{t,i}
-\end{eqnarray*}
-
-\item Correctly perceive level of their own spending $\cLevBF_{t,i}$
-\end{itemize}
-%\input \eq/aBari.tex
-
-%\input \eq/kBartp1i.tex
 \end{frame}
-
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\subsection{`Representative Agent' Version}
-\begin{frame}
-\frametitle{DSGE Heterogeneous Agents Model}
-
-\begin{itemize}
-\item  Idiosyncratic and aggregate shocks same as PE/SOE
-\item  Endogenous $\Wage_t$ and $\Rprod_t$
-\item Aggregate market resources $M_t$ is a state variable
-\small
-\begin{equation*}
- v(m_{t,i},\jemph{M_t},\PtyGro_t) = \max_{\cRat} \util(\cRat) + \PLives\DiscFac \Ex_{t}\big[(\Phi_{t+1}\pmb{\pShk}_{t+1,i})^{1-\CRRA}v(m_{t+1,i},\jemph{M_{t+1}},\PtyGro_{t+1})\big]
-\end{equation*}
-\normalsize
-\item Solved using \cite{ksHetero}
-\item  Perception dynamics identical to sticky PE/SOE:
-$$\cLevBF_{t,i} = \cFunc(\perc{m}_{t,i},\jemph{\perc{M}_{t,i}},\perc{\PtyGro}_{t,i})\times{p}_{t,i}\perc{P}_{t,i}$$
-\end{itemize}
-\end{frame}
-
 
 
 \begin{frame}
@@ -711,7 +613,7 @@ $$
 \end{frame}
 
 
-
+\begin{comment}
 \begin{frame}
 \frametitle{Micro vs Macro: Theory and Empirics}
 \begin{eqnarray}
@@ -736,31 +638,7 @@ $$
 \end{tabular}
 \end{center}
 \end{frame}
-
-
-
-
-
-\begin{frame}
-\frametitle{Calibration I}
-%\ptsize{9}
-\small
-\input ../Tables/Calibration_1.tex
-
-
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Calibration II}
-%\ptsize{9}
-\small
-\input ../Tables/Calibration_2.tex
-
-
-\end{frame}
-
-
+\end{comment}
 
 %\subsection{Simulated Data}
 \begin{frame}
@@ -797,7 +675,7 @@ $$
 
 %\providecommand{\DirCampManVsStickyE}{/Volumes/Data/Work/cAndCwithStickyEArchive/Empirical/US/Results/LaTeX/tables}
 
-\footnotesize
+\scriptsize
 
 %\input \TabsDir/slides/tEmpiricalConsNondurables.tex
 \input ../Tables/tEmpiricalCons.tex
@@ -828,28 +706,6 @@ $$
 
 
 
-\begin{frame}
-\frametitle{Heterogeneous Agents DSGE: Sticky}
-
-\scriptsize
-%\begin{center}
-\input ../Tables/DSGEmrkvSimRegS.tex
-
-\end{frame}
-
-
-
-\begin{frame}
-\frametitle{Heterogeneous Agents DSGE: Frictionless}
-
-\scriptsize
-%\begin{center}
-\input ../Tables/DSGEmrkvSimRegF.tex
-
-\end{frame}
-
-
-
 
 %\section{Conclusion}
 %\subsection{Conclusion}
@@ -874,12 +730,31 @@ sticky expectations:
 \begin{eqnarray*}\label{eq:WTP}
 \omega & = & 1 - \left( \frac{\overline{\widetilde{\vFunc}}_0}{\overline{\vFunc}_0} \right)^{\frac{1}{1-\CRRA}}
 \end{eqnarray*}
-\item \jbemph{$\omega \approx 0.05\%$ of permanent income}\\
-$\omega_{SOE}=4.82\text{e--4}$; $\omega_{HA-DSGE}=4.51\text{e--4}$
+\item \jbemph{$\omega \approx 0.05\%$ of permanent income}
 \end{itemize}
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Excess Sensitivity to Fiscal Stimulus}
+	Replicate \cite{psjmMPC2008} results:
+	\begin{itemize}
+		\item Little response when stimulus announced
+		\item MPC 0.12-0.3 on arrival of check
+	\end{itemize}
+	We model stimulus as \textit{macro} news - only some households notice the announcement\\
+	Calibrate to \textit{distribution} of liquid wealth to achieve high MPCs\\
+	Announcement occurs one quarter before check arrives
+\end{frame}
+
+\begin{frame}
+\frametitle{Excess Sensitivity to Fiscal Stimulus}
+  \begin{figure}
+	\begin{center}
+		\includegraphics[width=.9\textwidth]{../Figures/parkerExperiment}
+	\end{center}
+\end{figure}
+\end{frame}
 
 
 \begin{frame}
@@ -903,7 +778,7 @@ Model with `Sticky Expectations' of aggregate variables can match both micro and
 \\ \midrule \multicolumn{2}{l}{Macro}
 \\ & Data             & $\approx 0.75$     & $\approx 0$           & $< 0$
 \\ & Theory: Habits             & $\approx 0.75$     & $\approx 0$           & $< 0$
-\\ & Theory: Habits             & $\approx 0.75$     & $\approx 0$           & $< 0$
+\\ & Theory: Sticky Expectations             & $\approx 0.75$     & $\approx 0$           & $< 0$
 \\ \bottomrule
 %\\ & Data:CampMan            &                    & $0.50$                  & $> 0$
 %\\ & Data (Sommer)           & $0.7$              & $0.15$                  & $> 0$
@@ -919,17 +794,48 @@ Model with `Sticky Expectations' of aggregate variables can match both micro and
 
 \beamerdefaultoverlayspecification{<*>}
 
-\begin{frame}[t,allowframebreaks]
+\begin{frame}[t,allowframebreaks,noframenumbering]
 \frametitle{References}
 
-\input econtexBibMake
+%\input econtexBibMake
+
+%\write18{if [ `kpsewhich economics.bib` != '' ]; then touch economics.bib    ; fi} # This should be done only for final versions AFTER bibexport has occurred and \jobname.bib is populated
+%\write18{if [ ! -f \jobname.bib     ]; then touch \jobname.bib     ; fi}
+%\write18{if [ ! -f \jobname-Add.bib ]; then touch \jobname-Add.bib ; fi}
+
+\bibliographystyle{econtex}
+\bibliography{economics,cAndCwithStickyE-Slides,cAndCwithStickyE-Slides-Add}
+
+
 \end{frame}
 
 \normalsize
 
 
 
-\begin{frame}
+\begin{frame}[noframenumbering]
+\frametitle{Calibration I}
+\label{calibration1}
+%\ptsize{9}
+\small
+\input ../Tables/Calibration_1.tex
+
+\hyperlink{key_parameters}{\beamerbutton{Back}}
+
+\end{frame}
+
+
+\begin{frame}[noframenumbering]
+\frametitle{Calibration II}
+%\ptsize{9}
+\small
+\input ../Tables/Calibration_2.tex
+
+\hyperlink{key_parameters}{\beamerbutton{Back}}
+\end{frame}
+
+
+\begin{frame}[noframenumbering]
   \frametitle{Markov Process for Aggregate Productivity Growth $\Phi$}
 
 $
@@ -952,7 +858,7 @@ $
 
 
 
-\begin{frame}
+\begin{frame}[noframenumbering]
 \frametitle{Equilibrium}
 
 \footnotesize
@@ -960,8 +866,8 @@ $
 
 \end{frame}
 
-
-\begin{frame}
+\begin{comment}
+\begin{frame}[noframenumbering]
 \frametitle{Cost of Stickiness}
 Define (for given parameter values):
 \begin{center}
@@ -982,7 +888,7 @@ Guess (and verify) that:
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[noframenumbering]
 \frametitle{Cost of Stickiness: $\omega$ and $\Pi$}
 
 Costs of stickiness $\omega$ and prob of aggr info updating $\Pi$
@@ -998,7 +904,7 @@ Costs of stickiness $\omega$ and prob of aggr info updating $\Pi$
 
 
 
-\begin{frame}
+\begin{frame}[noframenumbering]
 \frametitle{Cost of Stickiness: Solution}
 Suppose utility cost of attention is $\iota\Pi$.
 \begin{itemize}
@@ -1019,9 +925,9 @@ Optimal $\Pi$ characteristics:
 
 
 \end{frame}
+\end{comment}
 
-
-\begin{frame}
+\begin{frame}[noframenumbering]
 \frametitle{Is Muth--Lucas--Pischke Kalman Filter Equivalent?}
 
 \jbemph{No.}\\
@@ -1045,7 +951,7 @@ Optimal $\Pi$ characteristics:
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[noframenumbering]
 \frametitle{Muth--Pischke Perception Dynamics}
 
 

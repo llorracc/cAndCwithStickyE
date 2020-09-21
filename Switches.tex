@@ -1,22 +1,27 @@
+% Resources that need to be accessible from various different locations
 
 \providecommand{\YLevBF}{\ensuremath{\mathbf{Y}}}
 \renewcommand{\pDies}{\ensuremath{\mathsf{d}}}
+%\renewcommand{\PDies}{\ensuremath{\mathsf{D}}}
+%\renewcommand{\PLives}{\ensuremath{(1-\mathsf{D})}}
 
 \providecommand{\aggrSavingRuleCoeff}{\ensuremath{\kappa}}
 \providecommand{\stnRatio}{\ensuremath{\tau}}
 
 \newcommand{\TabsDir}{\econtexRoot/Tables}\newcommand{\Calibration}{\econtexRoot/Calibration}
-\newcommand{\W}{\mathcal{W}}            
+\newcommand{\W}{\mathcal{W}}            % Include or exclude aggregate wage in individual problem - to include, should be \newcommand{\W}{W}
 
 \provideboolean{Depreciation}
 \setboolean{Depreciation}{true}
+%\setboolean{Depreciation}{false}
 \provideboolean{MicroDepr}
 \setboolean{MicroDepr}{true}
+%\setboolean{Depreciation}{false}
 \newcommand{\ifDepr}{\ifthenelse{\boolean{Depreciation}}}
 \newcommand{\MicroDepr}{\ifthenelse{\boolean{MicroDepr}}}
 
-\newcommand{\RBet}{\mathbf{R}} 
-\newcommand{\rBet}{\mathbf{r}} 
+\newcommand{\RBet}{\mathbf{R}} % Bold  version is between-period rate; \mathcal version is within
+\newcommand{\rBet}{\mathbf{r}} % Bold  version is between-period rate; \mathcal version is within
 \newcommand{\RIn}{\mathcal{R}}
 \newcommand{\rIn}{r}
 
@@ -24,10 +29,11 @@
 \provideboolean{Growth}
 \setboolean{Growth}{true}
 \setboolean{Growth}{false}
-\newcommand{\ifGG}{\ifthenelse{\boolean{Growth}}}  
+\newcommand{\ifGG}{\ifthenelse{\boolean{Growth}}}  % Switch for whether to include productivity growth in formulae; useful for programming/debugging
 
-\provideboolean{numSwitch}     
-\setboolean{numSwitch}{true}   
+\provideboolean{numSwitch}     % Switch that suppresses eqn numbers on slides but not in text
+\setboolean{numSwitch}{true}   % Set to true  at beginning of text
+%\setboolean{numSwitch}{false} % Set to false at beginning of slides
 \providecommand{\ifnumSw}{\ifthenelse{\boolean{numSwitch}}{}{\nonumber}}
 
 \provideboolean{Slides}
@@ -39,13 +45,16 @@
 \setboolean{ZeroProb}{true}
 \newcommand{\ifZero}{\ifthenelse{\boolean{ZeroProb}}}
 
-\provideboolean{DocVersion} 
+\provideboolean{DocVersion} % If true, produce an elaborate version of the document that contains all formulae used in the software
 \setboolean{DocVersion}{false}
 \setboolean{DocVersion}{true}
+%\providecommand{\ifDoc}{\ifthenelse{\boolean{DocVersion}}}
 \providecommand{\ifDoc}{\marginpar{\tiny{DocAndNodocVersions}}\emph}
 
+% ExtraExplain toggles whether to include the explanation for why we can't assume \bar{\ell}=\ell
 \provideboolean{ExtraExplain}
 \setboolean{ExtraExplain}{false}
+%\setboolean{ExtraExplain}{true}
 \newcommand{\ifExplain}{\ifthenelse{\boolean{ExtraExplain}}}
 
 \provideboolean{ShowStickyE}

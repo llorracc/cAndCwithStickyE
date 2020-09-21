@@ -7,6 +7,3 @@ future
 joblib
 dill
 scipy
-pandas
-statsmodels
-psutil

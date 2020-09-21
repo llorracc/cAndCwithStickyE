@@ -7,7 +7,7 @@
 \setcounter{secnumdepth}{4}
 \input{./Revision/Notation.tex}
 \usepackage{xr}
-\externaldocument{cAndCwithStickyE} 
+\externaldocument{cAndCwithStickyE} % Let appendix access references from main paper
 
 \provideboolean{ifWeb}
 \setboolean{ifWeb}{false}
@@ -18,6 +18,10 @@
 }{}
 
 
+%\titleformat{\paragraph}
+%{\sffamily\mdseries\normalsize}{\theparagraph}{1em}{}
+%\titlespacing*{\paragraph}
+%{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \hypersetup{pdfauthor={Christopher Carroll <ccarroll@jhu.edu>, Edmund Crawley <ecrawle2@jhu.edu>, Jiri Slacalek <jiri.slacalek@ecb.europa.eu>, Kiichi Tokuoka <kiichi.tokuoka@mof.go.jp>, Matthew N White <mnwecon@udel.edu>},
 	pdftitle={Sticky Expectations and Consumption Dynamics},
@@ -31,7 +35,7 @@
 
 \provideboolean{StandAlone}
 \setboolean{StandAlone}{false}
-\write18{\TabsDir/StandAloneOff.command} 
+\write18{\TabsDir/StandAloneOff.command} % Tell input files that they are being pulled in from the master (and are not standalone documents)
 
 \begin{document}\bibliographystyle{\econtexBibStyle}
 	
@@ -69,11 +73,11 @@
 			\and
 			Matthew N. White\authNum \\ {\small UDel}
 		}
-	} 
+	} % End ifWeb
 	
 	\keywords{Consumption, Expectations, Habits, Inattention}
 	\jelclass{D83, D84, E21, E32}
-	
+	% \aspublished{Final version as published in [].}
 	
 	
 	\date{May 22, 2019}
@@ -83,7 +87,7 @@
 	\begin{abstract}
 		\opt{JournalFormatting}{\doublespacing}
 		\begin{verbatimwrite}{./\jobname-abstract.metadata}
-			To match empirical evidence about aggregate consumption dynamics, representative agent macroeconomic models require some mechanism to generate `excess smoothness' in consumption growth.   But a large literature has found no evidence of corresponding smoothness in microeconomic data; consequently, existing microfounded models constructed to match the microdata fail to match the macro smoothness facts.  We show that the micro and macro evidence can be reconciled by a microfounded model in which consumers have accurate knowledge of their personal circumstances but `sticky expectations' about the macroeconomy, and the persistence of aggregate consumption growth reflects consumers' imperfect attention to aggregate shocks. Our proposed degree of (macro) inattention has negligible utility costs because aggregate shocks constitute only a tiny proportion of the uncertainty that consumers face.
+			To match empirical evidence about aggregate consumption dynamics, representative agent macroeconomic models require some mechanism to generate `excess smoothness' in consumption growth.   But a large literature has found no evidence of corresponding smoothness in microeconomic data; consequently, existing microfounded models constructed to match the microdata fail to match the macro smoothness facts.  We show that the micro and macro evidence can be reconciled by a microfounded model in which consumers have accurate knowledge of their personal circumstances but `sticky expectations' about the macroeconomy, and the persistence of aggregate consumption growth reflects consumers' imperfect attention to aggregate shocks. Our proposed degree of (macro) inattention has negligible utility costs because aggregate shocks constitute only a tiny proportion of the uncertainty that consumers face.% R2 - contribution
 		\end{verbatimwrite}
 		\input{./\jobname-abstract.metadata}
 	\end{abstract}
@@ -92,7 +96,7 @@
 		\parbox{\textwidth}{
 			\begin{center}
 				\begin{tabbing}
-					\texttt{~~~~PDF:~} \= \= \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \kill \\  
+					\texttt{~~~~PDF:~} \= \= \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \kill \\  % This line establishes the locations of the tabs, but is not printed because of the \kill directive
 					\texttt{~~~Repo:~} \= \= \url{https://github.com/llorracc/cAndCwithStickyE}  \\
 					\texttt{~~~~PDF:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \\
 					\texttt{~~~~Web:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE/} \\
@@ -116,8 +120,8 @@
 	
 	\titlepagefinish
 	\setcounter{page}{1}
-	\setcounter{table}{4} 
-	\setcounter{equation}{20} 
+	\setcounter{table}{4} % This needs to be changed if tables are changed in the main paper
+	\setcounter{equation}{20} % This needs to be changed if equations are changed in the main paper
 	
 	\pagebreak
 
@@ -179,8 +183,11 @@
 \input\econtexRoot/LaTeX/appendices/QuadCDyn.tex
 
 
+%\subsection{Calibration of Aggregate Income Process}\label{appendix:AggCalib}
 
+%\input\econtexRoot/Empirical/US/Results/LaTeX/AggCalibPermTran.tex
 
+%\input Appendix/EYGivenMandL.tex
 
 
 
@@ -195,6 +202,7 @@
 \subsection{\cite{muthOptimal} Signal Extraction}\label{appendix:Muth}
 
 \input\econtexRoot/LaTeX/appendices/MuthPre-muthOptimal.texinput
+%\input\eq/muthOptimal.tex
 
 \end{verbatimwrite}
 \input{./cAndCwithStickyE-App.texinput}
