@@ -5,7 +5,7 @@
 \newcommand{\texname}{cAndCwithStickyE}
 \usepackage{\econtexSetup}\usepackage{\econtexShortcuts}
 \usepackage[nolists,nomarkers,tablesonly]{endfloat}
-\usepackage{datetime}
+\usepackage{datetime2}
 \setcounter{secnumdepth}{4}
 \input{./Revision/Notation.tex}
 \usepackage{xr}
@@ -65,7 +65,7 @@
     Sticky Expectations and Consumption Dynamics
   \end{verbatimwrite}
 
-  \hfill{\tiny \jobname, \today, \currenttime}
+  \hfill{\tiny \jobname, \today, \DTMcurrenttime}
 
   \title{Sticky~Expectations~and~Consumption~Dynamics}
 
@@ -121,7 +121,7 @@
         \begin{tabbing}
           \texttt{~~~~~PDF:~} \= \= \url{https://llorracc.github.io/cAndCwithStickyE/cAndCwithStickyE.pdf} \\ %\kill \\  % This line establishes the locations of the tabs, but is not printed because of the \kill directive
           \texttt{~~~~Repo:~} \= \= \url{https://github.com/llorracc/cAndCwithStickyE}  \\
-          % \texttt{~~~~~PDF:~} \> \> \url{http://econ.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \\
+          % \texttt{~~~~~PDF:~} \> \> \url{https://www.econ2.jhu.edu/people/ccarroll/papers/cAndCwithStickyE.pdf} \\
           \texttt{Appendix:~} \> \> \url{https://llorracc.github.io/cAndCwithStickyE-App.pdf} \\
           \texttt{~~~~~Web:~} \> \> \url{https://llorracc.github.io/cAndCwithStickyE/} \\
           % \texttt{~BibTeX:~} \> \> \url{https://llorracc.github.io/cAndCwithStickyE.bib} \\
@@ -136,7 +136,7 @@
     \ifthenelse{\boolean{ifWeb}}{}{\end{small}} % \end{Web}
 
   \begin{authorsinfo}
-    \name{Carroll: Department of Economics, Johns Hopkins University, \url{http://econ.jhu.edu/people/ccarroll/}, \href{mailto:ccarroll@jhu.edu}{\texttt{ccarroll@jhu.edu}}}
+    \name{Carroll: Department of Economics, Johns Hopkins University, \url{https://www.econ2.jhu.edu/people/ccarroll/}, \href{mailto:ccarroll@jhu.edu}{\texttt{ccarroll@jhu.edu}}}
     \name{Crawley: Department of Economics, Johns Hopkins University, \href{mailto:ecrawle2@jhu.edu}{\texttt{ecrawle2@jhu.edu}}}
     \name{Slacalek: DG Research, European Central Bank, \url{http://www.slacalek.com/}, \href{mailto:jiri.slacalek@ecb.europa.eu}{\texttt{jiri.slacalek@ecb.europa.eu}}}
     \name{Tokuoka: Ministry of Finance, Japan, \href{mailto:kiichi.tokuoka@mof.go.jp}{\texttt{kiichi.tokuoka@mof.go.jp}}}
@@ -152,7 +152,7 @@
 \titlepagefinish
 
 % If web version, then just incorporate thanks at beginning of text instead of in frontmatter
-\ifthenelse{\boolean{ifWeb}}{\medskip \noindent {\footnotesize \thankstext \medskip \medskip \medskip  }}{\pagebreak } % \end{Web}
+\ifthenelse{\boolean{ifWeb}}{\medskip \noindent {\footnotesize \thankstext \medskip \medskip \medskip  \noindent \hrule height 0.4pt depth 0.0pt width \textwidth \relax}}{\pagebreak } % \end{Web}
 \setcounter{page}{1}
 
 \begin{figure}
@@ -197,6 +197,8 @@ Aggregate consumption sluggishness \textit{a la} \cite{cdSmooth} arises as follo
 \input{./Highlighted/Excess-Sensitivity-Flag}
 
 Because our model is formulated as a deviation from a maximizing model, we can calculate explicit utility costs of that deviation, which are small because the comparatively small size of the aggregate shocks means that neglecting them temporarily causes only small and temporary errors in the level of consumption.  Consistent with a theme in the literature all the way back to \cite{ayNearRational}, we find that the utility penalty from these small errors is tiny, so that our consumers would be willing to pay very little for even perpetually perfect information about macroeconomic conditions.
+\hypertarget{Matches-Stimulus}{} % R3 response
+
 
 Furthermore, we show that our sticky expectations mechanism can be used to produce quantitatively plausible estimates of how real-world shocks and policies have affected households in past episodes (and presumptively how similar policies will work in the future).  One illustration comes in section~\ref{sec:ExcessSens}, where we show that, with no change of our baseline parameters, our sticky expectations model is able to match the empirical response of household spending to actual fiscal stimulus experiments: The model with sticky expectations can generate both the fact that consumption reacts little to an announcement of the stimulus and that it reacts substantially to the receipt of the stimulus payment.  A further real-world application is to the effects of certain kinds of monetary policy. It has long been known that sticky expectations can generate inertia in inflation and inflation expectations. Recently, it has also been proposed that they matter for the transmission of monetary policy: For example, when households have sticky expectations, they do not react quickly or strongly to central bank communication (\cite{arsInvestmentInattention}), thus helping to provide a resolution to the forward guidance puzzle.
 
