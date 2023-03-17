@@ -9,6 +9,8 @@
 \usepackage{booktabs,natbib}
 \input{\econtexRoot/Switches.tex}
 
+
+
 \definecolor{myRed}{rgb}{0.8,0,0}
 \definecolor{jirkasblue}{rgb}{0.2,0.2,0.7}
 \definecolor{jirkasred}{rgb}{0.9,0,0}
@@ -33,6 +35,8 @@
 
 %\setbeamertemplate{navigation symbols}{}  % Take away navigation symbols
 
+
+
 \providecommand{\W}{\mathcal{W}}            % Include or exclude aggregate wage in individual problem - to include, should be
 \providecommand{\perc}[1]{\widetilde{#1}}
 
@@ -42,6 +46,7 @@
 \provideboolean{MicroDepr}
 \setboolean{MicroDepr}{true}
 % \setboolean{Depreciation}{false}
+
 
 \newboolean{includeTF}
 \setboolean{includeTF}{true}
@@ -62,6 +67,7 @@
 \providecommand{\rIn}{r}
 \providecommand{\rNet}{\mathfrak{r}} % For defining consumption Euler equation
 }
+
 
 \provideboolean{Growth}
 \setboolean{Growth}{true}
@@ -108,10 +114,12 @@
 \providecommand{\TimeShortHideBegin}{\ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{false}}{}}
 \providecommand{\TimeShortHideEnd}{  \ifthenelse{\boolean{TimeShort}}{\setboolean{includeTF}{true}}{}}
 
+
 \provideboolean{TimeShort}
 \setboolean{TimeShort}{true}
 %\setboolean{TimeShort}{false}
 \providecommand{\TimeShortYN}{\ifthenelse{\boolean{TimeShort}}}
+
 
 \providecommand{\econtexRoot}{.}
 \providecommand{\eq}{\econtexRoot/Equations}
@@ -123,6 +131,7 @@
 \providecommand{\TablesDir}{\TabsDir}
 %\providecommand{\ParmDir}{C:/Jirka/Research/stickyConsumptionUS/Nov26_07/cAndCwithStickyEArchive/Calibration/Parameters}
 %\providecommand{\TablesDir}{C:/Jirka/Research/stickyConsumptionUS/Nov26_07/cAndCwithStickyEArchive/Tables}
+
 
 %\input EconDocStart
 %\input PDFDocStart
@@ -139,10 +148,13 @@
 \providecommand{\jemph}[1]{{\color{jirkasblue}#1}}
 \def\newblock{\hskip .11em plus .33em minus .07em}
 
+
 \newcolumntype{d}[1]{D{.}{.}{#1}}
 
 \usepackage[latin1]{inputenc}
 % or whatever
+
+
 
 \title[Sticky Expectations and Consumption Dynamics]{Sticky Expectations and Consumption Dynamics}
 
@@ -178,6 +190,8 @@
   \titlepage
 \end{frame}
 
+
+
 \section{Consumption: Micro Vs Macro}
 \subsection{Habits?  No!  It's Inattention}
 \begin{frame}
@@ -201,7 +215,7 @@
     \begin{itemize}
     \item  \jbemph{Uninsurable risk is essential, changes everything}
     \item Var of micro income shocks much larger than of macro shocks:\\
-\centerline{    \%jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
+\centerline{    \jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
     \item Evidence: \jbemph{``Habits'' parameter $\chi^{\text{Micro}}\approx 0.0\sim 0.1$}
     \end{itemize}
   \end{block}
@@ -214,7 +228,7 @@
   \begin{itemize}
   \item New paper in EER, \cite*{havranek:metaHabits}\\ ~~~~Meta analysis of 597 estimates of $\chi$
   \item $ \Delta \log \mathbf{C}_{t+1} = \varsigma + \chi \Delta \log \mathbf{C}_t +\epsilon $
-  \item  \%jemph{$\{\chi^{\text{Macro}},\chi^{\text{Micro}}\} = \{0.6,0.1\}$}
+  \item  \jemph{$\{\chi^{\text{Macro}},\chi^{\text{Micro}}\} = \{0.6,0.1\}$}
   \begin{figure}
 \begin{center}
 \includegraphics[width=.75\textwidth]{../Figures/microMacroMetaHistogram}
@@ -224,6 +238,8 @@
   \end{itemize}
 
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Claim: It's Not Habits, It's Inattention! (Macro not Micro)}
@@ -246,6 +262,8 @@
 \end{block}
 
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Why Macro Inattention Is Plausible}
@@ -273,26 +291,33 @@
 \frametitle{Literature on C Dynamics and Info Frictions}
 \small
 \begin{itemize}
-\item \%jemph{C Smoothness:}
+\item \jemph{C Smoothness:}
 \cite{cdSmooth}; \cite{pischkeMicroMacro};
 \cite{rotemberg&woodford:macroannual}
 
-\item \%jemph{Inattention:}
+\item \jemph{Inattention:}
 \cite{mrSlumps}; \cite{reis:inattentive}; \cite{simsInattention}; \cite{mackWiedREStud15}; \cite{gabaixSparsityQJE}; \dots
 
-\item \%jemph{Adjustment Costs:} \cite{alvarezGuisoLippi:DurCons}; \cite{chettySzeidl:cCommitmentsEcta}
-\item \%jemph{Empirical Evidence on Info Frictions:} \cite{coibGor:AER15}; \cite{fuhrerIntrinsicPersistence}; \dots
+\item \jemph{Adjustment Costs:} \cite{alvarezGuisoLippi:DurCons}; \cite{chettySzeidl:cCommitmentsEcta}
+\item \jemph{Empirical Evidence on Info Frictions:} \cite{coibGor:AER15}; \cite{fuhrerIntrinsicPersistence}; \dots
 
-\item \%jemph{Macro Habits:}
+\item \jemph{Macro Habits:}
 \cite{abel:aerhabits}; \cite{constantinidesHabits}; all papers since \cite{cee:habits}
 
-\item \%jemph{Micro Habits:}
+\item \jemph{Micro Habits:}
 \cite{dynanHabits}; many recent papers
 
 \end{itemize}
 
 \end{frame}
 %}{}
+
+
+
+
+
+
+
 
 %\section{\href{http://www.econ2.jhu.edu/people/ccarroll/public/LectureNotes/Consumption/StickyExpectationsC/}{Toy Model}}
 %\subsection{Toy Model}
@@ -302,19 +327,19 @@
 \begin{block}{\cite{hallRandomWalk} Random Walk}
 \phantom{.}
 \begin{itemize}
-\item \%jemph{Total Wealth} (Human$\,+\,$Nonhuman):\\
+\item \jemph{Total Wealth} (Human$\,+\,$Nonhuman):\\
 \begin{center}
 {$\wAllLev_{t+1} = (\wAllLev_{t}-\cLevBF_{t})\Rfree+\zeta_{t+1}$}
 \end{center}
-\item \%jemph{C Euler Equation}: \\
+\item \jemph{C Euler Equation}: \\
 \begin{center}
 {$\uFunc^{\prime}(\cLevBF_{t}) = \Rfree\beta \Ex_{t}[\uFunc^{\prime}(\cLevBF_{t+1})]$}
 \end{center}
-\item $\Rightarrow$ \%jemph{Random Walk} (for $\Rfree\beta=1$): \\
+\item $\Rightarrow$ \jemph{Random Walk} (for $\Rfree\beta=1$): \\
 \begin{center}
 {$\Delta \cLevBF_{t+1} = \epsilon_{t+1}$}
 \end{center}
-\item \%jemph{Expected Wealth}: \\
+\item \jemph{Expected Wealth}: \\
 \begin{center}
 {$\wAllLev_{t} = \Ex_{t}[\wAllLev_{t+1}] = \Ex_{t}[\wAllLev_{t+2}] = \dots$}
 \end{center}
@@ -322,6 +347,7 @@
 \end{block}
 
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Sticky Expectations---Individual $\mathbf{c}$}
@@ -375,6 +401,7 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{One More Ingredient: Idiosyncratic Uncertainty \dots}
 
@@ -384,13 +411,13 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 
 \begin{itemize}
 \setlength{\itemsep}{2mm}
-\item  \%jemph{Idiosyncratic shocks:} Frictionless observation
+\item  \jemph{Idiosyncratic shocks:} Frictionless observation
   \begin{itemize}
   \setlength{\itemsep}{1mm}
   \item I notice if I am fired, promoted, somebody steals my wallet
   \item  True RW with respect to these
   \end{itemize}
-\item \%jemph{Aggregate shocks:} Sticky observation
+\item \jemph{Aggregate shocks:} Sticky observation
  \begin{itemize}
    \setlength{\itemsep}{1mm}
   \item May not instantly notice changes in aggregate productivity
@@ -400,13 +427,15 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 \item \jbemph{Result:}
 \begin{itemize}
   \setlength{\itemsep}{1mm}
-\item  \%jemph{Idiosyncratic $\Delta \mathbf{c}$}: dominated by frictionless RW part
-\item  \%jemph{Aggregate     $\Delta \mathbf{C}$}: highly serially correlated\\
+\item  \jemph{Idiosyncratic $\Delta \mathbf{c}$}: dominated by frictionless RW part
+\item  \jemph{Aggregate     $\Delta \mathbf{C}$}: highly serially correlated\\
   Law of large numbers $\Rightarrow$ idiosyncratic part vanishes
 \end{itemize}
 \end{itemize}
 
 \end{frame}
+
+
 
 %\section{The Real Model}
 %\subsection{Frictionless Setup}
@@ -434,6 +463,7 @@ $\CLevBF_{t} = \int_{0}^{1} \cLevBF_{t,i}\,\text{d}i$
 \end{block}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Income Process}
 
@@ -445,8 +475,8 @@ $$
 
 \item  Idiosyncratic and aggregate $p$ evolve according to
 \begin{eqnarray*}
-{{p}}_{t+1,i} & =&  \phantom{\%jemph{\PtyGro}_{t+1}}{{p}}_{t,i} \psi_{t+1,i}  \\
- {P}_{t+1\phantom{,i}} & =&  \%jemph{\PtyGro}_{t+1} {P}_{t\phantom{,i}}\Psi_{t+1}
+{{p}}_{t+1,i} & =&  \phantom{\jemph{\PtyGro}_{t+1}}{{p}}_{t,i} \psi_{t+1,i}  \\
+ {P}_{t+1\phantom{,i}} & =&  \jemph{\PtyGro}_{t+1} {P}_{t\phantom{,i}}\Psi_{t+1}
 \end{eqnarray*}
 
 %\item  $\Ex_{t}[\theta_{t+n}]=\Ex_{t}[\Theta_{t+n}]=\Ex_{t}[\pShk_{t+n}]=\Ex_{t}[\PShk_{t+n}]=1\quad\forall~n>0$
@@ -474,6 +504,7 @@ $$
   \end{cases}
 \end{equation*}
 
+
 \item Blanchardian scheme:
 \begin{equation*} \ifnumSw
 \kLevBF_{t+1,i}  =
@@ -488,6 +519,7 @@ $$
 \ifnumSw  \\          K _{t+1} & = &  \ALev_{t}\big/(\Psi_{t+1} \PtyGro_{t+1}) \ifnumSw
 \end{eqnarray*}
 
+
 %\item Implies steady-state distribution of ${p}$ with variance:
 %
 %\begin{eqnarray}
@@ -496,6 +528,8 @@ $$
 
 \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Resources}
@@ -517,6 +551,8 @@ $$\mLevBF_{t,i} = \underbrace{{\bf \Wage_t} \pmb{\ell}_{t,i}}_{\equiv\, \yLevBF_
 \end{itemize}
 
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Frictionless Solution}
@@ -546,13 +582,15 @@ $$\cLevBF_{t,i} = \cFunc(m_{t,i}, \PtyGro_t) \times {p}_{t,i}{P}_{t}$$
 \bi
 \item {\it True} Permanent income: ${P}_{t+1} =  \PtyGro_{t+1} {P}_{t}\Psi_{t+1}$\\
 \item Tilde ($\perc{P}$) denotes perceived variables
-\item \%jemph{Perception for consumer who has not updated for $n$ periods:}
+\item \jemph{Perception for consumer who has not updated for $n$ periods:}
 $$
   \perc{P}_{t,i}=\Ex_{t-n}\big[P_t\big\vert\Omega_{t-n}\big]=\Phi_{t-n}^nP_{t-n}
 $$
 because $\Phi$ is random walk 
 \ei
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Sticky Expectations about Aggregate Income}
@@ -566,9 +604,9 @@ i.e.\ $\mathbf{y}_{t,i}=\perc{\mathbf{y}}_{t,i}$ and $\mathbf{m}_{t,i}=\perc{\ma
 \item Updating shocks realized: $i$ observes true $P_t, \PtyGro_t$ w/ prob $\Pi$;\\
 forms perceptions of her normalized market resources $\perc{\mLev}_{t,i}$
 
-\item Consumes based on her perception, \%jemph{using $\cFunc(\perc{m}_{t,i},\perc{\PtyGro}_{t,i})$}\\[1mm]
+\item Consumes based on her perception, \jemph{using $\cFunc(\perc{m}_{t,i},\perc{\PtyGro}_{t,i})$}\\[1mm]
 
-  \%jemph{\textbf{Key Assumption:}}\\
+  \jemph{\textbf{Key Assumption:}}\\
     \begin{itemize}
     \item  People act as if their perceptions about aggregate state $\{\perc{P}_{t,i},\perc{\PtyGro}_{t,i}\}$
 are the true aggregate state $\{P_t,\PtyGro_t\}$
@@ -578,14 +616,15 @@ are the true aggregate state $\{P_t,\PtyGro_t\}$
 
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Behavior under Sticky Expectations}
 \bi
 \setlength{\itemsep}{2mm}
-\item \%jemph{Normalized resources:}
+\item \jemph{Normalized resources:}
   \begin{itemize}
-  \item   $\%jemph{m_{t,i}}\equiv\mathbf{m}_{t,i}\big/({p}_{t,i}{P}_{t})$ is {\it actual}\\
-\item \%jemph{\phantom{Normalized resources:}} $\%jemph{\perc{m}_{t,i}}\equiv\mathbf{m}_{t,i}\big/({p}_{t,i}\perc{P}_{t,i})$ is {\it perceived}
+  \item   $\jemph{m_{t,i}}\equiv\mathbf{m}_{t,i}\big/({p}_{t,i}{P}_{t})$ is {\it actual}\\
+\item \jemph{\phantom{Normalized resources:}} $\jemph{\perc{m}_{t,i}}\equiv\mathbf{m}_{t,i}\big/({p}_{t,i}\perc{P}_{t,i})$ is {\it perceived}
   \end{itemize}
 
 \item \jbemph{Usually $\perc{m}_{t,i}\not={m}_{t,i}$ because $P_{t}$ not perfectly observed}\\
@@ -608,6 +647,11 @@ are the true aggregate state $\{P_t,\PtyGro_t\}$
 %\input \eq/kBartp1i.tex
 \end{frame}
 
+
+
+
+
+
 %\subsection{`Representative Agent' Version}
 \begin{frame}
 \frametitle{DSGE Heterogeneous Agents Model}
@@ -618,14 +662,16 @@ are the true aggregate state $\{P_t,\PtyGro_t\}$
 \item Aggregate market resources $M_t$ is a state variable
 \small
 \begin{equation*}
- v(m_{t,i},\%jemph{M_t},\PtyGro_t) = \max_{\cRat} \util(\cRat) + \PLives\DiscFac \Ex_{t}\big[(\Phi_{t+1}\pmb{\pShk}_{t+1,i})^{1-\CRRA}v(m_{t+1,i},\%jemph{M_{t+1}},\PtyGro_{t+1})\big]
+ v(m_{t,i},\jemph{M_t},\PtyGro_t) = \max_{\cRat} \util(\cRat) + \PLives\DiscFac \Ex_{t}\big[(\Phi_{t+1}\pmb{\pShk}_{t+1,i})^{1-\CRRA}v(m_{t+1,i},\jemph{M_{t+1}},\PtyGro_{t+1})\big]
 \end{equation*}
 \normalsize
 \item Solved using \cite{ksHetero}
 \item  Perception dynamics identical to sticky PE/SOE:
-$$\cLevBF_{t,i} = \cFunc(\perc{m}_{t,i},\%jemph{\perc{M}_{t,i}},\perc{\PtyGro}_{t,i})\times{p}_{t,i}\perc{P}_{t,i}$$
+$$\cLevBF_{t,i} = \cFunc(\perc{m}_{t,i},\jemph{\perc{M}_{t,i}},\perc{\PtyGro}_{t,i})\times{p}_{t,i}\perc{P}_{t,i}$$
 \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Regressions on Simulated and Actual Data}
@@ -637,20 +683,22 @@ $$
 \begin{itemize}
 \setlength{\itemsep}{2mm}
 \item \jbemph{$\chi$: Extent of habits}\\
-\%jemph{Data: Micro:} $\chi^{\text{Micro}} = 0.1$ (EER 2017 paper)\\
-\hspace*{1.1cm}\%jemph{Macro:} $\chi^{\text{Macro}} = 0.6$
+\jemph{Data: Micro:} $\chi^{\text{Micro}} = 0.1$ (EER 2017 paper)\\
+\hspace*{1.1cm}\jemph{Macro:} $\chi^{\text{Macro}} = 0.6$
 
 \item  \jbemph{$\eta$: Fraction of Y going to `rule-of-thumb' C\,=\,Y types}\\
-\%jemph{Data: Micro:} $0<\eta^{\text{Micro}} <1$ (Depends \dots)\\
-\hspace*{1.1cm}\%jemph{Macro:} $\eta^{\text{Macro}} \approx 0.5$ (\cite{cmModel})
+\jemph{Data: Micro:} $0<\eta^{\text{Micro}} <1$ (Depends \dots)\\
+\hspace*{1.1cm}\jemph{Macro:} $\eta^{\text{Macro}} \approx 0.5$ (\cite{cmModel})
 
 \item  \jbemph{$\alpha$: Precautionary saving (micro) or IES (Macro)}\\
-\%jemph{Data: Micro:} $\alpha^{\text{Micro}}<0$ (\cite{zeldes:jpe})\\
-\hspace*{1.1cm}\%jemph{Macro:} $\alpha^{\text{Macro}}<0$ (but small)\\
+\jemph{Data: Micro:} $\alpha^{\text{Micro}}<0$ (\cite{zeldes:jpe})\\
+\hspace*{1.1cm}\jemph{Macro:} $\alpha^{\text{Macro}}<0$ (but small)\\
 {[In GE $\rfree$ depends roughly linearly on $A$]}
 \end{itemize}
 
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Micro vs Macro: Theory and Empirics}
@@ -677,13 +725,19 @@ $$
 \end{center}
 \end{frame}
 
+
+
+
+
 \begin{frame}
 \frametitle{Calibration I}
 %\ptsize{9}
 \small
 \input ../Tables/Calibration_1.tex
 
+
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Calibration II}
@@ -691,7 +745,10 @@ $$
 \small
 \input ../Tables/Calibration_2.tex
 
+
 \end{frame}
+
+
 
 %\subsection{Simulated Data}
 \begin{frame}
@@ -721,6 +778,7 @@ $$
 \normalsize
 \end{frame}
 
+
 %\subsection{Actual U.S. Data}
 \begin{frame}
 \frametitle{Empirical Results for U.S.}
@@ -734,6 +792,8 @@ $$
 \normalsize
 \end{frame}
 
+
+
 \begin{frame}
 \frametitle{Small Open Economy: Sticky}
 
@@ -742,6 +802,8 @@ $$
 \input ../Tables/SOEmrkvSimRegS.tex
 
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Small Open Economy: Frictionless}
@@ -752,6 +814,8 @@ $$
 
 \end{frame}
 
+
+
 \begin{frame}
 \frametitle{Heterogeneous Agents DSGE: Sticky}
 
@@ -760,6 +824,8 @@ $$
 \input ../Tables/DSGEmrkvSimRegS.tex
 
 \end{frame}
+
+
 
 \begin{frame}
 \frametitle{Heterogeneous Agents DSGE: Frictionless}
@@ -770,8 +836,12 @@ $$
 
 \end{frame}
 
+
+
+
 %\section{Conclusion}
 %\subsection{Conclusion}
+
 
 \begin{frame}
 \frametitle{Utility Costs of Stickiness}
@@ -796,6 +866,9 @@ sticky expectations:
 $\omega_{SOE}=4.82\text{e--4}$; $\omega_{HA-DSGE}=4.51\text{e--4}$
 \end{itemize}
 \end{frame}
+
+
+
 
 \begin{frame}
 \frametitle{Conclusion}
@@ -840,6 +913,8 @@ Model with `Sticky Expectations' of aggregate variables can match both micro and
 
 \normalsize
 
+
+
 \begin{frame}
   \frametitle{Markov Process for Aggregate Productivity Growth $\Phi$}
 
@@ -861,6 +936,8 @@ $
 
 \end{frame}
 
+
+
 \begin{frame}
 \frametitle{Equilibrium}
 
@@ -868,6 +945,7 @@ $
 \input ../Tables/EqbmSlides.tex
 
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Cost of Stickiness}
@@ -886,7 +964,9 @@ Fact suggested by theory (and confirmed numerically):
 Guess (and verify) that:
 \input \eq/vApproxSticky.tex
 
+
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Cost of Stickiness: $\omega$ and $\Pi$}
@@ -900,6 +980,9 @@ Costs of stickiness $\omega$ and prob of aggr info updating $\Pi$
 \end{figure}
 
 \end{frame}
+
+
+
 
 \begin{frame}
 \frametitle{Cost of Stickiness: Solution}
@@ -920,7 +1003,9 @@ Optimal $\Pi$ characteristics:
 \item Decreasing as attention becomes more costly: $\iota \uparrow$
 \end{itemize}
 
+
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Is Muth--Lucas--Pischke Kalman Filter Equivalent?}
@@ -940,12 +1025,15 @@ Optimal $\Pi$ characteristics:
 
 \item \jbemph{Signal extraction for aggregate $\mathbf{Y}_t$ gives too little persistence in $\Delta \mathbf{C}_t$: $\chi\approx 0.17$}
 
+
 \end{itemize}
 
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Muth--Pischke Perception Dynamics}
+
 
 \begin{itemize}
 \item Optimal signal extraction problem (Kalman filter):\\
@@ -966,5 +1054,10 @@ where for signal-to-noise ratio $\varphi = \sigma_{\PShk}/\sigma_{\Theta}$:
 \end{itemize}
 
 \end{frame}
+
+
+
+
+
 
 \end{document}
