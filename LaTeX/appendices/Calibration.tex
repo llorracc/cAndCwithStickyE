@@ -1,0 +1,50 @@
+This appendix presents more complete details and justification for the calibrated parameters in Table~\ref{table:calibration}.  We begin by calibrating market-level and preference parameters by standard methods, then specify additional parameters to characterize the idiosyncratic income shock distribution.
+
+\subsection{Macroeconomic Calibration}
+\label{sec:MacroCal}
+
+We assume a coefficient of relative risk aversion of
+$
+\input \ParmDir/CRRA.txt
+$. % $ marks is needed to avoid space between CRRA.txt and "," in the pdf
+The quarterly depreciation rate $\delta$ is calibrated by assuming annual depreciation of 6 percent,
+i.e.,
+$
+\DeprFac^{4}= \input \ParmDir/DeprFacAnn.txt
+$.  Capital's share in aggregate output takes its usual value of
+$
+\kapShare= \input \ParmDir/CapShare.txt
+$.
+
+We set the variances of the quarterly transitory and permanent shocks at the approximate values respectively:
+\begin{eqnarray*}
+	\sigma^{2}_{\Theta} & = & \input \ParmDir/TranShkAggVar.txt ,
+	\\ \sigma^{2}_{\Psi}  & =  & \input \ParmDir/PermShkAggVar.txt ,
+\end{eqnarray*}
+which allow the model to match high degree of persistence in aggregate labor income.\footnote{We measure labor income using U.S.\ NIPA data as wages and salaries plus transfers minus personal contributions for social insurance.} These values are consistent with papers such as \cite{jermannProduction}, \cite{bcfHabits}, and \cite{ckmCritique}, considered standard  in the RBC literature. These authors model the state of technology as either a highly persistent AR(1) process or a random walk; but the underlying calibrations come from the autocorrelation properties of measured aggregate dynamics, which are matched about as well by our specification of the income process.
+
+To finish the calibration, we consider a simple perfect foresight model (PF-DSGE), with all aggregate and idiosyncratic shocks turned off.  We set the perfect foresight steady state aggregate capital-to-output ratio to \input \ParmDir/KYratioSS.txt on a quarterly basis (corresponding to the usual ratio of 3 for capital divided by annual income).  Along with the calibrated values of $\kapShare$ and $\delta$, this choice implies values for the other steady-state characteristics of the PF-DSGE model:
+\begin{eqnarray*}
+	{\KLev} & = & \input \ParmDir/KYratioSS.txt ^{1/(1-\kapShare)},
+	\\ \ifnumSw {\Wage} & = & (1-\kapShare) {\KLev}^{\kapShare},
+	\\ \ifnumSw {\Rprod} & = & \DeprFac+\kapShare {\KLev}^{\kapShare-1}
+	.
+\end{eqnarray*}
+In the SOE model, we fix the interest factor $\Rprod$ and wage rate $\Wage$ to these PF-DSGE steady state values.
+
+A perfect foresight representative agent would achieve this steady state if his discount factor satisfied ${\Rprod} \beta = 1$.  For the SOE model, however, we choose a much lower value of $\beta$ ($ \input \ParmDir/betaSOE.txt $), resulting in agents with wealth holdings around the median observed in the data;\footnote{The exact value of the median is depends in part on whether housing equity should be viewed as part of the precautionary buffer stock, the age range of the households being matched, the measure of permanent income, and many other extraneous issues.} the value of $\beta$ satisfying ${\Rprod} \beta = 1$ is used in the closed economy models presented in the online appendix, allowing those models to fit the \textit{mean}  observed wealth.
+
+\subsection{Calibration of Idiosyncratic Shocks}
+
+The annual-rate idiosyncratic transitory and permanent shocks are assumed to be:
+\begin{eqnarray*}
+	\sigma_{\theta}^{2} & = & \input \ParmDir/TranShkVarAnn.txt ,
+	\\ \sigma_{\psi}^{2}             & = & \input \ParmDir/PermShkVarAnn.txt
+	.
+\end{eqnarray*}
+
+Our calibration for the sizes of the idiosyncratic shocks are conservative relative to the literature;\footnote{See Table~1 in the ECB working paper version of \cite{cstKS} for a comprehensive overview of estimates of variances of idiosyncratic income shocks; Carroll, Christopher~D., Jiri Slacalek, and Kiichi Tokuoka (2014): ``Buffer-Stock Saving in a Krusell--Smith World,'' working paper 1633, European Central Bank, \url{https://www.ecb.europa.eu/pub/pdf/scpwps/ecbwp1633.pdf}.} using data from the {\it Panel Study of Income Dynamics}, for example, \cite{carroll&samwick:nature} estimate $\sigma_{\psi}^{2} = 0.0217$ and $\sigma_{\theta}^{2} = 0.0440$; Storesletten, Telmer, and Yaron~(\citeyear{sty:consumption}) estimate $\sigma_{\psi}^{2} \approx 0.017$, with varying estimates of the transitory component.  But recent work by \cite{lmpPermShocks} suggests that controlling for participation decisions reduces estimates of the permanent variance somewhat; and using very well-measured Danish administrative data, \cite{nv:risk} estimate $\sigma_{\psi}^{2} \approx 0.005$ and $\sigma_{\theta}^{2} \approx 0.015$, which presumably constitute lower bounds for plausible values for the truth in the U.S. (given the comparative generosity of the Danish welfare state).
+
+We assume that the probability of unemployment is 5 percent per quarter.  This approximates the historical mean unemployment rate in the U.S., but model unemployment differs from real unemployment in (at least) two important ways.  First, the model does not incorporate unemployment insurance, so labor income of the unemployed is zero.  Second, model unemployment shocks last only one quarter, so their duration is shorter than the typical U.S.\ unemployment spell (about 6 months).  The idea of the calibration is that a single quarter of unemployment with zero benefits is roughly as bad as two quarters of unemployment with an unemployment insurance payment of half of permanent labor income (a reasonable approximation to the typical situation facing unemployed workers).  The model could be modified to permit a more realistic treatment of unemployment spells; this is a promising topic for future research, but would involve a considerable increase in model complexity because realism would require adding the individual's employment situation as a state variable.
+
+The probability of mortality is set at $\PDies= \input {\ParmDir/DiePrb.txt}$, which implies an expected working life of 50 years; results are not sensitive to plausible alternative values of this parameter, so long as the life length is short enough to permit a stationary distribution of idiosyncratic permanent income.

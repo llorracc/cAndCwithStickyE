@@ -1,0 +1,144 @@
+
+This appendix presents a representative agent model for analyzing the consequences of sticky expectations in a DSGE framework while abstracting from idiosyncratic income shocks and the death (and replacement) of households.  It builds upon the modeling assumptions in section~\ref{sec:models} to formulate the representative agent model, then presents simulated results analogous to section~\ref{sec:Results}.  The primary advantage of this model is that it allows fast analysis of sticky expectations in a closed economy, yielding very similar results to the heterogeneous agents DSGE model with less than a minute of computation, rather than a few hours.  However, the model is not truly a ``representative agent'' model under sticky expectations; instead it is as though there is an agent whose beliefs about the aggregate state are ``smeared'' over the state space with a probability distribution that reflects the distribution of perceptual delay implied by the Calvo updating probability. That is, the ealized level of consumption represents the weighted average level of consumption chosen by the ``many minds'' of the representative household, with weights reflecting the likelihood of each possible degree of perceptual delay.
+
+
+\subsection{Model and Solution}
+
+The representative agent's state variables at the time of its consumption decision are the
+level of market resources $\MLevBF_t$, the productivity of labor $\PLev_t$, and the growth
+rate of productivity $\PtyGro_t$.  Idiosyncratic productivity shocks $\psi$ and $\theta$ do
+not exist, and the possibility of death is irrelevant; aggregate permanent and transitory
+productivity shocks $\Psi$ and $\Theta$ are distributed as usual.
+
+The representative agent's problem can be written in Bellman form as:\footnote{Subject to definitions \eqref{eq:AggRandWalk}, \eqref{eq:Ktp1}, \eqref{eq:Lt}, \eqref{eq:Mtp1} and \eqref{eq:MargProd}.}
+\begin{eqnarray*}
+\textbf{V}(\MLevBF_t,\PLev_t,\PtyGro_t) &=& \max_{\CLevBF_t} \big\{ \uFunc(\CLevBF_t) + \Ex \big[\textbf{V}(\MLevBF_{t_+1},\PLev_{t+1},\PtyGro_{t+1})\big]   \big\} \nonumber
+\\  & \mbox{s.t.} & \nonumber
+\\ \ALevBF_t &=& \MLevBF_t - \CLevBF_t. \nonumber
+\end{eqnarray*}
+
+Normalizing the representative agent's problem by the productivity level $\PLev_t$ as in
+the SOE and HA-DSGE models, the problem's state space can be reduced to:\footnote{Subject to definitions \eqref{eq:AggRandWalk}, \eqref{eq:Mtp1norm} and \eqref{eq:MargProd}.}
+\begin{verbatimwrite}{\eq/RAscaledV.tex}
+\begin{eqnarray}
+\ifnumSw  \Value(\MLev_{t},\PtyGro_t) & = & \max_{\CLev_{t}} \big\{ \uFunc(\CLev_{t}) + \beta \Ex_{t} \big[ (\PtyGro_{t+1}\Psi_{t+1})^{1-\CRRA} \Value(\MLev_{t+1},\PtyGro_{t+1}) \big] \big\} \label{eq:RAscaledV} \ifnumSw
+\\  & \mbox{s.t.} & \nonumber
+\\ \ifnumSw \ALev_{t} & = & \MLev_{t}-\CLev_{t}. \nonumber
+\end{eqnarray}
+\end{verbatimwrite}
+\input \eq/RAscaledV.tex
+Noting that the return to (normalized) end-of-period assets for next period's
+market resources is
+$\frac{\text{d}\MLev_{t+1}}{\text{d} \ALev_{t}} = \Rprod_{t+1}/(\PtyGro_{t+1}\Psi_{t+1})$,
+\eqref{eq:RAscaledV} has a single first-order condition that is sufficient
+to characterize the solution to the normalized problem:
+\begin{equation}\label{eq:FOCRA}
+\CLev_t^{-\CRRA} - \underbrace{\beta \Ex \big[\Rprod_{t+1} (\PtyGro_{t+1}\Psi_{t+1})^{-\CRRA} \Value^\MLev(\ALev_{t} \Rprod_{t+1}/(\Psi_{t+1} \PtyGro_{t+1}) + \Theta_{t+1} \Wage_{t+1}, \PtyGro_{t+1})  \big]}_{\equiv\, \mathfrak{V}^\ALev(\ALev_t,\PtyGro_t)} = 0
+\end{equation}
+\begin{equation*}
+\Longrightarrow \CLev_t = \mathfrak{V}^\ALev(\ALev_t,\PtyGro_t)^{-1/\CRRA}.
+\end{equation*}
+The representative agent model can be solved using the endogenous grid method,
+following the same procedure as for the SOE model described in Appendix~\ref{appendix:Solution}, yielding
+ normalized consumption function $\text{C}(\MLev,\PtyGro)$.\footnote{The only
+differences in solution method are that the RA model uses $N_\Psi=N_\Theta=7$ point
+approximations to the aggregate shock distribution, expected marginal value of assets
+is calculated using \eqref{eq:FOCRA}, and the upper bound of $\mathbb{A}$ is 120.}
+
+
+\subsection{Frictionless vs Sticky Expectations}
+
+The typical interpretation of a representative agent model is that
+it represents a continuum of households that face no idiosyncratic shocks, and
+thus all find themselves with the same state variables; idiosyncratic decisions
+are equivalent to aggregate, representative agent decisions.  Once we introduce
+sticky expectations of aggregate productivity, this no longer holds: different
+households will have different perceptions of productivity, and thus make
+different consumption decisions.
+
+To handle this departure from the usual representative agent framework,
+we take a ``multiple minds'' or quasi-representative agent approach.  That is,
+we model the representative agent as being made up of a continuum of
+households who all correctly perceive the level of aggregate market
+resources $\MLevBF_t$, but have different perceptions of the aggregate productivity
+state.  Each household chooses their level of consumption based on their
+perception of the productivity state; the realized level of aggregate consumption
+is simply the sum across all households.
+
+Formally, we track the \textit{distribution} of perceptions about the aggregate productivity
+state as a stochastic vector $\varphi_t$ over the current growth rate $\PtyGro_t \in \{\PtyGro\}$,
+representing the fraction of households who perceive each value of $\PtyGro$,
+and a vector $\perc{\PLev}_t$ representing the average perceived productivity
+level among households who perceive each $\PtyGro$.  As in our other models,
+agents update their perception of the true aggregate
+productivity state $(\PLev_t,\PtyGro_t)$ with probability $\Pi$; likewise, the
+distinction between frictionless and sticky expectations is simply whether $\Pi=1$
+or $\Pi < 1$.
+
+Defining $e^j_N$ as the $N$-length vector with zeros in all elements but the
+$j$-th, which has a one, the distribution of population perceptions of growth
+rate $\PtyGro_t$ evolves according to:
+\begin{equation}\label{eq:PtyGroPerc}
+\varphi_{t+1} = (1 - \Pi) \varphi_{t} + \Pi e_N^j \text{ when } \PtyGro_{t+1} = \PtyGro_j.
+\end{equation}
+That is, a $\Pi$ proportion of households who perceive each growth rate update
+their perception to the true state $\PtyGro_{t+1} = \PtyGro_j$, while the other $(1-\Pi)$
+proportion of households maintain their prior belief (which might already be $\PtyGro_j$).
+
+The vector of average perceptions of aggregate productivity for each growth
+rate can then be calculated as:
+\begin{equation}\label{eq:PLevPercRA}
+\perc{\PLev}_{t+1} = \big((1 - \Pi) \varphi_{t} \odot \perc{\PLev}_t + \Pi e_N^j \PLev_{t+1} \big) \oslash \varphi_{t+1}.
+\end{equation}
+That is, the average perception of productivity in each growth state is the weighted
+average of updaters and non-updaters who perceive that growth rate.\footnote{The
+Hadamard operators $\odot$ and $\oslash$ represent element-wise multiplication and
+division, respectively. As a numeric detail, $\perc{\PLev}_t^j$ is reset to 1 when $\varphi_t^j=0$,
+which would otherwise cause it to be undefined.  When no households perceive growth
+rate $\PtyGro_j$, the average perception of productivity does not exist for this state and is quantitatively
+irrelevant, but must exist for \eqref{eq:PLevPercRA} to not fail in the next period.}
+
+Households who perceive each growth rate $\PtyGro$ choose their level of consumption according to their perception of normalized market resources, as though they knew their perception to be the truth.  Defining $\perc{\MLev}_t^j = \MLevBF_t/\perc{\PLev}_t^j$ as perceived normalized market resources for households who perceive the aggregate growth rate is $\PtyGro_j$, aggregate consumption is:
+\begin{equation}\label{eq:cLvlRA}
+\CLevBF_t = \sum_{\PtyGro_j \in \{\PtyGro\}} \perc{\PLev}_t^j \text{C}(\perc{\MLev}_t^j,\PtyGro_j) \varphi_t^j.
+\end{equation}
+This represents the weighted average of per-state consumption levels of the partial
+representative agents.
+
+When the representative agent frictionlessly updates its information every period ($\Pi=1$),
+equations \eqref{eq:PtyGroPerc} and \eqref{eq:PLevPercRA} say that $\varphi_t = e_N^j$
+and $\perc{\PLev}_t^j = \PLev_t$ (with irrelevant values in the other vector elements), so
+that the representative agent is truly representative.  When expectations are sticky ($\Pi < 1$),
+the representative agent's perceptions of the growth rate become ``smeared'' across its
+past realizations; its perceptions the productivity level likewise deviate from the true value,
+even for the part of the representative agent who perceives the true growth rate.\footnote{An alternative method for modeling sticky expectations with a representative agent would be to track the
+perceptions of the segments of households who last updated $n=\{0,1,\ldots,200\}$
+periods ago, compute consumption for each segment, and take the weighted average
+across the segments to yield aggregate consumption.  This approach would only be
+slightly more complicated to implement, and we believe it would yield quantitatively
+similar results.}
+
+
+\subsection{Simulation Results}
+
+\input\econtexRoot/Tables/RepAgentMrkvSimReg.tex
+
+We calibrate the RA model using the same parameters as for the
+HA-DSGE model (see Appendix~\ref{sec:MacroCal}, Table~\ref{table:calibration}, and Appendix~\ref{appendix:HADSGEresults}),
+except that there are no idiosyncratic income shocks
+($\sigma^2_\psi = \sigma^2_\theta = \wp = 0$) and the possibility
+of death is irrelevant ($\PDies=0$).  After solving the model, we
+utilize the same simulation procedure described in section~\ref{sec:Results},
+taking 100 samples of 200 quarters each; average coefficients
+and standard errors across the samples are reported in Table~\ref{tRAsim}.
+
+The upper panel of Table~\ref{tRAsim} shows that under frictionless
+expectations, consumption growth in the representative agent model
+cannot be predicted to any statistically significant degree under any
+specification.  The lower panel, under sticky expectations, yields
+results that are strikingly similar to the SOE model in Table~\ref{tPESOEsim}.
+Both (instrumented) lagged consumption growth and expected income
+growth are significant predictors of aggregate consumption growth,
+but the `horse race' regression reveals that the predictability is
+dominated by serially correlated consumption growth, confirming the
+results of the two heterogeneous agents models.

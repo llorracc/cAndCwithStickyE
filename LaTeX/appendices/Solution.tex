@@ -1,0 +1,106 @@
+
+\subsubsection{Small Open Economy Solution Details}
+
+Consider the household's normalized problem in the SOE model, given in \eqref{eq:scaledv}.  Substituting the latter two constraints into the maximand, this problem has one first order condition (with respect to $\cLev_{t,i}$), which is sufficient to characterize the solution:
+\begin{equation}\label{eq:SOEFOC}
+\cLev_{t,i}^{-\CRRA} - \underbrace{\Rfree \PLives \beta \Ex_t \big[  (\PtyGro_{t+1} \pmb{\psi}_{t+1,i})^{-\CRRA}\vFunc^\mLev\big(\Rfree/(\PtyGro_{t+1} \pmb{\psi}_{t+1,i}) \aLev_{t,i} + \Wage \pmb{\theta}_{t+1,i},\PtyGro_{t+1}\big) \big]}_{\equiv\,\mathfrak{v}^\aLev(\aLev_{t,i},\PtyGro_t)} = 0
+\end{equation}
+\begin{equation*}
+\Longrightarrow \cLev_{t,i} = \mathfrak{v}^\aLev(\aLev_{t,i},\PtyGro_t)^{-1/\CRRA}.
+\end{equation*}
+
+We use the endogenous grid method to solve the model by iterating
+on the first order condition.  Eliding some uninteresting complications, our procedure is straightforward:
+\begin{enumerate}
+\item Construct discrete approximations to the lognormal distributions of $\theta$, $\Theta$, $\psi$, and $\Psi$,
+adjusting for the point mass at 0 for $\theta$ with probability $\wp$.  We use equiprobable $N_\psi = N_\theta = 7$
+point approximations for the (lognormal portion of) the idiosyncratic shocks and $N_\Psi = N_\Theta = 5$
+point approximations for the aggregate shocks.
+
+\item Choose an exogenous grid of end-of-period normalized assets-above-natural-borrowing-constraint $\mathbb{A} = \{\blacktriangle \aLev_j\}_{j=1}^{N_a}$, spanning
+the range values that an agent might reasonably encounter in a simulated lifetime.  We use a triple-exponential grid spanning $\blacktriangle \aLev \in [10^{-5},40]$
+with $N_a$ = 48 gridpoints.  The natural borrowing constraint is zero because of the possibility of $\theta=0$, so
+ assets-above-natural-borrowing-constraint is simply assets $\aLev$.
+
+\item Initialize the guess of the consumption function to $\cFunc(\mLev,\cdot) = \mLev$, the solution for an agent who has no future.
+
+\item Define the marginal value function $\vFunc^\mLev(\cdot)$ as $\uFunc'(\cFunc(\cdot))$, as determined by the
+standard envelope condition.
+
+\item Use the discrete approximations to the shock processes and the Markov transition matrix $\Xi$ to
+compute $\mathfrak{v}^\aLev(\aLev_j,\PtyGro_k)$ for all $(\aLev_j,\PtyGro_k) \in \mathbb{A} \times \{\PtyGro\}$.
+
+\item Use \eqref{eq:SOEFOC} to find the level of consumption that would make ending the period
+with $\aLev_j$ in assets optimal (when aggregate growth is $\PtyGro_k$): $\cLev_{j,k} = \mathfrak{v}^\aLev(\aLev_j,\PtyGro_k)^{-1/\CRRA}$.
+
+\item Calculate beginning of period market resources $\mLev_{j,k} = \aLev_{j,k}+ \cLev_{j,k}$ for all $j,k$.
+
+\item For each $k$, construct $\cFunc(\mLev,\PtyGro_k)$ by linearly interpolating $\cLev_{j,k}$ over $\mLev_{j,k}$, with
+an additional point at $(\mLev=0,\cLev=0)$.
+
+\item Calculate the supnorm distance between the newly constructed $\cFunc$ and the previous guess,
+evaluated at the $N_\aLev \times ||\{\PtyGro\} ||$ gridpoints.  If the distance is less than $\epsilon = 10^{-6}$, STOP; else go to step 4.
+\end{enumerate}
+
+The numerically computed consumption function can then be used to simulate a population of households,
+as described in Appendix~\ref{appendix:Simulation}.
+
+
+\subsubsection{Dynamic Stochastic General Equilibrium Solution Details} \label{app:Sol_DSGE}
+
+Consider the household's normalized problem in the HA-DSGE model,
+given in \eqref{eq:DSGEproblemNorm}. Recalling that we are taking the
+aggregate saving rule $\aleph$ as given, optimal consumption is
+characterized by the solution to the first-order condition:
+\begin{equation}\label{eq:DSGEFOC}
+\cLev_{t,i}^{-\CRRA} - \underbrace{\beta \Ex \big[ \Rprod_{t+1} (\PtyGro_{t+1} \pmb{\psi}_{t+1,i})^{-\CRRA}\vFunc\big(\Rprod_t \aLev_{t,i}/(\PLives \PtyGro_{t+1}\pmb{\psi}_{t+1,i}) + \pmb{\theta}_{t+1,i} \Wage_{t+1},\MLev_{t+1},\PtyGro_{t+1}\big) \big]}_{\equiv\, \mathfrak{v}^\aLev(\aLev_{t,i},\MLev_t,\PtyGro_t)} = 0
+\end{equation}
+\begin{equation*}
+\Longrightarrow \cLev_{t,i} = \mathfrak{v}^\aLev(\aLev_{t,i},\MLev_t,\PtyGro_t)^{-1/\CRRA}.
+\end{equation*}
+
+Solving the HA-DSGE model requires a nested loop procedure in the style of \cite{ksHetero},
+as the equilibrium of the model is a fixed point in the space of household beliefs about the
+aggregate saving rule. For the outer loop, searching for the equilibrium $\aleph$, we use the following procedure:
+\begin{enumerate}
+\item Construct a grid of (normalized) aggregate market resources $\mathbb{M} = \{\MLev_j \}_{j=1}^{N_\MLev}$.
+We use a $N_M = 19$ point grid based on the steady state of the perfect foresight DSGE model, spanning the range of 10 percent to 500 percent of this value.
+
+\item For each $\PtyGro_k \in \{\PtyGro\}$, initialize the aggregate saving rule to arbitrary values.
+We use $\aggrSavingRuleCoeff_{k,0} = 0$ and $\aggrSavingRuleCoeff_{k,1} = 1$; there exist more efficient initial guesses.
+
+\item In the inner loop, solve the household's optimization problem for the current guess of $\aleph$,
+using the procedure described below.
+
+\item Simulate many households for many periods, using the procedure described in
+Appendix~\ref{appendix:Simulation}, yielding a long \textit{history} of aggregate
+market resources, productivity growth, and assets $\mathfrak{H} = \left\{(\MLev_t,\PtyGro_t,\ALev_t)\right\}_{t=0}^T$.
+
+\item For each $k$, define $\mathfrak{H}_k \equiv \left\{ \mathfrak{H} | \PtyGro_t = \PtyGro_k \right\}$.
+Regress $\ALev_t$ on $\MLev_t$ on the set $\mathfrak{H}_k$, yielding coefficients
+that provide updated values of $\aggrSavingRuleCoeff_{k,0}$ and $\aggrSavingRuleCoeff_{k,1}$ for $\aleph$.
+
+\item Calculate the supnorm distance between the new and previous values of aggregate
+saving rule coefficients $\aggrSavingRuleCoeff$.  If it is less than $\grave{\epsilon} = 10^{-4}$, STOP;
+else go to step 3.
+\end{enumerate}
+
+The inner solution loop (step 3) proceeds very similarly to the SOE solution method above,
+with differences in the following steps:
+\begin{enumerate}
+\setcounter{enumi}{1}
+
+\item The set $\mathbb{A}$ spans $[10^{-5},120]$ because of the higher $\beta$ in the HA-DSGE model.
+
+\setcounter{enumi}{4}
+
+\item End-of-period marginal value of assets is calculated as $\mathfrak{v}^\aLev(\aLev_j,\MLev_k,\PtyGro_\ell)$
+for all $(\aLev_j,\MLev_k,\PtyGro_\ell) \in \mathbb{A} \times \mathbb{M} \times \{\PtyGro\}$.
+
+\item Use \eqref{eq:DSGEFOC} to calculate $\cLev_{j,k,\ell} = \mathfrak{v}^\aLev(\aLev_j,\MLev_k,\PtyGro_\ell)^{-1/\CRRA}$.
+
+\setcounter{enumi}{7}
+
+\item For each $\ell$, construct $\cFunc(\mLev,\MLev,\PtyGro_\ell)$ by linearly interpolating $\cLev_{j,k,\ell}$ over $\mLev_{j,k,\ell}$
+for each $k$, then interpolating the linear interpolations over $\mathbb{M}$.
+\end{enumerate}

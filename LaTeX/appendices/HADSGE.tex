@@ -1,0 +1,76 @@
+Our HA-DSGE model relaxes the simplifying assumption in the SOE model of a frictionless global capital market.
+In this closed economy, factor prices $\Wage_t$ and $\rfree_t$ are determined in the usual way from the aggregate production function and aggregate state variables, including the stochastic aggregate shocks, putting the model in the (small, but rapidly growing) class of heterogeneous agent DSGE models.
+
+For the HA-DSGE model, we set the discount factor to $\beta = {\Rprod}^{-1}=0.986$, roughly matching the target capital-to-output ratio.\footnote{The addition of aggregate and idiosyncratic risk implies that the capital-to-output ratio will be higher in the HA-DSGE model than the PF-DSGE calibration.  Moreover, the Markov growth process will move aggregate capital holdings away from the calibrated target.}
+Households in the HA-DSGE model thus hold significantly more wealth than their counterparts in the baseline SOE model, who were calibrated to approximate the \textit{median} observed wealth-to-income ratio.
+This reflects our goal of presenting results that span the full range of calibrations in the micro and macro literatures; the micro literature has often focused on trying to explain the wealth holdings of the median household, which are much smaller than average wealth holdings.
+Experimentation has indicated that our results are not sensitive to such choices.
+
+
+\subsection{Model and Solution}
+
+We make the standard assumption that markets are competitive, and so factor prices are the
+marginal product of (effective) labor and capital respectively. Denoting capital's share as $\kapShare$,
+so that $\textbf{Y}_t = \KLevBF_t^\kapShare \LLevBF_t^{1-\kapShare}$, this yields the usual wage and interest rates:
+\begin{eqnarray}
+\Wage_t = \frac{\partial \textbf{Y}_t}{\partial \LLevBF_t} &=& (1-\kapShare) (\KLevBF_t/\LLevBF_t)^{-\kapShare}, \label{eq:MargProd} \\
+\rfree_t = \frac{\partial \textbf{Y}_t}{\partial \KLevBF_t} &=& \kapShare (\underbrace{\KLevBF_t/\LLevBF_t}_{=\,\KLev_t/\Theta_t})^{\kapShare-1}. \nonumber
+\end{eqnarray}
+Net of depreciation, the return factor on capital is $\Rprod_t = 1 -\delta + \rfree_t$.
+
+An agent's relevant state variables at the time of the consumption decision include the levels of household and aggregate market resources $(\mLevBF_{t,i},\MLevBF_t)$, as well as household and aggregate labor productivity $(p_{t,i},\PLev_t)$ and the aggregate growth rate $\PtyGro_t$.  We assume that agents correctly understand the operation of the economy, including the production and shock processes, and have \textit{beliefs} about aggregate saving---how aggregate market resources $\MLevBF_t$ become aggregate assets $\ALevBF_t$ (equivalently, next period's aggregate capital $\KLevBF_{t+1}$).  Following \cite{ksHetero} and \cite{cstwMPC}, we assume that households believe that the aggregate saving rule is linear in logs, conditional on the current aggregate growth rate:
+\begin{equation}\label{eq:AggSaving}
+\Ex[\ALevBF_t] = \aleph(\MLevBF_t,\PtyGro_t = \PtyGro_j) \equiv \exp\big(\aggrSavingRuleCoeff_{j,0} + \aggrSavingRuleCoeff_{j,1}\log(\MLevBF_t)\big).
+\end{equation}
+
+The growth-rate-conditional parameters $\aggrSavingRuleCoeff_{j,0}$ and $\aggrSavingRuleCoeff_{j,1}$ are exogenous to
+the individual's (partial equilibrium) optimization problem, but are endogenous to the general
+equilibrium of the economy.  Taking the aggregate saving rule $\aleph$ as given, the household's
+problem can be written in Bellman form as:\footnote{Subject to definitions \eqref{eq:AggRandWalk},
+\eqref{eq:IndRandWalk}, \eqref{eq:ell}, \eqref{eq:mDef}, \eqref{eq:aDef}, \eqref{eq:ktp1icompact},
+\eqref{eq:Ktp1}, \eqref{eq:Lt}, \eqref{eq:Mtp1}, \eqref{eq:MargProd} and \eqref{eq:AggSaving}.}
+\begin{eqnarray}
+\textbf{v}(\mLevBF_{t,i},\MLevBF_t,p_{t,i},\PLev_t,\PtyGro_t) &=& \max_{\cLevBF_{t,i}} \big\{ \uFunc(\cLevBF_{t,i}) + \beta \Ex\big[(1-\pDies_{t,i})\textbf{v}(\mLevBF_{t+1,i},\MLevBF_{t+1},p_{t+1,i},\PLev_{t+1},\PtyGro_{t+1})\big] \big\}. \nonumber \\ \label{eq:DSGEproblem}
+\end{eqnarray}
+
+As in the SOE model, the household's problem can be normalized by the combined productivity level $\pLev_{t,i}$, reducing the state space by two continuous dimensions.  Dividing \eqref{eq:DSGEproblem} by $\pLev_{t,i}^{1-\CRRA}$ and substituting normalized variables, the reduced problem is:
+\begin{eqnarray}
+\vFunc(\mLev_{t,i},\MLev_t,\PtyGro_t) &=& \max_{\cLev_{t,i}} \big\{ \uFunc(\cLev_{t,i}) + \beta \PLives \Ex\big[(\PtyGro_{t+1} \pmb{\psi}_{t+1,i})^{1-\CRRA}\vFunc(\mLev_{t+1,i},\MLev_{t+1},\PtyGro_{t+1})\big] \big\} \nonumber \\
+& \text{s.t.} & \label{eq:DSGEproblemNorm}\\
+\aLev_{t,i} & = & \mLev_{t,i} - \cLev_{t,i}, \nonumber \\
+\kLev_{t+1,i} & = & \aLev_{t,i}/\PLives, \nonumber \\
+\mLev_{t+1,i} & = & \Rprod_{t+1} \kLev_{t+1,i}/(\PtyGro_{t+1}\pmb{\psi}_{t+1,i}) + \pmb{\theta}_{t+1,i} \Wage_{t+1}. \nonumber
+\end{eqnarray}
+Because household beliefs about the aggregate saving rule are linear in logs, \eqref{eq:AggSaving} holds with normalized market resources and aggregate assets as well as in levels.
+
+The equilibrium of the HA-DSGE model is characterized by a (normalized) consumption function $\cFunc(\mLev,\MLev,\PtyGro)$ and an aggregate saving rule $\aleph$ such that when all households believe $\aleph$, the solution to their individual problem \eqref{eq:DSGEproblemNorm} is $\cFunc$; and when all agents act according to $\cFunc$, the best log-linear fit of $\ALev_t$ on $\MLev_t$ (conditional on $\PtyGro_t$) is $\aleph$.  The model is solved using a method similar to \cite{ksHetero}.\footnote{Details are in Appendix~\ref{app:Sol_DSGE}.}
+
+\subsection{Frictionless vs Sticky Expectations}
+
+The treatment of sticky beliefs in the HA-DSGE model is the natural extension of what we did in the SOE model presented in section \ref{sec:StickySOE}: Because the level of $\MLevBF_t$ now affects future wages and interest rates, a consumer's perceptions of that variable $\perc{\MLev}_{t,i} = \MLevBF_t/\perc{\PLev}_{t,i}$ now matter.  As households in our model do not necessarily observe the true aggregate productivity level, their perception of normalized aggregate market resources is
+\begin{equation*}
+\perc{\MLev}_{t,i} = \MLevBF_t\big/\perc{P}_{t,i} = \big(P_t\big/\perc{P}_{t,i}\big) \MLev_t .
+\end{equation*}
+
+Households in the DSGE model choose their level of consumption using their perception of their normalized state variables:
+\begin{equation*}
+\cLevBF_{t,i} = \perc{\pLev}_{t,i} \cFunc(\perc{\mLev}_{t,i},\perc{\MLev}_{t,i},\perc{\PtyGro}_{t,i}) = \cFuncLev(\mLevBF_{t,i},\MLevBF_{t},p_{t,i},\perc{\PLev}_{t,i},\perc{\PtyGro}_{t,i}).
+\end{equation*}
+Households who misperceive the aggregate productivity state will incorrectly predict aggregate saving at the end of the period, and thus aggregate capital and the distribution of factor prices next period.\footnote{This incorrect prediction is short-lived: all households will learn the true \textit{levels} of next period's aggregate capital and output.}
+
+Because households who misperceive the aggregate productivity state will make (slightly) different consumption--saving decisions than they would have if fully informed, \textit{aggregate} saving behavior will be different under sticky than under frictionless expectations.  Consequently, the equilibrium aggregate saving rule $\aleph$ will be slightly different under sticky vs frictionless expectations.  When the HA-DSGE model is solved under sticky expectations, we implicitly assume that all households understand that all other households also have sticky expectations, and the equilibrium aggregate saving rule is the one that emerges from this belief structure.
+
+\subsection{Results}
+\label{appendix:HADSGEresults}
+
+We report some of the equilibrium characteristics of the SOE and HA-DSGE models in Table~\ref{table:Eqbm}, to highlight their qualitatively similar patterns.
+The table suggests a broad generalization that we have confirmed with extensive experimentation: With respect to either cross section statistics, mean outcomes, or idiosyncratic consumption dynamics, the frictionless expectations and sticky expectations models are virtually indistinguishable using microeconomic data, and very similar in most aggregate implications aside from the dynamics of aggregate consumption.
+\input{\econtexRoot/Tables/Eqbm.tex}
+
+Table~\ref{tDSGEsim} reports the results of estimating regression \eqref{eq:CGrowBench} on data generated from the HA-DSGE model.  The results are substantially the same as the previous analysis for the SOE model (in Table~\ref{tPESOEsim}).\footnote{Essentially similar results are obtained if we assume that households have heterogeneous discount factors, in the style of \cite{cstwMPC}.  Using a calibration of the distribution of $\beta$ that approximately matches the distribution of net worth in the U.S., the results presented in Table~\ref{tDSGEsim} are effectively unchanged (table available upon request).  The main results hold whether $\beta$ is chosen to match aggregate asset holdings, the wealth of the median household, or the entire distribution of wealth; it is not sensitive to the particular calibration of the model.}
+
+The model with frictionless expectations (top panel) implies aggregate consumption growth that is moderately (but not statistically significantly) serially correlated when examined in isolation (second row), but the effect ``washes out'' when expected income growth and the aggregate wealth to income ratio are included in the horse race regression (fourth row).  As expected in a closed economy model, the aggregate wealth-to-income ratio $\ALev_t$ is negatively correlated with consumption growth, but its predictive power is so slight that it is statistically insignificant in samples of only 200 quarters.
+
+The model with sticky expectations (bottom panel) again implies a serial correlation coefficient of consumption growth not far from 0.75 in the univariate IV regression (second row).  As in the SOE simulation, the horserace regression (fifth row) indicates that the apparent success of the Campbell--Mankiw specification (third row) reflects the correlation of predicted current income growth with instrumented lagged consumption growth.
+
+\input\econtexRoot/Tables/DSGEmrkvSimReg.tex

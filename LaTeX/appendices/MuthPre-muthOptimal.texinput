@@ -1,0 +1,32 @@
+  \cite{muthOptimal}, pp.\ 303--304,  shows that the signal-extracted estimate of permanent income is
+  \begin{eqnarray*}
+  \perc{\PLev}_{t} & = & v_{1}Y_{t}+v_{2}Y_{t-1}+v_{3}Y_{t-2}+...
+  \end{eqnarray*}
+  for a sequence of $v$'s given by
+  \begin{eqnarray*}
+    v_{k} & = & (1-\lambda_{1})\lambda_{1}^{k-1}
+  \end{eqnarray*}
+  for $k = 1,2,3,...$.  So:
+  \begin{eqnarray*}
+    \perc{\PLev}_{t} & = & (1-\lambda_{1})(\phantom{\YLev_{t+1}+\lambda_{1}^{0}}\YLev_{t}+\lambda_{1} \YLev_{t-1} + \lambda_{1}^{2} \YLev_{t-2} ...)
+\\    \perc{\PLev}_{t+1} & = & (1-\lambda_{1})(\YLev_{t+1}+\lambda_{1} \YLev_{t} + \lambda_{1}^{2} \YLev_{t-1}+ \lambda_{1}^{3} \YLev_{t-2} ...)
+\\     & = & (1-\lambda_{1})\phantom{(}\YLev_{t+1}+\lambda_{1} \underbrace{(1-\lambda_{1})(\YLev_{t} + \lambda_{1}^{2} \YLev_{t-1}+ \lambda_{1}^{3} \YLev_{t-2} ...)}_{\perc{\PLev}_{t}}
+\\    & = & (1-\lambda_{1})\YLev_{t+1}+\lambda_{1} \perc{\PLev}_{t}
+  \end{eqnarray*}
+
+This compares with \eqref{eq:PischkeP} in the main text
+  \begin{eqnarray*}
+    \perc{\PLev}_{t+1} & = & \Pi \YLev_{t+1} + (1-\Pi) \perc{\PLev}_{t}
+  \end{eqnarray*}
+so the relationship between our $\Pi$ and Muth's $\lambda_{1}$ is:
+  \begin{eqnarray*}
+    \lambda_{1} & = & 1-\Pi
+  \end{eqnarray*}
+
+  Defining the signal-to-noise ratio $\varphi = \sigma_{\pmb{\psi}}/\sigma_{\pmb{\theta}}$, starting with equation (3.10) in \cite{muthOptimal} we have
+  \begin{eqnarray*}
+\notag    \lambda_{1} & = & 1 + (1/2) \varphi^{2} - \varphi \sqrt{1+\varphi^{2}/4}
+\notag \\ (1-\Pi) & = & 1 + (1/2) \varphi^{2} - \varphi \sqrt{1+\varphi^{2}/4}
+                        \notag\\ -\Pi & = & (1/2) \varphi^{2} - \varphi \sqrt{1+\varphi^{2}/4}
+  \end{eqnarray*}
+  yielding equation \eqref{eq:muthOptimal} in the main text.

@@ -1,0 +1,9 @@
+econ-ark==0.10.0.dev3
+numpy
+matplotlib
+Sphinx
+numpydoc
+future
+joblib
+dill
+scipy

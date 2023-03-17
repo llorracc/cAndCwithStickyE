@@ -1,0 +1,62 @@
+
+After simulating a population of households using the procedure in Appendix~\ref{appendix:Simulation},
+we have a history of micro observations $\left\{ \{\cLevBF_{t,i}, \pDies_{t,i}\}_{t=0}^T \right\}_{i=1}^I$
+and a history of aggregate permanent productivity levels $\{ \PLev_t \}_{t=0}^T$.  Each household index
+$i$ contains the history of many agents, as the agent at $i$ dies and is replaced at the beginning of any period
+with $\pDies_{t,i}=1$.  Let $\tau_{i,n}$ be the $n$-th time $t$ index where $\pDies_{t,i}=1$; further define
+$N_i = \sum_{t=0}^T \pDies_{t,i}$, the number of replacement events for household index $i$.
+
+A single consumer's (normalized) discounted sum of lifetime utility is then:
+\begin{equation*}
+\vFunc_{i,n} =  \PLev_{\tau_{i,n}}^{\CRRA-1} \sum_{t=\tau_{i,n}}^{\tau_{i,n+1}-1} \beta^{t-\tau_{i,n}} \uFunc(\cLevBF_{t,i}).
+\end{equation*}
+Normalizing by aggregate productivity at birth $\PLev_t$ is equivalent to normalizing by the consumer's
+total productivity at birth $\pLev_{t,i}$ because $p_{t,i}=1$ at birth by assumption.
+
+The total number of households who are born and die in the history is:
+\begin{equation*}
+N_I = \sum_{i=1}^I (N_i - 1).
+\end{equation*}
+The overall expected lifetime value at birth can then be computed as:
+\begin{equation*}
+\overline{\vFunc}_0 = N_I^{-1} \sum_{i=1}^I \sum_{n=1}^{N_i-1} \vFunc_{i,n}.
+\end{equation*}
+
+Because we use $T=20,000$ and $I=20,000$, and agents live for 200 periods on average ($\PDies = 0.005$),
+our simulated history includes about $N_I \approx I T \PDies =$ 2 million consumer lifetimes.  The standard errors
+on our numerically calculated $\overline{\vFunc}_0$ and $\overline{\widetilde{\vFunc}}_0$ are thus negligible
+and not reported.
+
+In the SOE model, we use the same random seed for the frictionless and sticky specifications, so
+the same sequence of replacement events and income shocks occurs in both. With no externalities
+or general equilibrium effects, the distribution of states that consumers are born into is likewise identical,
+so the ``value ratio'' calculation is valid.
+
+The cost of stickiness in the HA-DSGE model is slightly more complicated.  If we
+used the generated histories of the frictionless and sticky specifications to compute
+$\overline{\vFunc}_0$ and $\overline{\widetilde{\vFunc}}_0$, the calculated $\omega$
+would represent a newborn's willingness-to-pay for \textit{everyone} to be frictionless
+rather than sticky. We are interested in the utility cost of \textit{just one agent} having
+sticky expectations, so an alternate procedure is required.
+
+We compute $\overline{\widetilde{\vFunc}}_0$ in the HA-DSGE model the same as in the SOE
+model.  However, $\overline{\vFunc}_0$ is calculated as the expected lifetime (normalized) value
+of a newborn who is frictionless \textit{but lives in a world otherwise populated by sticky consumers}. To do
+this, we simulate a new history of micro observations using the consumption function for the
+sticky HA-DSGE economy, but with all $I$ households updating their knowledge of the aggregate
+state frictionlessly.  Critically, we \textit{do not} actually calculate $\ALevBF_t = \KLevBF_{t+1}$
+each period; instead, we use the \textit{same sequence} of $\ALevBF_t$ that occurred in the
+ordinary sticky simulation.  Thus our simulated population of $I$ households represents an infinitesimally
+small portion of an economy made up (almost) entirely of consumers with sticky expectations.  The
+calculated $\omega$ is thus the willingness-to-pay to be the very first agent to ``wake up.''
+
+The formula for willingness-to-pay \eqref{eq:WTP} arises from the homotheticity of the household's
+problem with respect to $\pLev_{t,i}$.  If a consumer gives up an $\omega$ portion of their permanent
+income at the moment they are ``born'', before receiving income that period, then his normalized market
+resources will still be $\mLev_{t,i} = \Wage_t$, and he will make the same normalized consumption
+choice that he would have, had he not lost any permanent income.  In fact, he will make the \textit{exact same}
+sequence of normalized consumption choices for his entire life; the \textit{level} of his consumption will
+be scaled by the factor $(1-\omega)$ in every period.  With CRRA utility, this means that utility is scaled
+by $(1-\omega)^{1-\CRRA}$ in every period of life, which can be factored out of the lifetime summation.
+The indifference condition between being frictionless and losing an $\omega$ fraction of permanent income
+versus having sticky expectations (and not losing) can be easily rearranged into \eqref{eq:WTP}.

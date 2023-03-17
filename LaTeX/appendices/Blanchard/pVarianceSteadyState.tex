@@ -1,0 +1,41 @@
+
+
+This appendix follows closely Appendix~A in the ECB working paper version of \cite{cstKS}.\footnote{Carroll, Christopher~D., Jiri Slacalek,  and Kiichi Tokuoka  (2014): ``Buffer-Stock Saving in a Krusell--Smith World,'' working paper 1633, European Central Bank, \url{https://www.ecb.europa.eu/pub/pdf/scpwps/ecbwp1633.pdf}.} It computes dynamics and steady state of the square of the idiosyncratic component
+of permanent income (from which the variance can be derived).  Recalling that consumers are
+born with $p_{t,i}=1$:
+\begin{eqnarray}
+    {p}_{t+1,i} & = & (1-\pDies_{t+1,i}) {p}_{t,i}\psi_{t+1,i} + \pDies_{t+1,i} \nonumber
+\\  {p}_{t+1,i}^{2} & = & \big((1-\pDies_{t+1,i}) {p}_{t,i}\psi_{t+1,i}\big)^{2}+ \underbrace{(1-\pDies_{t+1,i})\pDies_{t+1,i}}_{= 0} 2 {p}_{t,i}\psi_{t+1,i} + \pDies_{t+1,i}^{2} \nonumber
+\end{eqnarray}
+and because  $\Ex_{t}[\pDies_{t+1,i}^{2}] = \PDies$ we have
+\begin{eqnarray}
+\Ex_{t}[{p}_{t+1,i}^{2}] & = &  \Ex_{t}[((1-\pDies_{t+1,i}) {p}_{t,i }\psi_{t+1,i})^{2}] + \PDies \nonumber
+\\ & = & \PLives {p}_{t,i}^{2} \Ex[\psi^{2}] + \PDies. \nonumber
+\end{eqnarray}
+Defining the mean operator $\Mean[\bullet_{t}]=\int_{0}^{1} \bullet_{t,\iota} \text{d}\iota$, we have
+\begin{eqnarray}
+  \Mean\left[ {p}_{t+1}^{2} \right] & = & \PLives \Mean[{p}^{2}_{t}] \Ex[\psi^{2}] + \PDies, \nonumber
+\end{eqnarray}
+so that the steady state expected level of $\Mean[{p}^{2}] \equiv \lim_{t \rightarrow
+  \infty} \Mean[{p}_{t}^{2}]$ can be found from
+\begin{eqnarray}
+  \Mean[{p}^{2}] & = &  \PLives \Ex[\psi^{2}] \Mean[{p}^{2}] + \PDies \nonumber
+\\                          & = & \frac{\PDies}{1-\PLives \Ex[\psi^{2}]}. \nonumber
+\end{eqnarray}
+
+Finally, note the relation between $p^{2}$ and the variance of ${p}$:
+\begin{eqnarray}
+  \sigma^{2}_{p} & = & \Mean[({p}-\Mean[{p}])^{2}] \nonumber
+\\ & = & \Mean[({p}^{2}-2 {p} \Mean[{p}]+(\Mean[{p}])^{2})] \nonumber
+\\ & = & \Mean[{p}^{2}]-1, \nonumber
+%\\ & = & {p}^{2}-1
+\end{eqnarray}
+where the last line follows because under the other assumptions we
+have made, $\Mean[{p}]=1$.
+
+For the preceding derivations to be valid, it is necessary to
+impose the parameter restriction $\PLives \Ex[\psi^{2}] < 1$.  This requires
+that income does not spread out so quickly among survivors as to
+overcome the compression of the distribution that arises because of death.
+
+\ifthenelse{\boolean{StandAlone}}{\end{document}}{}

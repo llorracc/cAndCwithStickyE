@@ -1,0 +1,61 @@
+
+This appendix derives the equation \eqref{eq:deltac} asserted in the main text.  Start with the definition of consumption for the updaters,
+\begin{eqnarray*}
+   \mathbf{C}_{t}^{{\pi}}  & \equiv & \Pi^{-1}     \int_{0}^{1} \pi_{t,i}\mathbf{c}_{t,i} \,\text{d}i
+\\ \ifnumSw & = & \Pi^{-1}\int_{0}^{1} \pi_{t,i}(\rfree/\Rfree) \wAllLev_{t,i}\, \text{d}i \nonumber
+\\ \ifnumSw & = & \Pi^{-1}(\rfree/\Rfree) \int_{0}^{1} \pi_{t,i}\wAllLev_{t,i} \,\text{d}i \nonumber
+\\ \ifnumSw & = & \Pi^{-1}(\rfree/\Rfree) \Pi \WAllLev_{t} \nonumber
+\\ \ifnumSw & = & (\rfree/\Rfree) \WAllLev_{t}, \nonumber
+\end{eqnarray*}
+where the penultimate line follows from the fact that the updaters are
+chosen randomly among members of the population so that the average
+per capita value of $\wAllLev$ among updaters is equal to the
+average per capita value of $\wAllLev$ for the population as a whole.
+
+
+The text asserts (equation \eqref{eq:dCQuadStickyApprox}) that
+\begin{eqnarray*}
+        \mathbf{C}_{t+1} & = & \Pi \Delta \mathbf{C}^{{\pi}}_{t+1} + (1-\Pi) \Delta \mathbf{C}_{t} % \label{eq:dCQuadStickyApprox}
+\\ \ifnumSw   & \approx & (1-\Pi) \Delta \mathbf{C}_{t} + \xi_{t+1}. \nonumber
+\end{eqnarray*}
+
+To see this, define market resources $M_{t}=Y_{t}+\Rfree A_{t}$ where $Y_{t}$ is noncapital income in period $t$ and $A_{t}$ is the level of nonhuman assets with which the consumer ended the previous period; and define $H_{t}$ as `human wealth,' the present discounted value of future noncapital income.  Then write
+\begin{eqnarray}
+        \mathbf{C}_{t+1}^{{\pi}} & = & (\rfree/\Rfree)\big(M_{t+1}+H_{t+1}\big)  \nonumber \\
+        \mathbf{C}_{t}^{{\pi}} & = & (\rfree/\Rfree)\big(M_{t}+H_{t}\big)  \nonumber \\
+        \mathbf{C}_{t+1}^{{\pi}}-\mathbf{C}_{t}^{{\pi}} & = & (\rfree/\Rfree)\big(M_{t+1}-M_{t}+H_{t+1}-H_{t}\big)  \nonumber
+\\ \ifnumSw      \mathbf{C}_{t+1}^{{\pi}}-\mathbf{C}_{t}^{{\pi}} & = & (\rfree/\Rfree)\big(\Rfree(Y_{t}+M_{t}-\mathbf{C}_{t})-M_{t}+H_{t+1}-H_{t}\big).    \label{eq:notquite}
+\end{eqnarray}
+
+What theory tells us is that {\it if aggregate consumption were chosen
+frictionlessly in period $t$}, then this expression would be white
+noise; that is, we know that
+\begin{eqnarray}
+        (\rfree/\Rfree)\big(\Rfree(Y_{t}+ M_{t}-\mathbf{C}_{t}^{{\pi}})-M_{t}+H_{t+1}-H_{t}\big) & = & \xi_{t+1}  \nonumber
+\end{eqnarray}
+for some white noise $\xi_{t+1}$.  The only difference between this expression
+and the RHS of \eqref{eq:notquite} is the $\Pi$ superscript on the
+$\mathbf{C}_{t}$.  Thus, substituting, we get
+\begin{eqnarray}
+        \mathbf{C}_{t+1}^{{\pi}}-\mathbf{C}_{t}^{{\pi}} & = & (\rfree/\Rfree)\big(\Rfree\left(Y_{t}+M_{t}-(\mathbf{C}_{t}+\mathbf{C}_{t}^{{\pi}}-\mathbf{C}_{t}^{{\pi}})\right)-M_{t}+H_{t+1}-H_{t}\big)     \nonumber
+\\ \ifnumSw      \mathbf{C}_{t+1}^{{\pi}}-\mathbf{C}_{t}^{{\pi}} & = & (\rfree/\Rfree)\big(\Rfree(Y_{t}+M_{t}-\mathbf{C}_{t}^{{\pi}})-M_{t}+H_{t+1}-H_{t}\big) + (\rfree/\Rfree) (\mathbf{C}_{t}^{{\pi}}-\mathbf{C}_{t}) \nonumber
+\\ \ifnumSw  & = & \xi_{t+1} + (\rfree/\Rfree) (\mathbf{C}_{t}^{{\pi}}-\mathbf{C}_{t}).  \nonumber
+\end{eqnarray}
+
+So equation \eqref{eq:deltac} can be rewritten as
+\begin{eqnarray}
+    \Delta \mathbf{C}_{t+1} & = & (1-\Pi)
+        \Delta \mathbf{C}_{t} + \Pi \big((\rfree/\Rfree)(\mathbf{C}_{t}^{{\pi}}-\mathbf{C}_{t}) + \xi_{t+1}\big)  \nonumber
+\label{eq:deltac2}
+\end{eqnarray}
+where $\xi _{t+1}$ is a white noise variable.
+Thus,
+\begin{verbatimwrite}{\eq/dCQuadSticky.tex}
+\begin{eqnarray}
+    \Delta \mathbf{C}_{t+1} & = & (1-\Pi)\big(1+\underbrace{(\rfree/\Rfree)}_{\approx\,0}\big) \Delta \mathbf{C}_{t} + \underbrace{\Pi \xi_{t+1}}_{\equiv\,\epsilon_{t+1}} \label{eq:dCQuadSticky}
+\end{eqnarray}
+\end{verbatimwrite}
+\input \eq/dCQuadSticky.tex
+for a white noise variable $\epsilon_{t+1}$, and $(\rfree/\Rfree) \approx 0$
+for plausible quarterly interest rates.  \eqref{eq:dCQuadSticky}
+leads directly to \eqref{eq:dCQuadStickyApprox}.

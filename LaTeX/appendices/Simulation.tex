@@ -1,0 +1,78 @@
+
+This appendix describes the procedure for generating a \textit{history}
+of simulated outcomes once the household's optimization problem has
+been solved to yield consumption function $\cFunc(\cdot)$ (or $\CFunc(\cdot)$
+in the representative agent model).  We first describe the procedure for
+the SOE and HA-DSGE models, then summarize
+the simulation method for the representative agent model of Appendix~\ref{sec:RepAgent}.
+
+In any given period $t$, there are exactly $I=20,000$ households in
+the simulated population.  At the very beginning of the simulation, all households
+are given an initial level of capital: $\kLev_{t,i} = 0$ in the SOE model (as if
+they were newborns) and $\kLev_{t,i}$ at the perfect foresight steady state $\KLev$ in the HA-DSGE model.
+Likewise, normalized aggregate capital $\KLev_{t}$ is set to the perfect foresight
+steady state.  At the beginning of time, all households
+have $p_{t,i} = 1$ and correct perceptions of the aggregate state.
+We initialize $\PLev_{t}=1$ and $\PtyGro_{t}=1$, average growth.
+
+Time begins in period $t=-1000$, but the reported \textit{history}
+begins at $t=0$ following a 1000 period ``burn in'' phase to allow the
+population distribution of $p_{t,i}$ and $\aLev_{t,i}$ to reach its
+long run distribution.  In each simulated period $t$, we execute the following steps:
+
+\begin{enumerate}
+\item Draw aggregate shocks $\Theta_t$ and $\Psi_t$ and productivity growth $\PtyGro_t$, then calculate
+the new level of aggregate permanent productivity $\PLev_t$ and factor returns $\Wage_t$ and $\RProd_t$
+using \eqref{eq:MargProd} (HA-DSGE model) or assigning the constant global values (SOE).
+
+\item Randomly select $\PDies I = 100$ household indices $i$ to die and be replaced: $\pDies_{i,t}=1$.
+Newborns get $p_{t,i} = 1$, $\kLev_{t,i} = 0$, and a correct perception of the aggregate state.
+Survivors receive the capital of the dead via the Blanchardian scheme.
+
+\item Randomly select $\Pi I$ household indices to update their aggregate information: $\pi_{t,i}=1$.
+Agents' perceptions  $(\perc{\PLev}_{t,i},\perc{\PtyGro}_{t,i})$ are set according to \eqref{eq:PLevBeliefSOE}.
+
+\item The economy produces output. All agents draw idiosyncratic shocks $\psi_{t,i}$ and $\theta_{t,i}$,
+with newborns automatically drawing $\psi_{t,i} = \theta_{t,i}=1$,\footnote{This prevents newborns from being
+unemployed in their first period of life and thus getting $\cLevBF_{t,i}=0$.  It also simplifies the calculation
+of the cost of stickiness.} then observe their true $\mLevBF_{t,i}$ (and $\MLevBF_t$ in the HA-DSGE model).
+
+\item Agents compute their perception of normalized idiosyncratic  market resources $\perc{\mLev}_{t,i}$
+(and aggregate $\perc{\MLev}_{t,i}$ in HA-DSGE).
+
+\item Agents choose their level of consumption $\cLevBF_{t,i}$ according to their
+consumption function and their perceived state, and end the period with $\aLevBF_{t,i} = \mLevBF_{t,i} - \cLevBF_{t,i}$
+in assets.
+
+\item Aggregate assets $\ALevBF_t$ and consumption $\CLevBF_t$ are calculated by
+taking population averages across the $I$ households.  This period's assets become
+next period's aggregate capital $\KLevBF_{t+1}$, and the next period begins.
+\end{enumerate}
+
+We simulate a total of about 21,000 periods, so that the final period is indexed
+by $t=T=20,000$.  The time series values reported in Table~\ref{table:Eqbm}
+are calculated on the span of the history, $t=0$ to $t=T$; the cross sectional
+values in this table are averaged across all within-period cross sections.  The
+time series regressions in Tables \ref{tPESOEsim} and \ref{tDSGEsim} partition
+the history into 200 samples of 100 quarters each; the tables report
+average coefficients and statistics across 100 sample regressions.
+
+When simulating the representative agent model of Appendix~\ref{sec:RepAgent},
+only a few changes are necessary to the procedure above.  The vectors of
+perceptions are initialized to $\perc{\PLev}_t = \mathbf{1}_{11}$ and $\varphi = e^6_{11}$,
+so the ``entire'' representative agent has correct perceptions of the aggregate state.
+No households are ever ``replaced'' in the RA simulation, idiosyncratic shocks do
+not exist; only aggregate market resources are relevant.  The vectors of perceptions
+evolve according to \eqref{eq:PtyGroPerc} and \eqref{eq:PLevPercRA}, and
+aggregate consumption is determined using \eqref{eq:cLvlRA}.
+
+The microeconomic (or cross sectional) regressions in Table~\ref{table:CGrowCross} are generated using a single 4000 period sample of the history, from $t=0$ to $t=4000$, using 5000 of the 20,000 households.  After dropping observations with $\yLevBF_{t,i}=0$, this leaves about 19 million observations, far larger than any consumption panel dataset that we know of.  Standard errors are thus vanishingly small, and have little meaning in any case, which is why we do not report them in the table summarizing our microsimulation results.
+
+When making their forecasts of expected income growth, households are assumed
+to forecast that the transitory component of income will grow by the factor
+$1/\theta_{t,i}$, which is the forecast implied by their
+observation of the idiosyncratic transitory
+component of income.  Substantively, this assumption reflects the real-world fact that
+essentially all of the predictable variation in income growth at the
+household level comes from idiosyncratic components of income.
+
