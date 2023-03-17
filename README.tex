@@ -63,7 +63,6 @@ This zip archive contains all files needed to replicate all results, tables, and
 \item Run \texttt{python ./do\_all.py}.  If you want to use a graphical environment like IPython and have installed Anaconda, run Spyder, open this file, and click the green arrow ``run'' button.  Executing this file will take 1-2 days and requires 32 GB of RAM.
 \end{enumerate}
 
-
 If you want to run the code but don't want to wait two days for it to finish, the files \texttt{./do\_min.py} and \texttt{do\_mid.py} run much more manageable subsets of our results.  Running \texttt{./do\_min.py} takes about one minute (a bit longer if using Stata to run the regressions) and produces results for the representative agent model in the appendix; running \texttt{do\_mid.py} produces results for our main specification in the text and takes about 30 minutes.
 
 Each of these files specifies particular options and then runs \texttt{./Code/Models/StickyE\_MAIN.py}.  To do a custom execution of our main code, open \texttt{./do\_custom.py} and edit the options there; detailed instructions of each model option are presented in that file.  You need not ever open Stata manually to produce any of our results; if the work requires Stata, Python will make a shell call to open Stata and run the appropriate script (\texttt{.do} file).
@@ -100,7 +99,5 @@ Each of these files specifies particular options and then runs \texttt{./Code/Mo
 \item \texttt{./Tables/} contains many tex files produced by the Python and Stata code with individual tables for the paper, along with additional specifications that we ran but did not report in the paper.  These tex files are automatically incorporated in the paper when \texttt{./cAndCwithStickyE.tex} is compiled.  In many cases, different version of the same table are produced for the paper and slides.
 
 \end{itemize}
-
-
 
 \end{document}

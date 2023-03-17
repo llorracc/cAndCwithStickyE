@@ -1,4 +1,4 @@
-\begin{minipage}{\textwidth}
+%\begin{minipage}{\textwidth}
     \begin{table}  
 \caption{Equilibrium Statistics}  
 \label{table:Eqbm}  
@@ -40,11 +40,12 @@
  \usebox{\EqbmBox}  
 \ifthenelse{\boolean{StandAlone}}{\newlength\TableWidth}{}  
 \settowidth\TableWidth{\usebox{\EqbmBox}} % Calculate width of table so notes will match  
-\medskip\medskip \vspace{0.0cm} \parbox{\TableWidth}{\footnotesize
+\medskip\medskip \vspace{0.0cm} \parbox{\TableWidth}{
+\footnotesize
   \begin{flushleft}
     \textbf{Notes}: The cost of stickiness is calculated as the proportion by which the permanent income of a newborn frictionless consumer would need to be reduced in order to achieve the same reduction of expected value associated with forcing them to become a sticky expectations consumer.
   \end{flushleft}
 }
 \end{table}
-\end{minipage}
+%\end{minipage}
 \ifthenelse{\boolean{StandAlone}}{\end{document}}{}  
