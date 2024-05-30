@@ -28,13 +28,13 @@
 %%%     \thanks{text of the thank-you footnote} produces a footnote at the bottom of the page containing the text
 
 % Made by handoutMake.sh
-\ProvidesClass{handout}[2019/11/18 LaTeX class for handouts written by Christopher Carroll]
+\ProvidesClass{handout}[2023/03/05 LaTeX class for handouts written by Christopher Carroll]
 \NeedsTeXFormat{LaTeX2e}
 % \RequirePackage{rotating}
 \RequirePackage{snapshot} % Creates list of external files used by a LaTeX document
 \RequirePackage{ifthen}
 \RequirePackage{changepage}
-
+\RequirePackage{currfile}   % define macros to produce the filename and path
 % If unspecified whether pdf output (instead of dvi) is being used, determine that it SHOULD be
 \newif\ifdvi\dvitrue
 \@ifundefined{pdfoutput}{}{\ifnum\pdfoutput>0 \dvifalse\fi}
@@ -51,7 +51,7 @@
 % pass any options on to the scrartcl class and load this class with some options
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \ProcessOptions\relax
-\LoadClass[fontsize=12pt,english,numbers=noenddot,captions=tableheading,captions=nooneline]{scrartcl}
+\LoadClass[fontsize=12pt,english,numbers=noenddot,captions=tableheading,captions=nooneline,headings=optiontocandhead]{scrartcl}
 % pointlessnumbers = do not add final dot after ordinary section numbers
 % tablecaptionabove = use \captionabove for captions above rather than below tables
 % noonelinecaption = do not treat one-line captions differently
@@ -201,6 +201,7 @@
   {\mbox{\textsuperscript{\tiny\@thefnmark}}} % Restore footnote defn after titlepage redefines it
   \ifdvi
   \else
+  \providecommand{\ushort}{}
   \renewcommand{\ushort}{\underline} % ushort seems to not work properly for tex4ht (which compiles using dvi)
   \fi
 }
@@ -217,8 +218,6 @@
 % titlepage with title, author(s), and date
 
 \renewcommand{\maketitle}{
-  \ifthenelse{ \isundefined\@forcedate }{ 
-    \ClassWarningNoLine{handout}{{\protect\forcedate} is undefined in the .tex file; please define it and rerun}}{}
   \ifthenelse{\equal{\theIncludeTitlePage}{1}}{
     \let\footnotesize\scriptsize
     \thispagestyle{empty}
@@ -280,21 +279,21 @@
 \newcommand{\aspublished}[1]{\newcommand{\@aspublished}{#1}}
 
 \renewenvironment{abstract}{%
-  \begin{spacing}{0.9}
-    \noindent {\tiny \phantom{.}} \\ % Trick to get proper spacing in html
+%  \begin{spacing}{0.9}
+%    \noindent {\tiny \phantom{.}} \\ % Trick to get proper spacing in html
     \ifdvi
     \else % horizontal rule works well for PDF, not for html
-    \noindent \hrule height 0.4pt depth 0.0pt width \textwidth \relax
+%    \noindent \hrule height 0.4pt depth 0.0pt width \textwidth \relax
     \fi
     \vspace*{4mm}
     \abstractSizeDefault
     \noindent \textbf{Abstract}\\
     \indent 
   }{%
-    \noindent {\tiny \phantom{.}} \\  % Trick to get proper spacing in html
+%    \noindent {\tiny \phantom{.}} \\  % Trick to get proper spacing in html
     \ifdvi
     \else
-    \noindent \hrule height 0.4pt depth 0.0pt width \textwidth \relax
+%    \noindent \hrule height 0.4pt depth 0.0pt width \textwidth \relax
     \fi
     \vspace*{0mm}
     \ifthenelse{ \isundefined\@keywords }{
@@ -302,7 +301,7 @@
         Please use the command \protect\keywords}
     }{
     }
-  \end{spacing}
+%  \end{spacing}
 
   \begin{quote}
     \begin{Description}
@@ -412,3 +411,6 @@
 \DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
 \DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
 \makeatother
+
+% Add default link for html material at github llorracc
+\newcommand{\llorraccio}[1]{\href{https://llorracc.github.io/#1}{\texttt{#1}}}

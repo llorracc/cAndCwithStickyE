@@ -15,7 +15,6 @@
 \input{\econtexRoot/Switches.tex}
 \pdfmapfile{+sansmathaccent.map}
 
-%%% Jirka's colors
 
 \definecolor{myRed}{rgb}{0.8,0,0}
 \definecolor{jirkasblue}{rgb}{0.2,0.2,0.7}
@@ -30,8 +29,6 @@
 \newcommand{\jbemph}[1]{\textbf{\color{SlideNavy}#1}}
 \newcommand{\var}{\ensuremath{\text{var}}}
 
-%%%%%%%%%%%%%%%  Beamer setup
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mode<presentation>
 {
   \usetheme{default} % Singapore % Montpellier
@@ -44,8 +41,6 @@
 %\setbeamertemplate{navigation symbols}{}  % Take away navigation symbols
 
 
-%%%%%%%%%%%%%%%  Chris's definitions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\W}{\mathcal{W}}            % Include or exclude aggregate wage in individual problem - to include, should be
 \providecommand{\perc}[1]{\widetilde{#1}}
@@ -118,8 +113,6 @@
 %\providecommand{\ParmDir}{C:/Jirka/Research/stickyConsumptionUS/Nov26_07/cAndCwithStickyEArchive/Calibration/Parameters}
 %\providecommand{\TablesDir}{C:/Jirka/Research/stickyConsumptionUS/Nov26_07/cAndCwithStickyEArchive/Tables}
 
-%%%%%%%%%%%%%%%  Jirka's definitions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\input EconDocStart
 %\input PDFDocStart
@@ -144,8 +137,6 @@
 
 \beamertemplatenavigationsymbolsempty
 
-%%%%%%%%%%%%%%%  Opening slide
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \title[]{Sticky Expectations and Consumption Dynamics}
@@ -182,8 +173,6 @@
 \end{frame}
 
 
-%%%%%%%%%%%%%%% Other slides
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\section{Consumption: Micro Vs Macro}
 %\subsection{Habits?  No!  It's Inattention}
@@ -254,7 +243,7 @@ This paper
 	\begin{itemize}
 		\item  \jbemph{Uninsurable risk is essential, changes everything}
 		\item Var of micro income shocks much larger than of macro shocks:\\
-		\centerline{    \jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
+		\centerline{    \%jemph{var$(\Delta \log \pLevBF) \approx  100\times$var($\Delta \log \PLevBF$)}}
 		\item Evidence: \jbemph{``Habits'' parameter $\chi^{\text{Micro}}\approx 0.0$--$0.1$}
 	\end{itemize}
 \end{block}
@@ -338,19 +327,19 @@ $\chi^{\text{Micro}}\approx 0.1$ \\
 \begin{block}{\cite{hallRandomWalk} Random Walk}
 \phantom{.}
 \begin{itemize}
-\item \jemph{Total Wealth} (Human$\,+\,$Nonhuman):\\
+\item \%jemph{Total Wealth} (Human$\,+\,$Nonhuman):\\
 \begin{center}
 {$\wAllLev_{t+1} = (\wAllLev_{t}-\cLevBF_{t})\Rfree+\zeta_{t+1}$}
 \end{center}
-\item \jemph{Euler Equation}: \\
+\item \%jemph{Euler Equation}: \\
 \begin{center}
 {$\uFunc^{\prime}(\cLevBF_{t}) = \Rfree\beta \Ex_{t}[\uFunc^{\prime}(\cLevBF_{t+1})]$}
 \end{center}
-\item $\Rightarrow$ \jemph{Random Walk} (for $\Rfree\beta=1$): \\
+\item $\Rightarrow$ \%jemph{Random Walk} (for $\Rfree\beta=1$): \\
 \begin{center}
 {$\Delta \cLevBF_{t+1} = \epsilon_{t+1}$}
 \end{center}
-\item \jemph{Expected Wealth}: \\
+\item \%jemph{Expected Wealth}: \\
 \begin{center}
 {$\wAllLev_{t} = \Ex_{t}[\wAllLev_{t+1}] = \Ex_{t}[\wAllLev_{t+2}] = \dots$}
 \end{center}
@@ -416,12 +405,12 @@ Implies that $\Delta^{n} \wAllLev_{t+n} \equiv \wAllLev_{t+n}-\wAllLev_{t}$ is w
 
 \begin{itemize}
 \setlength{\itemsep}{2mm}
-\item[] \jemph{Idiosyncratic shocks:} Frictionless observation
+\item[] \%jemph{Idiosyncratic shocks:} Frictionless observation
   \begin{itemize}
   \setlength{\itemsep}{1mm}
   \item I notice if I am fired, promoted, somebody steals my wallet
   \end{itemize}
-\item[] \jemph{Aggregate shocks:} Sticky observation
+\item[] \%jemph{Aggregate shocks:} Sticky observation
  \begin{itemize}
    \setlength{\itemsep}{1mm}
   \item May not instantly notice changes in aggregate productivity
@@ -431,11 +420,11 @@ Implies that $\Delta^{n} \wAllLev_{t+n} \equiv \wAllLev_{t+n}-\wAllLev_{t}$ is w
 So...
 \begin{itemize}
   \setlength{\itemsep}{1mm}
-\item[]  \jemph{Idiosyncratic $\Delta \mathbf{c}$}: dominated by frictionless dynamics
+\item[]  \%jemph{Idiosyncratic $\Delta \mathbf{c}$}: dominated by frictionless dynamics
 \end{itemize}
 But law of large numbers $\Rightarrow$ idiosyncratic part vanishes
 \begin{itemize}
-\item[]  \jemph{Aggregate     $\Delta \mathbf{C}$}: highly serially correlated
+\item[]  \%jemph{Aggregate     $\Delta \mathbf{C}$}: highly serially correlated
 \end{itemize}
 
 
@@ -490,8 +479,8 @@ $$
 
 \item  Idiosyncratic and aggregate $p$ evolve according to
 \begin{eqnarray*}
-{{p}}_{t+1,i} & =&  \phantom{\jemph{\PtyGro}_{t+1}}{{p}}_{t,i} \psi_{t+1,i}  \\
- {P}_{t+1\phantom{,i}} & =&  \jemph{\PtyGro}_{t+1} {P}_{t\phantom{,i}}\Psi_{t+1}
+{{p}}_{t+1,i} & =&  \phantom{\%jemph{\PtyGro}_{t+1}}{{p}}_{t,i} \psi_{t+1,i}  \\
+ {P}_{t+1\phantom{,i}} & =&  \%jemph{\PtyGro}_{t+1} {P}_{t\phantom{,i}}\Psi_{t+1}
 \end{eqnarray*}
 
 %\item  $\Ex_{t}[\theta_{t+n}]=\Ex_{t}[\Theta_{t+n}]=\Ex_{t}[\pShk_{t+n}]=\Ex_{t}[\PShk_{t+n}]=1\quad\forall~n>0$
@@ -514,14 +503,14 @@ $$
 \bi
 \item {\it True} Permanent income: ${P}_{t+1} =  \PtyGro_{t+1} {P}_{t}\Psi_{t+1}$\\
 \item Tilde ($\perc{P}$) denotes perceived variables
-\item \jemph{Perception for consumer who has not updated for $n$ periods:}
+\item \%jemph{Perception for consumer who has not updated for $n$ periods:}
 $$
   \perc{P}_{t,i}=\Ex_{t-n}\big[P_t\big\vert\Omega_{t-n}\big]=\Phi_{t-n}^nP_{t-n}
 $$
 because $\Phi$ is random walk
 \ei
 \bigskip  
-\jemph{\textbf{Key Assumption:}}\\
+\%jemph{\textbf{Key Assumption:}}\\
 \begin{itemize}
 	\item  People act as if their perceptions about aggregate state $\{\perc{P}_{t,i},\perc{\PtyGro}_{t,i}\}$
 	are the true aggregate state $\{P_t,\PtyGro_t\}$
@@ -543,7 +532,7 @@ because $\Phi$ is random walk
 
 \item Consumes based on her perception of the aggregate state\\
 \bigskip
-  \jemph{\textbf{Key Assumption:}}\\
+  \%jemph{\textbf{Key Assumption:}}\\
     \begin{itemize}
     \item  People act as if their perceptions about aggregate state $\{\perc{P}_{t,i},\perc{\PtyGro}_{t,i}\}$
 are the true aggregate state $\{P_t,\PtyGro_t\}$
@@ -584,7 +573,6 @@ are the true aggregate state $\{P_t,\PtyGro_t\}$
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{frame}
@@ -597,16 +585,16 @@ $$
 \begin{itemize}
 \setlength{\itemsep}{2mm}
 \item \jbemph{$\chi$: Extent of habits}\\
-\jemph{Data: Micro:} $\chi^{\text{Micro}} = 0.1$ (EER 2017 paper)\\
-\hspace*{1.1cm}\jemph{Macro:} $\chi^{\text{Macro}} = 0.6$
+\%jemph{Data: Micro:} $\chi^{\text{Micro}} = 0.1$ (EER 2017 paper)\\
+\hspace*{1.1cm}\%jemph{Macro:} $\chi^{\text{Macro}} = 0.6$
 
 \item  \jbemph{$\eta$: Fraction of Y going to `rule-of-thumb' C\,=\,Y types}\\
-\jemph{Data: Micro:} $0<\eta^{\text{Micro}} <1$ (Depends \dots)\\
-\hspace*{1.1cm}\jemph{Macro:} $\eta^{\text{Macro}} \approx 0.5$ (\cite{cmModel})
+\%jemph{Data: Micro:} $0<\eta^{\text{Micro}} <1$ (Depends \dots)\\
+\hspace*{1.1cm}\%jemph{Macro:} $\eta^{\text{Macro}} \approx 0.5$ (\cite{cmModel})
 
 \item  \jbemph{$\alpha$: Precautionary saving (micro) or IES (Macro)}\\
-\jemph{Data: Micro:} $\alpha^{\text{Micro}}<0$ (\cite{zeldes:jpe})\\
-\hspace*{1.1cm}\jemph{Macro:} $\alpha^{\text{Macro}}<0$ (but small)\\
+\%jemph{Data: Micro:} $\alpha^{\text{Micro}}<0$ (\cite{zeldes:jpe})\\
+\hspace*{1.1cm}\%jemph{Macro:} $\alpha^{\text{Macro}}<0$ (but small)\\
 {[In GE $\rfree$ depends roughly linearly on $A$]}
 \end{itemize}
 
@@ -788,8 +776,6 @@ Model with `Sticky Expectations' of aggregate variables can match both micro and
 
 \end{frame}
 
-%%%%%%%%%%%%%%%  bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \tiny
 
 \beamerdefaultoverlayspecification{<*>}
